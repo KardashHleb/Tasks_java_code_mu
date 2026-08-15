@@ -6,5 +6,7 @@ public class Main {
     public static void main(String[] args) {
         NegativeNumberChecker checker = new org.example.NegativeNumberChecker();
         checker.isNegativer(-22);
+        StringLengthShower showLength = new org.example.StringLengthShower();
+        showLength.lengthShower("привет, как дела?");
     }
 }

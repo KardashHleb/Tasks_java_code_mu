@@ -8,5 +8,7 @@ public class Main {
         checker.isNegativer(-22);
         StringLengthShower showLength = new org.example.StringLengthShower();
         showLength.lengthShower("привет, как дела?");
+        LastCharShower lastChar = new org.example.LastCharShower();
+        lastChar.showLastChar("привет, как дела?");
     }
 }

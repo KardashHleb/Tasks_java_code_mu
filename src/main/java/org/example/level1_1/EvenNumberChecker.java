@@ -1,4 +1,4 @@
-package org.example;
+package org.example.level1_1;
 
 public class EvenNumberChecker {
 

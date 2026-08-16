@@ -5,6 +5,7 @@ import org.example.level1_1.FirstTwoLettersChecker;
 import org.example.level1_1.LastCharShower;
 import org.example.level1_1.NegativeNumberChecker;
 import org.example.level1_1.StringLengthShower;
+import org.example.level1_2.FirstDigitShower;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
@@ -23,5 +24,9 @@ public class Main {
         FirstTwoLettersChecker lettersChecker = new FirstTwoLettersChecker();
         lettersChecker.sameFirstTwoLetters("привет", "приветик");
         lettersChecker.sameFirstTwoLetters("кот", "дом");
+
+        FirstDigitShower firstDigit = new FirstDigitShower();
+        firstDigit.showFirstDigit(12345);
+        firstDigit.showFirstDigit(-567);
     }
 }

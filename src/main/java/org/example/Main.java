@@ -13,5 +13,9 @@ public class Main {
 
         EvenNumberChecker evenChecker = new org.example.EvenNumberChecker();
         evenChecker.isEven(-22);
+
+        FirstTwoLettersChecker lettersChecker = new org.example.FirstTwoLettersChecker();
+        lettersChecker.sameFirstTwoLetters("привет", "приветик");
+        lettersChecker.sameFirstTwoLetters("кот", "дом");
     }
 }

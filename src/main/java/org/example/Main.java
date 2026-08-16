@@ -10,5 +10,8 @@ public class Main {
         showLength.lengthShower("привет, как дела?");
         LastCharShower lastChar = new org.example.LastCharShower();
         lastChar.showLastChar("привет, как дела?");
+
+        EvenNumberChecker evenChecker = new org.example.EvenNumberChecker();
+        evenChecker.isEven(-22);
     }
 }

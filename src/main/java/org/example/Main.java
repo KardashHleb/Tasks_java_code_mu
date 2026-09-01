@@ -6,6 +6,8 @@ import org.example.level1_1.LastCharShower;
 import org.example.level1_1.NegativeNumberChecker;
 import org.example.level1_1.StringLengthShower;
 import org.example.level1_2.FirstDigitShower;
+import org.example.level1_2.LastDigitShower;
+import org.example.level1_2.SummFirstAndLast;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
@@ -28,5 +30,13 @@ public class Main {
         FirstDigitShower firstDigit = new FirstDigitShower();
         firstDigit.showFirstDigit(12345);
         firstDigit.showFirstDigit(-567);
+
+        LastDigitShower lastDigit = new LastDigitShower();
+        lastDigit.showLastDigit(12345);
+        lastDigit.showLastDigit(-567);
+
+        SummFirstAndLast summFirstAndLast = new SummFirstAndLast();
+        summFirstAndLast.sumFirstAndLast(12345);
+        summFirstAndLast.sumFirstAndLast(-567);
     }
 }

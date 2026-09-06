@@ -5,7 +5,9 @@ import org.example.level1_1.FirstTwoLettersChecker;
 import org.example.level1_1.LastCharShower;
 import org.example.level1_1.NegativeNumberChecker;
 import org.example.level1_1.StringLengthShower;
+import org.example.level1_2.DigitAmaount;
 import org.example.level1_2.FirstDigitShower;
+import org.example.level1_2.FirstDigitsChecker;
 import org.example.level1_2.LastDigitShower;
 import org.example.level1_2.SummFirstAndLast;
 
@@ -38,5 +40,13 @@ public class Main {
         SummFirstAndLast summFirstAndLast = new SummFirstAndLast();
         summFirstAndLast.sumFirstAndLast(12345);
         summFirstAndLast.sumFirstAndLast(-567);
+
+        DigitAmaount digitAmount = new DigitAmaount();
+        digitAmount.countDigits(12345);
+        digitAmount.countDigits(-567);
+
+        FirstDigitsChecker firstDigitsChecker = new FirstDigitsChecker();
+        firstDigitsChecker.sameFirstDigits(123, 156);
+        firstDigitsChecker.sameFirstDigits(89, 12);
     }
 }

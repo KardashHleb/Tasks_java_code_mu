@@ -41,6 +41,10 @@ import org.example.level1_10.DivideUntilLessThanTen;
 import org.example.level1_10.DivisorsShower;
 import org.example.level1_10.EvenSumFromOneToHundred;
 import org.example.level1_10.SecondsInYearFinder;
+import org.example.level2_1.ArrayElementsShower;
+import org.example.level2_1.EvenDigitsSumFinder;
+import org.example.level2_1.FactorialFinder;
+import org.example.level2_1.FirstCharsShower;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
@@ -182,5 +186,17 @@ public class Main {
 
         DivideUntilLessThanTen divideUntilTen = new DivideUntilLessThanTen();
         divideUntilTen.countIterations(12345);
+
+        ArrayElementsShower arrayElements = new ArrayElementsShower();
+        arrayElements.printElements(new int[]{1, 2, 3, 4, 5});
+
+        FirstCharsShower firstChars = new FirstCharsShower();
+        firstChars.printFirstChars(new String[]{"ab", "cd", "ef"});
+
+        EvenDigitsSumFinder evenDigitsSum = new EvenDigitsSumFinder();
+        evenDigitsSum.sumEvenDigits(12345);
+
+        FactorialFinder factorialFinder = new FactorialFinder();
+        factorialFinder.findFactorial((byte) 12);
     }
 }

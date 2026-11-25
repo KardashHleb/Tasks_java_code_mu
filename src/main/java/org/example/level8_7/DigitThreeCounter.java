@@ -1,26 +1,19 @@
 package org.example.level8_7;
 
 public class DigitThreeCounter {
+
+    /** Returns how many times the digit 3 occurs in all numbers of the array together. */
     public int count(int[] values) {
         int result = 0;
-
-        for (int i = 0; i < values.length; i++) {
-            int value = values[i];
-            if (value < 0) {
-                value = -value;
-            }
-            if (value == 0) {
-                continue;
-            }
-            while (value > 0) {
-                if (value % 10 == 3) {
-                    result = result + 1;
+        for (int value : values) {
+            long rest = Math.abs((long) value);
+            while (rest > 0) {
+                if (rest % 10 == 3) {
+                    result++;
                 }
-                value = value / 10;
+                rest /= 10;
             }
         }
-
-        System.out.println(result);
         return result;
     }
 }

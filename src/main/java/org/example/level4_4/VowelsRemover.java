@@ -1,25 +1,18 @@
 package org.example.level4_4;
 
 public class VowelsRemover {
-    public String removeVowels(String str) {
-        String vowels = "aeiouAEIOUаеёиоуыэюяАЕЁИОУЫЭЮЯ";
-        String result = "";
 
+    private static final String VOWELS = "aeiouAEIOU";
+
+    /** Removes all English vowels (a, e, i, o, u in either case) from the string. */
+    public String removeVowels(String str) {
+        StringBuilder result = new StringBuilder();
         for (int i = 0; i < str.length(); i++) {
             char current = str.charAt(i);
-            boolean vowel = false;
-            for (int j = 0; j < vowels.length(); j++) {
-                if (current == vowels.charAt(j)) {
-                    vowel = true;
-                    break;
-                }
-            }
-            if (!vowel) {
-                result = result + current;
+            if (VOWELS.indexOf(current) == -1) {
+                result.append(current);
             }
         }
-
-        System.out.println(result);
-        return result;
+        return result.toString();
     }
 }

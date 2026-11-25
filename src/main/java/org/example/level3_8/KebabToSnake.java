@@ -1,19 +1,9 @@
 package org.example.level3_8;
 
 public class KebabToSnake {
+
+    /** Converts kebab-case to snake_case. */
     public String convert(String str) {
-        String result = "";
-
-        for (int i = 0; i < str.length(); i++) {
-            char current = str.charAt(i);
-            if (current == '-') {
-                result = result + '_';
-            } else {
-                result = result + current;
-            }
-        }
-
-        System.out.println(result);
-        return result;
+        return str.replace('-', '_');
     }
 }

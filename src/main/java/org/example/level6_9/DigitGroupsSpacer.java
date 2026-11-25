@@ -1,30 +1,17 @@
 package org.example.level6_9;
 
 public class DigitGroupsSpacer {
+
+    /** Splits a string of digits into groups of three from the right: 1234567 becomes "1 234 567". */
     public String group(String number) {
-        int remainder = number.length() % 3;
-        int firstLength = remainder;
-        if (firstLength == 0) {
-            firstLength = 3;
+        if (number.isEmpty() || !number.chars().allMatch(Character::isDigit)) {
+            throw new IllegalArgumentException("Expected a non-empty string of digits: " + number);
         }
-
-        String result = "";
-        int index = 0;
-
-        for (int i = 0; i < firstLength; i++) {
-            result = result + number.charAt(index);
-            index = index + 1;
+        int firstLength = number.length() % 3 == 0 ? 3 : number.length() % 3;
+        StringBuilder result = new StringBuilder(number.substring(0, firstLength));
+        for (int index = firstLength; index < number.length(); index += 3) {
+            result.append(' ').append(number, index, index + 3);
         }
-
-        while (index < number.length()) {
-            result = result + " ";
-            for (int i = 0; i < 3; i++) {
-                result = result + number.charAt(index);
-                index = index + 1;
-            }
-        }
-
-        System.out.println(result);
-        return result;
+        return result.toString();
     }
 }

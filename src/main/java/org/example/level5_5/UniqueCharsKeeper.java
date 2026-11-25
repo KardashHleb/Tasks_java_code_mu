@@ -1,25 +1,16 @@
 package org.example.level5_5;
 
 public class UniqueCharsKeeper {
-    public String keepUnique(String str) {
-        String result = "";
 
-        for (int i = 0; i < str.length(); i++) {
-            char current = str.charAt(i);
-            boolean already = false;
-
-            for (int j = 0; j < result.length(); j++) {
-                if (result.charAt(j) == current) {
-                    already = true;
-                }
-            }
-
-            if (!already) {
-                result = result + current;
+    /** Removes repeated characters, keeping the first occurrence of each. */
+    public String keepUnique(String text) {
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < text.length(); i++) {
+            char current = text.charAt(i);
+            if (result.indexOf(String.valueOf(current)) < 0) {
+                result.append(current);
             }
         }
-
-        System.out.println(result);
-        return result;
+        return result.toString();
     }
 }

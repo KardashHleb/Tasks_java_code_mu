@@ -1,17 +1,11 @@
 package org.example.level4_4;
 
+import java.util.Collections;
+
 public class XxxGroupsString {
+
+    /** Returns the string "xxx xxx xxx". */
     public String make() {
-        String result = "";
-
-        for (int group = 0; group < 3; group++) {
-            if (group > 0) {
-                result = result + " ";
-            }
-            result = result + "xxx";
-        }
-
-        System.out.println(result);
-        return result;
+        return String.join(" ", Collections.nCopies(3, "xxx"));
     }
 }

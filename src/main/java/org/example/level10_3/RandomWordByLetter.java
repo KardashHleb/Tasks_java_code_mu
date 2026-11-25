@@ -1,38 +1,23 @@
 package org.example.level10_3;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 public class RandomWordByLetter {
-    public String pick(String[] words, char letter) {
-        int count = 0;
-        for (int i = 0; i < words.length; i++) {
-            if (startsWith(words[i], letter)) {
-                count = count + 1;
-            }
-        }
-        if (count == 0) {
-            System.out.println("");
-            return "";
-        }
 
-        String[] matched = new String[count];
-        int index = 0;
-        for (int i = 0; i < words.length; i++) {
-            if (startsWith(words[i], letter)) {
-                matched[index] = words[i];
-                index = index + 1;
-            }
+    /** Picks a random word starting with the given letter (case-insensitive), or empty if there is none. */
+    public Optional<String> pick(List<String> words, char letter, Random random) {
+        if (!Character.isLetter(letter)) {
+            throw new IllegalArgumentException("Not a letter: '" + letter + "'");
         }
-
-        String result = matched[new Random().nextInt(matched.length)];
-        System.out.println(result);
-        return result;
-    }
-
-    private boolean startsWith(String word, char letter) {
-        if (word.length() == 0) {
-            return false;
+        char wanted = Character.toLowerCase(letter);
+        List<String> matched = words.stream()
+                .filter(word -> !word.isEmpty() && Character.toLowerCase(word.charAt(0)) == wanted)
+                .toList();
+        if (matched.isEmpty()) {
+            return Optional.empty();
         }
-        return Character.toLowerCase(word.charAt(0)) == Character.toLowerCase(letter);
+        return Optional.of(matched.get(random.nextInt(matched.size())));
     }
 }

@@ -1,52 +1,35 @@
 package org.example.level8_4;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import org.example.common.FileUtils;
 
 public class WordInFileChecker {
-    public boolean contains(String path, String word) {
-        System.out.println("Введите слово");
-        System.out.println(word);
 
-        String text = readText(path);
-        boolean found = false;
-
-        for (int i = 0; i + word.length() <= text.length(); i++) {
-            boolean match = true;
-            for (int j = 0; j < word.length(); j++) {
-                if (text.charAt(i + j) != word.charAt(j)) {
-                    match = false;
-                }
-            }
-            if (match) {
-                boolean leftFree = i == 0 || !Character.isLetterOrDigit(text.charAt(i - 1));
-                int after = i + word.length();
-                boolean rightFree = after == text.length() || !Character.isLetterOrDigit(text.charAt(after));
-                if (leftFree && rightFree) {
-                    found = true;
-                }
-            }
-        }
-
-        System.out.println(found);
-        return found;
+    /** Returns true if the file contains the word as a whole word (case-sensitive). */
+    public boolean contains(Path file, String word) {
+        return containsWord(FileUtils.readText(file), word);
     }
 
-    private String readText(String path) {
-        String text = "";
-        try (InputStreamReader reader = new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8)) {
-            int ch = reader.read();
-            while (ch != -1) {
-                if (ch != '\r') {
-                    text = text + (char) ch;
-                }
-                ch = reader.read();
-            }
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
+    /**
+     * Returns true if the text contains the word as a whole word: an occurrence counts only when it is not
+     * glued to a letter or digit on either side, so "cat" is not found in "concatenate".
+     */
+    public boolean containsWord(String text, String word) {
+        if (word.isBlank()) {
+            throw new IllegalArgumentException("Word must not be blank");
         }
-        return text;
+        int from = 0;
+        int index = text.indexOf(word, from);
+        while (index >= 0) {
+            int after = index + word.length();
+            boolean leftFree = index == 0 || !Character.isLetterOrDigit(text.charAt(index - 1));
+            boolean rightFree = after == text.length() || !Character.isLetterOrDigit(text.charAt(after));
+            if (leftFree && rightFree) {
+                return true;
+            }
+            from = index + 1;
+            index = text.indexOf(word, from);
+        }
+        return false;
     }
 }

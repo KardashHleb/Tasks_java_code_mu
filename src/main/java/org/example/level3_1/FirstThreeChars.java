@@ -1,14 +1,12 @@
 package org.example.level3_1;
 
 public class FirstThreeChars {
+
+    /** Returns the first three characters of the string. */
     public String firstThree(String str) {
-        String result = "";
-
-        for (int i = 0; i < 3; i++) {
-            result = result + str.charAt(i);
+        if (str.length() < 3) {
+            throw new IllegalArgumentException("String must contain at least 3 characters: \"" + str + "\"");
         }
-
-        System.out.println(result);
-        return result;
+        return str.substring(0, 3);
     }
 }

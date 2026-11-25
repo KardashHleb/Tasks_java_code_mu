@@ -1,12 +1,16 @@
 package org.example.level1_6;
 
 public class DigitCharsSummer {
+
+    /** Returns the sum of the numeric values of three digit characters. */
     public int sumDigitChars(char chr1, char chr2, char chr3) {
-        int number1 = chr1 - '0';
-        int number2 = chr2 - '0';
-        int number3 = chr3 - '0';
-        int sum = number1 + number2 + number3;
-        System.out.println(sum);
-        return sum;
+        return digitValue(chr1) + digitValue(chr2) + digitValue(chr3);
+    }
+
+    private static int digitValue(char chr) {
+        if (chr < '0' || chr > '9') {
+            throw new IllegalArgumentException("Character is not a digit: " + chr);
+        }
+        return chr - '0';
     }
 }

@@ -2,43 +2,31 @@ package org.example.level6_10;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CurrentMonthCalendar {
-    public String show() {
-        LocalDate today = LocalDate.now();
-        int days = today.lengthOfMonth();
-        String result = "";
 
-        for (int day = 1; day <= days; day++) {
-            LocalDate date = LocalDate.of(today.getYear(), today.getMonth(), day);
-            if (day > 1) {
-                result = result + "\n";
-            }
-            result = result + format(date);
-            DayOfWeek weekday = date.getDayOfWeek();
-            if (weekday == DayOfWeek.SATURDAY || weekday == DayOfWeek.SUNDAY) {
-                result = result + " выходной";
-            } else {
-                result = result + " будний";
-            }
-            if (date.equals(today)) {
-                result = result + ", сегодня";
-            }
-        }
-
-        System.out.println(result);
-        return result;
+    /** Returns the calendar of the current month; see {@link #lines(LocalDate)}. */
+    public List<String> lines() {
+        return lines(LocalDate.now());
     }
 
-    private String format(LocalDate date) {
-        String month = "" + date.getMonthValue();
-        String day = "" + date.getDayOfMonth();
-        if (month.length() == 1) {
-            month = "0" + month;
+    /**
+     * Returns one line per day of the month of the given "today" date, such as "2026-11-25 weekday, today":
+     * the date, "weekend" or "weekday", and the mark ", today" for the given date.
+     */
+    public List<String> lines(LocalDate today) {
+        List<String> result = new ArrayList<>();
+        LocalDate date = today.withDayOfMonth(1);
+        while (date.getMonth() == today.getMonth()) {
+            DayOfWeek day = date.getDayOfWeek();
+            String kind = day == DayOfWeek.SATURDAY || day == DayOfWeek.SUNDAY ? "weekend" : "weekday";
+            String line = DateTimeFormatter.ISO_LOCAL_DATE.format(date) + " " + kind;
+            result.add(date.equals(today) ? line + ", today" : line);
+            date = date.plusDays(1);
         }
-        if (day.length() == 1) {
-            day = "0" + day;
-        }
-        return date.getYear() + "-" + month + "-" + day;
+        return result;
     }
 }

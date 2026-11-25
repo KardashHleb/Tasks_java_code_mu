@@ -1,16 +1,18 @@
 package org.example.level2_6;
 
 public class PositiveLessThanTenSum {
-    public int sumInRange(int[] arr) {
-        int sum = 0;
 
-        for (int i = 0; i < arr.length; i++) {
-            if (arr[i] > 0 && arr[i] < 10) {
-                sum = sum + arr[i];
+    /** Returns the sum of the array elements that are greater than 0 and less than 10. */
+    public int sumInRange(int[] arr) {
+        if (arr == null) {
+            throw new IllegalArgumentException("Array must not be null");
+        }
+        int sum = 0;
+        for (int element : arr) {
+            if (element > 0 && element < 10) {
+                sum += element;
             }
         }
-
-        System.out.println(sum);
         return sum;
     }
 }

@@ -1,9 +1,13 @@
 package org.example.level1_9;
 
 public class NumbersFromMinusHundredToZero {
-    public void printNumbers() {
-        for (int i = -100; i <= 0; i++) {
-            System.out.println(i);
+
+    /** Returns the numbers from -100 to 0 in ascending order. */
+    public int[] numbers() {
+        int[] numbers = new int[101];
+        for (int i = 0; i < numbers.length; i++) {
+            numbers[i] = i - 100;
         }
+        return numbers;
     }
 }

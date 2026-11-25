@@ -1,23 +1,20 @@
 package org.example.level10_9;
 
+import java.util.Arrays;
+
 public class ColumnSwapper {
+
+    /** Returns a copy of the matrix with two columns (0-based indexes) swapped. */
     public int[][] swap(int[][] matrix, int first, int second) {
-        for (int i = 0; i < matrix.length; i++) {
-            if (first >= 0 && second >= 0 && first < matrix[i].length && second < matrix[i].length) {
-                int temp = matrix[i][first];
-                matrix[i][first] = matrix[i][second];
-                matrix[i][second] = temp;
+        int[][] result = Arrays.stream(matrix).map(int[]::clone).toArray(int[][]::new);
+        for (int[] row : result) {
+            if (first < 0 || second < 0 || first >= row.length || second >= row.length) {
+                throw new IllegalArgumentException("Column index out of range: " + first + ", " + second);
             }
+            int temp = row[first];
+            row[first] = row[second];
+            row[second] = temp;
         }
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[i].length; j++) {
-                System.out.print(matrix[i][j]);
-                if (j < matrix[i].length - 1) {
-                    System.out.print(" ");
-                }
-            }
-            System.out.println();
-        }
-        return matrix;
+        return result;
     }
 }

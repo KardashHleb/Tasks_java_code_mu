@@ -1,19 +1,18 @@
 package org.example.level2_1;
 
 public class EvenDigitsSumFinder {
+
+    /** Returns the sum of the even digits of the number (the sign is ignored). */
     public int sumEvenDigits(int number) {
-        int positiveNumber = Math.abs(number);
+        long rest = Math.abs((long) number);
         int sum = 0;
-
-        while (positiveNumber > 0) {
-            int lastDigit = positiveNumber % 10;
+        while (rest > 0) {
+            int lastDigit = (int) (rest % 10);
             if (lastDigit % 2 == 0) {
-                sum = sum + lastDigit;
+                sum += lastDigit;
             }
-            positiveNumber = positiveNumber / 10;
+            rest /= 10;
         }
-
-        System.out.println(sum);
         return sum;
     }
 }

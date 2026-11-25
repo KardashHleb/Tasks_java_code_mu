@@ -1,43 +1,36 @@
 package org.example.level10_8;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Eratosthenes {
-    public int[] primes(int from, int to) {
+
+    /** Prime numbers in the range [from, to] found with the sieve of Eratosthenes. */
+    public List<Integer> primes(int from, int to) {
         if (from > to) {
-            int temp = from;
-            from = to;
-            to = temp;
+            throw new IllegalArgumentException("Range start " + from + " is greater than its end " + to);
         }
+        if (to == Integer.MAX_VALUE) {
+            throw new IllegalArgumentException("Range end is too large: " + to);
+        }
+        List<Integer> result = new ArrayList<>();
         if (to < 2) {
-            return new int[0];
+            return result;
         }
 
+        // Every prime i crosses out its multiples starting from i * i (smaller ones were crossed out earlier).
         boolean[] composite = new boolean[to + 1];
-        for (int i = 2; i * i <= to; i++) {
+        for (int i = 2; i <= to / i; i++) {
             if (!composite[i]) {
-                for (int j = i * i; j <= to; j = j + i) {
-                    composite[j] = true;
+                for (long j = (long) i * i; j <= to; j += i) {
+                    composite[(int) j] = true;
                 }
             }
         }
 
-        int start = from;
-        if (start < 2) {
-            start = 2;
-        }
-        int count = 0;
-        for (int i = start; i <= to; i++) {
+        for (int i = Math.max(from, 2); i <= to; i++) {
             if (!composite[i]) {
-                count = count + 1;
-            }
-        }
-
-        int[] result = new int[count];
-        int index = 0;
-        for (int i = start; i <= to; i++) {
-            if (!composite[i]) {
-                result[index] = i;
-                System.out.println(result[index]);
-                index = index + 1;
+                result.add(i);
             }
         }
         return result;

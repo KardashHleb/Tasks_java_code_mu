@@ -1,15 +1,21 @@
 package org.example.level4_2;
 
+import java.util.stream.IntStream;
+
 public class EvenFirstDigitNumbers {
-    public void printNumbers() {
-        for (int i = 10; i <= 1000; i++) {
-            int firstDigit = i;
-            while (firstDigit >= 10) {
-                firstDigit = firstDigit / 10;
-            }
-            if (firstDigit % 2 == 0) {
-                System.out.println(i);
-            }
+
+    /** Returns the numbers from 10 to 1000 whose first digit is even. */
+    public int[] find() {
+        return IntStream.rangeClosed(10, 1000)
+                .filter(number -> firstDigit(number) % 2 == 0)
+                .toArray();
+    }
+
+    private int firstDigit(int number) {
+        int rest = number;
+        while (rest >= 10) {
+            rest = rest / 10;
         }
+        return rest;
     }
 }

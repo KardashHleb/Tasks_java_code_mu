@@ -1,53 +1,30 @@
 package org.example.level8_10;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import org.example.common.FileUtils;
 
 public class LeapYearsWriter {
-    public int[] write(String path) {
-        int current = LocalDate.now().getYear();
-        int from = current - 100;
-        int to = current - 1;
-        int count = 0;
 
-        for (int year = from; year <= to; year++) {
+    private static final int YEARS_BACK = 100;
+
+    /** Writes the leap years of the last hundred years before the current one to the file and returns them. */
+    public List<Integer> write(Path file) {
+        return write(file, LocalDate.now());
+    }
+
+    /** Writes the leap years from {@code today}'s year minus 100 to the previous year, one per line, and returns them. */
+    public List<Integer> write(Path file, LocalDate today) {
+        int currentYear = today.getYear();
+        List<Integer> years = new ArrayList<>();
+        for (int year = currentYear - YEARS_BACK; year < currentYear; year++) {
             if (isLeap(year)) {
-                count = count + 1;
+                years.add(year);
             }
         }
-
-        int[] years = new int[count];
-        int index = 0;
-        String text = "";
-        for (int year = from; year <= to; year++) {
-            if (isLeap(year)) {
-                years[index] = year;
-                if (index > 0) {
-                    text = text + "\n";
-                }
-                text = text + year;
-                System.out.println(year);
-                index = index + 1;
-            }
-        }
-
-        try {
-            File file = new File(path);
-            File parent = file.getParentFile();
-            if (parent != null) {
-                parent.mkdirs();
-            }
-            try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8)) {
-                writer.write(text);
-            }
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-
+        FileUtils.writeLines(file, years.stream().map(String::valueOf).toList());
         return years;
     }
 

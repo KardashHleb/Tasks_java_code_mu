@@ -1,48 +1,38 @@
 package org.example.level8_3;
 
-import java.io.File;
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import org.example.common.FileUtils;
 
 public class ExtensionFilesDeleter {
-    public String[] delete(String folderPath, String extension) {
-        String suffix = extension;
-        if (suffix.length() > 0 && suffix.charAt(0) != '.') {
-            suffix = "." + suffix;
-        }
 
-        File folder = new File(folderPath);
-        File[] children = folder.listFiles();
-        if (children == null) {
-            System.out.println("Папка не найдена");
-            return new String[0];
+    /**
+     * Deletes the files with the given extension (case-insensitive, with or without a leading dot) directly
+     * inside the folder and returns their names in alphabetical order.
+     */
+    public List<String> delete(Path folder, String extension) {
+        String bareExtension = extension.startsWith(".") ? extension.substring(1) : extension;
+        if (bareExtension.isBlank()) {
+            throw new IllegalArgumentException("Extension must not be empty");
         }
-
-        int count = 0;
-        for (int i = 0; i < children.length; i++) {
-            if (children[i].isFile() && endsWith(children[i].getName(), suffix)) {
-                count = count + 1;
+        if (!Files.isDirectory(folder)) {
+            throw new IllegalArgumentException("Not a folder: " + folder);
+        }
+        List<String> deleted = new ArrayList<>();
+        for (Path file : FileUtils.listFiles(folder)) {
+            if (FileUtils.hasExtension(file, bareExtension)) {
+                try {
+                    Files.delete(file);
+                } catch (IOException e) {
+                    throw new UncheckedIOException(e);
+                }
+                deleted.add(file.getFileName().toString());
             }
         }
-
-        String[] deleted = new String[count];
-        int index = 0;
-        for (int i = 0; i < children.length; i++) {
-            if (children[i].isFile() && endsWith(children[i].getName(), suffix)) {
-                String name = children[i].getName();
-                children[i].delete();
-                deleted[index] = name;
-                System.out.println(deleted[index]);
-                index = index + 1;
-            }
-        }
-
         return deleted;
-    }
-
-    private boolean endsWith(String name, String suffix) {
-        if (name.length() < suffix.length()) {
-            return false;
-        }
-        String ending = name.substring(name.length() - suffix.length());
-        return ending.equalsIgnoreCase(suffix);
     }
 }

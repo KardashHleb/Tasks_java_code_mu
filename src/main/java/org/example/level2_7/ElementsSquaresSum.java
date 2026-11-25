@@ -1,14 +1,16 @@
 package org.example.level2_7;
 
 public class ElementsSquaresSum {
-    public int sumSquares(int[] arr) {
-        int sum = 0;
 
-        for (int i = 0; i < arr.length; i++) {
-            sum = sum + arr[i] * arr[i];
+    /** Returns the sum of the squares of the array elements. */
+    public long sumSquares(int[] arr) {
+        if (arr == null) {
+            throw new IllegalArgumentException("Array must not be null");
         }
-
-        System.out.println(sum);
+        long sum = 0;
+        for (int element : arr) {
+            sum += (long) element * element;
+        }
         return sum;
     }
 }

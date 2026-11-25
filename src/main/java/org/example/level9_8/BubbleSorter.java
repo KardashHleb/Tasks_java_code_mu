@@ -1,20 +1,24 @@
 package org.example.level9_8;
 
 public class BubbleSorter {
+
+    /** Returns a sorted copy of the array using bubble sort (stops early when a pass makes no swaps). */
     public int[] sort(int[] values) {
-        for (int i = 0; i < values.length; i++) {
-            for (int j = 0; j < values.length - 1; j++) {
-                if (values[j] > values[j + 1]) {
-                    int temp = values[j];
-                    values[j] = values[j + 1];
-                    values[j + 1] = temp;
+        int[] result = values.clone();
+        for (int end = result.length - 1; end > 0; end--) {
+            boolean swapped = false;
+            for (int j = 0; j < end; j++) {
+                if (result[j] > result[j + 1]) {
+                    int temp = result[j];
+                    result[j] = result[j + 1];
+                    result[j + 1] = temp;
+                    swapped = true;
                 }
             }
+            if (!swapped) {
+                break;
+            }
         }
-
-        for (int i = 0; i < values.length; i++) {
-            System.out.println(values[i]);
-        }
-        return values;
+        return result;
     }
 }

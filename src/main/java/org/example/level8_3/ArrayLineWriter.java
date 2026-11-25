@@ -1,36 +1,18 @@
 package org.example.level8_3;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.stream.Collectors;
+import org.example.common.FileUtils;
 
 public class ArrayLineWriter {
-    public String write(int[] values, String path) {
-        String result = "";
 
-        for (int i = 0; i < values.length; i++) {
-            if (i > 0) {
-                result = result + "\n";
-            }
-            result = result + values[i];
-            System.out.println(values[i]);
-        }
-
-        try {
-            File file = new File(path);
-            File parent = file.getParentFile();
-            if (parent != null) {
-                parent.mkdirs();
-            }
-            try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8)) {
-                writer.write(result);
-            }
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-
-        return result;
+    /** Writes every element of the array on its own line of the file and returns the written text. */
+    public String write(int[] values, Path file) {
+        String text = Arrays.stream(values)
+                .mapToObj(String::valueOf)
+                .collect(Collectors.joining("\n"));
+        FileUtils.writeText(file, text);
+        return text;
     }
 }

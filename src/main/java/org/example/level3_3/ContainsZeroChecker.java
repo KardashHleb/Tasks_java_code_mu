@@ -1,23 +1,16 @@
 package org.example.level3_3;
 
 public class ContainsZeroChecker {
+
+    /** Checks whether the decimal notation of the number contains the digit 0. */
     public boolean containsZero(int number) {
-        int positiveNumber = Math.abs(number);
-
-        if (positiveNumber == 0) {
-            System.out.println("Содержит ноль");
-            return true;
-        }
-
-        while (positiveNumber > 0) {
-            if (positiveNumber % 10 == 0) {
-                System.out.println("Содержит ноль");
+        int rest = Math.abs(number);
+        do {
+            if (rest % 10 == 0) {
                 return true;
             }
-            positiveNumber = positiveNumber / 10;
-        }
-
-        System.out.println("Не содержит ноль");
+            rest = rest / 10;
+        } while (rest > 0);
         return false;
     }
 }

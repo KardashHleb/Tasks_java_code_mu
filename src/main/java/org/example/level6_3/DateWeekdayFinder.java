@@ -1,25 +1,18 @@
 package org.example.level6_3;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.time.format.TextStyle;
+import java.util.Locale;
 
 public class DateWeekdayFinder {
-    public String find(String dateText) {
-        System.out.println("Введите дату в формате год-месяц-день");
-        System.out.println(dateText);
 
-        LocalDate date = LocalDate.parse(dateText);
-        String[] names = {
-                "",
-                "понедельник",
-                "вторник",
-                "среда",
-                "четверг",
-                "пятница",
-                "суббота",
-                "воскресенье"
-        };
-        String result = names[date.getDayOfWeek().getValue()];
-        System.out.println(result);
-        return result;
+    /** Returns the English name of the day of the week of a date given as year-month-day. */
+    public String find(String date) {
+        try {
+            return LocalDate.parse(date).getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Invalid date, expected yyyy-MM-dd: " + date, e);
+        }
     }
 }

@@ -1,50 +1,27 @@
 package org.example.level7_7;
 
+import java.util.Arrays;
+
 public class CommonElements {
+
+    /** Returns the distinct values present in both arrays, in order of their first occurrence in {@code first}. */
     public int[] common(int[] first, int[] second) {
-        int count = 0;
-
-        for (int i = 0; i < first.length; i++) {
-            boolean inSecond = false;
-            boolean already = false;
-            for (int j = 0; j < second.length; j++) {
-                if (second[j] == first[i]) {
-                    inSecond = true;
-                }
-            }
-            for (int j = 0; j < i; j++) {
-                if (first[j] == first[i]) {
-                    already = true;
-                }
-            }
-            if (inSecond && !already) {
-                count = count + 1;
+        int[] result = new int[first.length];
+        int size = 0;
+        for (int value : first) {
+            if (contains(second, second.length, value) && !contains(result, size, value)) {
+                result[size++] = value;
             }
         }
+        return Arrays.copyOf(result, size);
+    }
 
-        int[] result = new int[count];
-        int index = 0;
-
-        for (int i = 0; i < first.length; i++) {
-            boolean inSecond = false;
-            boolean already = false;
-            for (int j = 0; j < second.length; j++) {
-                if (second[j] == first[i]) {
-                    inSecond = true;
-                }
-            }
-            for (int j = 0; j < i; j++) {
-                if (first[j] == first[i]) {
-                    already = true;
-                }
-            }
-            if (inSecond && !already) {
-                result[index] = first[i];
-                System.out.println(result[index]);
-                index = index + 1;
+    private boolean contains(int[] values, int length, int value) {
+        for (int i = 0; i < length; i++) {
+            if (values[i] == value) {
+                return true;
             }
         }
-
-        return result;
+        return false;
     }
 }

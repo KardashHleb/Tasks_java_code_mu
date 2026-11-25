@@ -1,23 +1,22 @@
 package org.example.level3_8;
 
 public class SnakeToCamel {
-    public String convert(String str) {
-        String result = "";
-        boolean upperNext = false;
 
+    /** Converts snake_case to camelCase, e.g. "var_test_text" gives "varTestText". */
+    public String convert(String str) {
+        StringBuilder result = new StringBuilder();
+        boolean upperNext = false;
         for (int i = 0; i < str.length(); i++) {
             char current = str.charAt(i);
             if (current == '_') {
                 upperNext = true;
             } else if (upperNext) {
-                result = result + Character.toUpperCase(current);
+                result.append(Character.toUpperCase(current));
                 upperNext = false;
             } else {
-                result = result + current;
+                result.append(current);
             }
         }
-
-        System.out.println(result);
-        return result;
+        return result.toString();
     }
 }

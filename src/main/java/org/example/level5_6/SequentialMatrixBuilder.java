@@ -1,18 +1,16 @@
 package org.example.level5_6;
 
 public class SequentialMatrixBuilder {
-    public int[][] build() {
-        int[][] arr = new int[3][3];
-        int value = 1;
 
-        for (int i = 0; i < arr.length; i++) {
-            for (int j = 0; j < arr[i].length; j++) {
-                arr[i][j] = value;
-                System.out.println(arr[i][j]);
-                value = value + 1;
+    /** Builds a 3x3 array filled with the numbers 1 to 9 row by row. */
+    public int[][] build() {
+        int[][] matrix = new int[3][3];
+        int value = 1;
+        for (int[] row : matrix) {
+            for (int j = 0; j < row.length; j++) {
+                row[j] = value++;
             }
         }
-
-        return arr;
+        return matrix;
     }
 }

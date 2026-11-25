@@ -1,16 +1,18 @@
 package org.example.level2_5;
 
 public class PositiveElementsSum {
-    public int sumPositive(int[] arr) {
-        int sum = 0;
 
-        for (int i = 0; i < arr.length; i++) {
-            if (arr[i] > 0) {
-                sum = sum + arr[i];
+    /** Returns the sum of the positive array elements. */
+    public long sumPositive(int[] arr) {
+        if (arr == null) {
+            throw new IllegalArgumentException("Array must not be null");
+        }
+        long sum = 0;
+        for (int element : arr) {
+            if (element > 0) {
+                sum += element;
             }
         }
-
-        System.out.println(sum);
         return sum;
     }
 }

@@ -1,35 +1,25 @@
 package org.example.level9_6;
 
 public class FirstFolderFromUrl {
+
+    /** Returns the first folder of a URL path, e.g. "dir1" for "http://site.com/dir1/dir2/page.html", or "" if there is none. */
     public String folder(String url) {
-        int scheme = url.indexOf("://");
-        int start = 0;
-        if (scheme >= 0) {
-            start = scheme + 3;
+        String rest = url;
+        int query = rest.indexOf('?');
+        if (query >= 0) {
+            rest = rest.substring(0, query);
         }
+        int scheme = rest.indexOf("://");
+        int start = scheme >= 0 ? scheme + 3 : 0;
 
-        int domainEnd = url.length();
-        for (int i = start; i < url.length(); i++) {
-            if (url.charAt(i) == '/') {
-                domainEnd = i;
-                break;
-            }
+        int pathStart = rest.indexOf('/', start);
+        if (pathStart < 0) {
+            return "";
         }
-
-        int folderStart = domainEnd + 1;
-        int folderEnd = url.length();
-        for (int i = folderStart; i < url.length(); i++) {
-            if (url.charAt(i) == '/') {
-                folderEnd = i;
-                break;
-            }
+        int folderEnd = rest.indexOf('/', pathStart + 1);
+        if (folderEnd < 0) {
+            return "";
         }
-
-        String result = "";
-        if (folderStart < folderEnd && folderStart <= url.length()) {
-            result = url.substring(folderStart, folderEnd);
-        }
-        System.out.println(result);
-        return result;
+        return rest.substring(pathStart + 1, folderEnd);
     }
 }

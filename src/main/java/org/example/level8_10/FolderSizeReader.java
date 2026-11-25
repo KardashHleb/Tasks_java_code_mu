@@ -1,30 +1,32 @@
 package org.example.level8_10;
 
-import java.io.File;
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.stream.Stream;
 
 public class FolderSizeReader {
-    public long size(String folderPath) {
-        long result = sizeOf(new File(folderPath));
-        System.out.println(result);
-        return result;
+
+    /** Returns the total size in bytes of all files in the folder and its subfolders. */
+    public long size(Path folder) {
+        if (!Files.isDirectory(folder)) {
+            throw new IllegalArgumentException("Not a folder: " + folder);
+        }
+        try (Stream<Path> walk = Files.walk(folder)) {
+            return walk.filter(Files::isRegularFile)
+                    .mapToLong(FolderSizeReader::sizeOf)
+                    .sum();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
-    private long sizeOf(File folder) {
-        File[] children = folder.listFiles();
-        if (children == null) {
-            if (folder.isFile()) {
-                return folder.length();
-            }
-            return 0;
+    private static long sizeOf(Path file) {
+        try {
+            return Files.size(file);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
         }
-        long sum = 0;
-        for (int i = 0; i < children.length; i++) {
-            if (children[i].isDirectory()) {
-                sum = sum + sizeOf(children[i]);
-            } else if (children[i].isFile()) {
-                sum = sum + children[i].length();
-            }
-        }
-        return sum;
     }
 }

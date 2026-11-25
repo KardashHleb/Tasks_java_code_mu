@@ -1,37 +1,20 @@
 package org.example.level3_7;
 
 public class OddDigitsRemover {
+
+    /** Removes all odd digits from the number, keeping the sign, e.g. 123456 gives 246. */
     public int removeOddDigits(int number) {
-        int positiveNumber = Math.abs(number);
-        int temp = positiveNumber;
-        int digits = 0;
-
-        if (positiveNumber == 0) {
-            digits = 1;
-        }
-
-        while (temp > 0) {
-            digits = digits + 1;
-            temp = temp / 10;
-        }
-
-        int divisor = 1;
-        for (int i = 1; i < digits; i++) {
-            divisor = divisor * 10;
-        }
-
+        int rest = Math.abs(number);
         int result = 0;
-        temp = positiveNumber;
-
-        while (divisor > 0) {
-            int digit = temp / divisor % 10;
+        int position = 1;
+        while (rest > 0) {
+            int digit = rest % 10;
             if (digit % 2 == 0) {
-                result = result * 10 + digit;
+                result = result + digit * position;
+                position = position * 10;
             }
-            divisor = divisor / 10;
+            rest = rest / 10;
         }
-
-        System.out.println(result);
-        return result;
+        return number < 0 ? -result : result;
     }
 }

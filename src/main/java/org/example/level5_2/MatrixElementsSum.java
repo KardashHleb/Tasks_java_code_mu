@@ -1,16 +1,15 @@
 package org.example.level5_2;
 
 public class MatrixElementsSum {
-    public int sum(int[][] arr) {
-        int result = 0;
 
-        for (int i = 0; i < arr.length; i++) {
-            for (int j = 0; j < arr[i].length; j++) {
-                result = result + arr[i][j];
+    /** Returns the sum of all elements of a two-dimensional array. */
+    public long sum(int[][] matrix) {
+        long result = 0;
+        for (int[] row : matrix) {
+            for (int element : row) {
+                result += element;
             }
         }
-
-        System.out.println(result);
         return result;
     }
 }

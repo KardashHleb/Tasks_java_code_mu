@@ -1,31 +1,20 @@
 package org.example.level7_8;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PrimesInRange {
-    public int[] primes(int from, int to) {
-        int min = from;
-        int max = to;
-        if (to < from) {
-            min = to;
-            max = from;
-        }
 
-        int count = 0;
-        for (int number = min; number <= max; number++) {
-            if (isPrime(number)) {
-                count = count + 1;
+    /** Returns all primes between the two bounds inclusive (bounds may come in any order). */
+    public List<Integer> primes(int from, int to) {
+        int min = Math.min(from, to);
+        int max = Math.max(from, to);
+        List<Integer> result = new ArrayList<>();
+        for (long number = min; number <= max; number++) {
+            if (isPrime((int) number)) {
+                result.add((int) number);
             }
         }
-
-        int[] result = new int[count];
-        int index = 0;
-        for (int number = min; number <= max; number++) {
-            if (isPrime(number)) {
-                result[index] = number;
-                System.out.println(result[index]);
-                index = index + 1;
-            }
-        }
-
         return result;
     }
 
@@ -33,7 +22,7 @@ public class PrimesInRange {
         if (number < 2) {
             return false;
         }
-        for (int divisor = 2; divisor * divisor <= number; divisor++) {
+        for (long divisor = 2; divisor * divisor <= number; divisor++) {
             if (number % divisor == 0) {
                 return false;
             }

@@ -1,26 +1,23 @@
 package org.example.level10_8;
 
 public class BracketsChecker {
-    public boolean check(String text) {
-        int balance = 0;
-        boolean ok = true;
 
-        for (int i = 0; i < text.length(); i++) {
-            char current = text.charAt(i);
+    /**
+     * Checks that the round brackets in the text are balanced: a running counter goes up on "(" and
+     * down on ")", must never drop below zero and must end at zero.
+     */
+    public boolean isBalanced(String text) {
+        int balance = 0;
+        for (char current : text.toCharArray()) {
             if (current == '(') {
-                balance = balance + 1;
+                balance++;
             } else if (current == ')') {
-                balance = balance - 1;
+                balance--;
                 if (balance < 0) {
-                    ok = false;
+                    return false;
                 }
             }
         }
-        if (balance != 0) {
-            ok = false;
-        }
-
-        System.out.println(ok);
-        return ok;
+        return balance == 0;
     }
 }

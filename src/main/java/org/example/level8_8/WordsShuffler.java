@@ -1,120 +1,49 @@
 package org.example.level8_8;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import org.example.common.FileUtils;
 
 public class WordsShuffler {
-    public String shuffle(String path) {
-        String text = readText(path);
-        int count = countWords(text);
-        String[] words = new String[count];
-        int[] starts = new int[count];
-        int[] ends = new int[count];
-        collect(text, words, starts, ends);
 
-        Random random = new Random();
-        for (int i = words.length - 1; i > 0; i--) {
-            int j = random.nextInt(i + 1);
-            String temp = words[i];
-            words[i] = words[j];
-            words[j] = temp;
-        }
+    private static final Pattern WORD = Pattern.compile("[\\p{L}\\p{N}]+");
 
-        String result = "";
-        int word = 0;
-        int i = 0;
-        while (i < text.length()) {
-            if (word < words.length && i == starts[word]) {
-                result = result + words[word];
-                i = ends[word];
-                word = word + 1;
-            } else {
-                result = result + text.charAt(i);
-                i = i + 1;
-            }
-        }
+    /** Shuffles the words of the file in place and returns the new text. */
+    public String shuffle(Path file) {
+        return shuffle(file, new Random());
+    }
 
-        writeText(path, result);
-        System.out.println(result);
+    /** Same as {@link #shuffle(Path)} with a caller-supplied random generator. */
+    public String shuffle(Path file, Random random) {
+        String result = shuffleWords(FileUtils.readText(file), random);
+        FileUtils.writeText(file, result);
         return result;
     }
 
-    private int countWords(String text) {
-        int count = 0;
-        boolean inWord = false;
-        for (int i = 0; i < text.length(); i++) {
-            if (isWordChar(text.charAt(i))) {
-                if (!inWord) {
-                    count = count + 1;
-                    inWord = true;
-                }
-            } else {
-                inWord = false;
-            }
+    /**
+     * Shuffles the words of the text while every separator (spaces, punctuation, line breaks) stays
+     * exactly where it was: the words are collected, shuffled, and put back into the original word slots.
+     */
+    public String shuffleWords(String text, Random random) {
+        List<String> words = new ArrayList<>();
+        Matcher matcher = WORD.matcher(text);
+        while (matcher.find()) {
+            words.add(matcher.group());
         }
-        return count;
-    }
-
-    private void collect(String text, String[] words, int[] starts, int[] ends) {
-        int index = 0;
-        boolean inWord = false;
-        for (int i = 0; i < text.length(); i++) {
-            if (isWordChar(text.charAt(i))) {
-                if (!inWord) {
-                    starts[index] = i;
-                    inWord = true;
-                }
-            } else if (inWord) {
-                ends[index] = i;
-                words[index] = text.substring(starts[index], ends[index]);
-                index = index + 1;
-                inWord = false;
-            }
+        Collections.shuffle(words, random);
+        Iterator<String> shuffled = words.iterator();
+        StringBuilder result = new StringBuilder();
+        matcher.reset();
+        while (matcher.find()) {
+            matcher.appendReplacement(result, Matcher.quoteReplacement(shuffled.next()));
         }
-        if (inWord) {
-            ends[index] = text.length();
-            words[index] = text.substring(starts[index], ends[index]);
-        }
-    }
-
-    private boolean isWordChar(char current) {
-        return Character.isLetterOrDigit(current);
-    }
-
-    private String readText(String path) {
-        String text = "";
-        try (InputStreamReader reader = new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8)) {
-            int ch = reader.read();
-            while (ch != -1) {
-                if (ch != '\r') {
-                    text = text + (char) ch;
-                }
-                ch = reader.read();
-            }
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-        return text;
-    }
-
-    private void writeText(String path, String text) {
-        try {
-            File file = new File(path);
-            File parent = file.getParentFile();
-            if (parent != null) {
-                parent.mkdirs();
-            }
-            try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8)) {
-                writer.write(text);
-            }
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
+        matcher.appendTail(result);
+        return result.toString();
     }
 }

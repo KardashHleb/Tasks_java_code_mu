@@ -1,33 +1,32 @@
 package org.example.level10_3;
 
-public class EnglishPlural {
-    public String plural(String noun) {
-        String result = noun + "s";
-        if (ends(noun, "s") || ends(noun, "x") || ends(noun, "z") || ends(noun, "ch") || ends(noun, "sh")) {
-            result = noun + "es";
-        } else if (noun.length() >= 2 && noun.charAt(noun.length() - 1) == 'y') {
-            char before = Character.toLowerCase(noun.charAt(noun.length() - 2));
-            if (before != 'a' && before != 'e' && before != 'i' && before != 'o' && before != 'u') {
-                result = noun.substring(0, noun.length() - 1) + "ies";
-            }
-        } else if (ends(noun, "fe")) {
-            result = noun.substring(0, noun.length() - 2) + "ves";
-        } else if (ends(noun, "f") && !ends(noun, "ff")) {
-            result = noun.substring(0, noun.length() - 1) + "ves";
-        }
+import java.util.Locale;
 
-        System.out.println(result);
-        return result;
+public class EnglishPlural {
+
+    /** Plural of a regular English noun: box -> boxes, city -> cities, knife -> knives, cat -> cats. */
+    public String plural(String noun) {
+        if (noun == null || noun.isBlank()) {
+            throw new IllegalArgumentException("Noun must not be empty");
+        }
+        String lower = noun.toLowerCase(Locale.ROOT);
+        if (lower.endsWith("s") || lower.endsWith("x") || lower.endsWith("z")
+                || lower.endsWith("ch") || lower.endsWith("sh")) {
+            return noun + "es";
+        }
+        if (lower.length() >= 2 && lower.endsWith("y") && !isVowel(lower.charAt(lower.length() - 2))) {
+            return noun.substring(0, noun.length() - 1) + "ies";
+        }
+        if (lower.endsWith("fe")) {
+            return noun.substring(0, noun.length() - 2) + "ves";
+        }
+        if (lower.endsWith("f") && !lower.endsWith("ff")) {
+            return noun.substring(0, noun.length() - 1) + "ves";
+        }
+        return noun + "s";
     }
 
-    private boolean ends(String word, String ending) {
-        if (word.length() < ending.length()) {
-            return false;
-        }
-        String tail = "";
-        for (int i = word.length() - ending.length(); i < word.length(); i++) {
-            tail = tail + Character.toLowerCase(word.charAt(i));
-        }
-        return tail.equals(ending);
+    private static boolean isVowel(char letter) {
+        return "aeiou".indexOf(letter) >= 0;
     }
 }

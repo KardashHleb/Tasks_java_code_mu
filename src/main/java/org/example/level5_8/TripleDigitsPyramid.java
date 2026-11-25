@@ -1,19 +1,18 @@
 package org.example.level5_8;
 
 public class TripleDigitsPyramid {
-    public String make() {
-        String result = "";
 
+    /** Builds nine rows 111, 222, ..., 999. */
+    public String build() {
+        StringBuilder result = new StringBuilder();
         for (int digit = 1; digit <= 9; digit++) {
             if (digit > 1) {
-                result = result + "\n";
+                result.append('\n');
             }
             for (int i = 0; i < 3; i++) {
-                result = result + digit;
+                result.append(digit);
             }
         }
-
-        System.out.println(result);
-        return result;
+        return result.toString();
     }
 }

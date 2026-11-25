@@ -1,90 +1,42 @@
 package org.example.level9_8;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import org.example.common.FileUtils;
 
 public class CharPercentFile {
-    public String write(String source, String target) {
-        String text = readText(source);
-        String chars = "";
-        int[] counts = new int[text.length() + 1];
 
-        for (int i = 0; i < text.length(); i++) {
-            char current = text.charAt(i);
-            int place = -1;
-            for (int j = 0; j < chars.length(); j++) {
-                if (chars.charAt(j) == current) {
-                    place = j;
-                }
-            }
-            if (place < 0) {
-                chars = chars + current;
-                counts[chars.length() - 1] = 1;
-            } else {
-                counts[place] = counts[place] + 1;
-            }
-        }
-
-        String result = "";
-        for (int i = 0; i < chars.length(); i++) {
-            if (i > 0) {
-                result = result + "\n";
-            }
-            int scaled = 0;
-            if (text.length() > 0) {
-                scaled = counts[i] * 1000 / text.length();
-            }
-            result = result + show(chars.charAt(i)) + " " + (scaled / 10) + "." + (scaled % 10) + "%";
-        }
-
-        writeText(target, result);
-        System.out.println(result);
+    /** Writes into {@code target} the share of every character of {@code source} and returns the report. */
+    public String write(Path source, Path target) {
+        String result = report(FileUtils.readText(source));
+        FileUtils.writeText(target, result);
         return result;
     }
 
-    private String show(char current) {
-        if (current == ' ') {
-            return "пробел";
+    /** One line per distinct character in order of first appearance, e.g. "a 40.0%". */
+    public String report(String text) {
+        Map<Character, Integer> counts = new LinkedHashMap<>();
+        for (char current : text.toCharArray()) {
+            counts.merge(current, 1, Integer::sum);
         }
-        if (current == '\n') {
-            return "\\n";
+        List<String> lines = new ArrayList<>();
+        for (Map.Entry<Character, Integer> entry : counts.entrySet()) {
+            double percent = entry.getValue() * 100.0 / text.length();
+            lines.add(String.format(Locale.ROOT, "%s %.1f%%", show(entry.getKey()), percent));
         }
-        return "" + current;
+        return String.join("\n", lines);
     }
 
-    private String readText(String path) {
-        String text = "";
-        try (InputStreamReader reader = new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8)) {
-            int ch = reader.read();
-            while (ch != -1) {
-                if (ch != '\r') {
-                    text = text + (char) ch;
-                }
-                ch = reader.read();
-            }
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-        return text;
-    }
-
-    private void writeText(String path, String text) {
-        try {
-            File file = new File(path);
-            File parent = file.getParentFile();
-            if (parent != null) {
-                parent.mkdirs();
-            }
-            try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8)) {
-                writer.write(text);
-            }
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
+    private static String show(char current) {
+        return switch (current) {
+            case ' ' -> "space";
+            case '\n' -> "\\n";
+            case '\t' -> "\\t";
+            default -> String.valueOf(current);
+        };
     }
 }

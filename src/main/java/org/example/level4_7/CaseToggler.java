@@ -1,21 +1,20 @@
 package org.example.level4_7;
 
 public class CaseToggler {
-    public String toggle(String str) {
-        String result = "";
 
+    /** Swaps the case of every letter: upper case becomes lower case and vice versa. */
+    public String toggle(String str) {
+        StringBuilder result = new StringBuilder(str.length());
         for (int i = 0; i < str.length(); i++) {
             char current = str.charAt(i);
             if (Character.isUpperCase(current)) {
-                result = result + Character.toLowerCase(current);
+                result.append(Character.toLowerCase(current));
             } else if (Character.isLowerCase(current)) {
-                result = result + Character.toUpperCase(current);
+                result.append(Character.toUpperCase(current));
             } else {
-                result = result + current;
+                result.append(current);
             }
         }
-
-        System.out.println(result);
-        return result;
+        return result.toString();
     }
 }

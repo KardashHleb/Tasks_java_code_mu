@@ -1,27 +1,18 @@
 package org.example.level4_3;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 public class FirstWords {
+
+    /** Returns the first {@code count} words of the string joined by single spaces. */
     public String takeFirst(String str, int count) {
-        String result = "";
-        String word = "";
-        int found = 0;
-
-        for (int i = 0; i <= str.length(); i++) {
-            if (i == str.length() || str.charAt(i) == ' ') {
-                if (word.length() > 0 && found < count) {
-                    if (result.length() > 0) {
-                        result = result + " ";
-                    }
-                    result = result + word;
-                    found = found + 1;
-                }
-                word = "";
-            } else {
-                word = word + str.charAt(i);
-            }
+        if (count < 0) {
+            throw new IllegalArgumentException("Word count must not be negative: " + count);
         }
-
-        System.out.println(result);
-        return result;
+        return Arrays.stream(str.trim().split(" +"))
+                .filter(word -> !word.isEmpty())
+                .limit(count)
+                .collect(Collectors.joining(" "));
     }
 }

@@ -1,32 +1,22 @@
 package org.example.level9_1;
 
 public class MinMaxDigit {
-    public int[] find(int number) {
-        int value = number;
-        if (value < 0) {
-            value = -value;
-        }
 
-        int min = value % 10;
-        int max = value % 10;
-        if (value == 0) {
-            min = 0;
-            max = 0;
-        }
+    /** Smallest and largest digit of a number. */
+    public record MinMax(int min, int max) {
+    }
 
+    /** Finds the smallest and the largest digit of a number (the sign is ignored). */
+    public MinMax find(int number) {
+        long value = Math.abs((long) number);
+        int min = (int) (value % 10);
+        int max = min;
         while (value > 0) {
-            int digit = value % 10;
-            if (digit < min) {
-                min = digit;
-            }
-            if (digit > max) {
-                max = digit;
-            }
+            int digit = (int) (value % 10);
+            min = Math.min(min, digit);
+            max = Math.max(max, digit);
             value = value / 10;
         }
-
-        System.out.println(min);
-        System.out.println(max);
-        return new int[]{min, max};
+        return new MinMax(min, max);
     }
 }

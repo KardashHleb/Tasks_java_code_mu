@@ -1,78 +1,56 @@
 package org.example.level8_9;
 
-import java.io.File;
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
+import org.example.common.FileUtils;
 
 public class ImagesMover {
-    public String[] move(String fromFolder, String toFolder) {
-        File source = new File(fromFolder);
-        File target = new File(toFolder);
-        target.mkdirs();
 
-        int count = countImages(source);
-        File[] images = new File[count];
-        fill(source, images, new int[]{0});
+    private static final String[] IMAGE_EXTENSIONS = {"jpg", "jpeg", "png", "gif", "bmp", "webp"};
 
-        String[] moved = new String[count];
-        for (int i = 0; i < images.length; i++) {
-            String name = images[i].getName();
-            File dest = new File(target, name);
-            int suffix = 2;
-            while (dest.exists()) {
-                dest = new File(target, withSuffix(name, suffix));
-                suffix = suffix + 1;
+    /**
+     * Moves every image file from the source folder and all its subfolders into the target folder and returns
+     * the new paths. When a name is already taken, a suffix is added: photo.jpg, photo_2.jpg, photo_3.jpg...
+     */
+    public List<Path> move(Path source, Path target) {
+        if (!Files.isDirectory(source)) {
+            throw new IllegalArgumentException("Not a folder: " + source);
+        }
+        try {
+            Files.createDirectories(target);
+            Path targetFolder = target.toAbsolutePath().normalize();
+            List<Path> images;
+            try (Stream<Path> paths = Files.walk(source)) {
+                // images already in the target folder (when it lies inside the source) stay where they are
+                images = paths.filter(Files::isRegularFile)
+                        .filter(file -> FileUtils.hasExtension(file, IMAGE_EXTENSIONS))
+                        .filter(file -> !file.toAbsolutePath().normalize().getParent().equals(targetFolder))
+                        .sorted()
+                        .toList();
             }
-            images[i].renameTo(dest);
-            moved[i] = dest.getPath();
-            System.out.println(moved[i]);
-        }
-        return moved;
-    }
-
-    private int countImages(File folder) {
-        File[] children = folder.listFiles();
-        if (children == null) {
-            return 0;
-        }
-        int count = 0;
-        for (int i = 0; i < children.length; i++) {
-            if (children[i].isDirectory()) {
-                count = count + countImages(children[i]);
-            } else if (children[i].isFile() && isImage(children[i].getName())) {
-                count = count + 1;
+            List<Path> moved = new ArrayList<>();
+            for (Path image : images) {
+                moved.add(Files.move(image, freeName(target, image.getFileName().toString())));
             }
-        }
-        return count;
-    }
-
-    private void fill(File folder, File[] result, int[] index) {
-        File[] children = folder.listFiles();
-        if (children == null) {
-            return;
-        }
-        for (int i = 0; i < children.length; i++) {
-            if (children[i].isDirectory()) {
-                fill(children[i], result, index);
-            } else if (children[i].isFile() && isImage(children[i].getName())) {
-                result[index[0]] = children[i];
-                index[0] = index[0] + 1;
-            }
+            return moved;
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
         }
     }
 
-    private boolean isImage(String name) {
-        String lower = "";
-        for (int i = 0; i < name.length(); i++) {
-            lower = lower + Character.toLowerCase(name.charAt(i));
-        }
-        return lower.endsWith(".jpg") || lower.endsWith(".jpeg") || lower.endsWith(".png")
-                || lower.endsWith(".gif") || lower.endsWith(".bmp") || lower.endsWith(".webp");
-    }
-
-    private String withSuffix(String name, int suffix) {
+    private Path freeName(Path folder, String name) {
+        Path candidate = folder.resolve(name);
         int dot = name.lastIndexOf('.');
-        if (dot < 0) {
-            return name + "_" + suffix;
+        String base = dot < 0 ? name : name.substring(0, dot);
+        String extension = dot < 0 ? "" : name.substring(dot);
+        for (int suffix = 2; Files.exists(candidate); suffix++) {
+            candidate = folder.resolve(base + "_" + suffix + extension);
         }
-        return name.substring(0, dot) + "_" + suffix + name.substring(dot);
+        return candidate;
     }
 }

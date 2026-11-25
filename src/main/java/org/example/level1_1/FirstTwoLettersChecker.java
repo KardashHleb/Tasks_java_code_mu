@@ -2,16 +2,16 @@ package org.example.level1_1;
 
 public class FirstTwoLettersChecker {
 
-    public boolean sameFirstTwoLetters(String word1, String word2) {
-        String start1 = word1.substring(0, 2);
-        String start2 = word2.substring(0, 2);
+    /** Checks whether two words start with the same two letters. */
+    public boolean haveSameFirstTwoLetters(String word1, String word2) {
+        requireAtLeastTwoChars(word1);
+        requireAtLeastTwoChars(word2);
+        return word1.substring(0, 2).equals(word2.substring(0, 2));
+    }
 
-        if (start1.equals(start2)) {
-            System.out.println("Первые две буквы совпадают");
-            return true;
-        } else {
-            System.out.println("Первые две буквы не совпадают");
-            return false;
+    private static void requireAtLeastTwoChars(String word) {
+        if (word == null || word.length() < 2) {
+            throw new IllegalArgumentException("Word must contain at least two characters: " + word);
         }
     }
 }

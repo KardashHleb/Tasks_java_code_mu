@@ -1,49 +1,30 @@
 package org.example.level10_2;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class RangePrimes {
-    public int[] primes(int from, int to) {
-        System.out.println("Введите два целых числа");
-        System.out.println(from);
-        System.out.println(to);
 
+    /** Prime numbers in the range [from, to], each checked by trial division. */
+    public List<Integer> primes(int from, int to) {
         if (from > to) {
-            int temp = from;
-            from = to;
-            to = temp;
+            throw new IllegalArgumentException("Range start " + from + " is greater than its end " + to);
         }
-        if (to < 2) {
-            return new int[0];
-        }
-
-        int start = from;
-        if (start < 2) {
-            start = 2;
-        }
-        int count = 0;
-        for (int number = start; number <= to; number++) {
+        List<Integer> result = new ArrayList<>();
+        for (int number = Math.max(from, 2); number <= to && number > 0; number++) {
             if (isPrime(number)) {
-                count = count + 1;
-            }
-        }
-
-        int[] result = new int[count];
-        int index = 0;
-        for (int number = start; number <= to; number++) {
-            if (isPrime(number)) {
-                result[index] = number;
-                System.out.println(result[index]);
-                index = index + 1;
+                result.add(number);
             }
         }
         return result;
     }
 
-    private boolean isPrime(int number) {
+    private static boolean isPrime(int number) {
         if (number < 2) {
             return false;
         }
-        for (int i = 2; i * i <= number; i++) {
-            if (number % i == 0) {
+        for (int divisor = 2; divisor <= number / divisor; divisor++) {
+            if (number % divisor == 0) {
                 return false;
             }
         }

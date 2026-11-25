@@ -1,82 +1,36 @@
 package org.example.level9_4;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import org.example.common.FileUtils;
 
 public class FrequentWord {
-    public String find(String path) {
-        String text = readText(path);
-        int count = countWords(text);
-        String[] words = new String[count];
-        fillWords(text, words);
 
-        String result = "";
+    /** Returns the most frequent word in a text file. */
+    public String find(Path file) {
+        return mostFrequent(FileUtils.readText(file));
+    }
+
+    /** Returns the most frequent word (case-insensitive, lowercased); on a tie the word that reached the top count first wins. */
+    public String mostFrequent(String text) {
+        Map<String, Integer> counts = new HashMap<>();
+        String result = null;
         int best = 0;
-        for (int i = 0; i < words.length; i++) {
-            int times = 0;
-            for (int j = 0; j < words.length; j++) {
-                if (words[i].equals(words[j])) {
-                    times = times + 1;
-                }
+        for (String word : text.toLowerCase(Locale.ROOT).split("[^\\p{L}\\p{N}]+")) {
+            if (word.isEmpty()) {
+                continue;
             }
-            if (times > best) {
-                best = times;
-                result = words[i];
+            int count = counts.merge(word, 1, Integer::sum);
+            if (count > best) {
+                best = count;
+                result = word;
             }
         }
-
-        System.out.println(result);
+        if (result == null) {
+            throw new IllegalArgumentException("Text contains no words");
+        }
         return result;
-    }
-
-    private int countWords(String text) {
-        int count = 0;
-        boolean inWord = false;
-        for (int i = 0; i < text.length(); i++) {
-            if (Character.isLetterOrDigit(text.charAt(i))) {
-                if (!inWord) {
-                    count = count + 1;
-                    inWord = true;
-                }
-            } else {
-                inWord = false;
-            }
-        }
-        return count;
-    }
-
-    private void fillWords(String text, String[] words) {
-        int index = 0;
-        String word = "";
-        for (int i = 0; i < text.length(); i++) {
-            if (Character.isLetterOrDigit(text.charAt(i))) {
-                word = word + text.charAt(i);
-            } else if (word.length() > 0) {
-                words[index] = word;
-                index = index + 1;
-                word = "";
-            }
-        }
-        if (word.length() > 0 && index < words.length) {
-            words[index] = word;
-        }
-    }
-
-    private String readText(String path) {
-        String text = "";
-        try (InputStreamReader reader = new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8)) {
-            int ch = reader.read();
-            while (ch != -1) {
-                if (ch != '\r') {
-                    text = text + (char) ch;
-                }
-                ch = reader.read();
-            }
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-        return text;
     }
 }

@@ -1,29 +1,19 @@
 package org.example.level4_10;
 
 public class ShortWordsUpper {
+
+    /** Converts words of up to three characters to upper case; words are separated by spaces. */
     public String convert(String str) {
-        String result = "";
-        String word = "";
-
-        for (int i = 0; i <= str.length(); i++) {
-            if (i == str.length() || str.charAt(i) == ' ') {
-                if (word.length() > 0) {
-                    if (result.length() > 0) {
-                        result = result + " ";
-                    }
-                    if (word.length() <= 3) {
-                        result = result + word.toUpperCase();
-                    } else {
-                        result = result + word;
-                    }
-                    word = "";
-                }
-            } else {
-                word = word + str.charAt(i);
+        StringBuilder result = new StringBuilder();
+        for (String word : str.trim().split(" +")) {
+            if (word.isEmpty()) {
+                continue;
             }
+            if (!result.isEmpty()) {
+                result.append(' ');
+            }
+            result.append(word.length() <= 3 ? word.toUpperCase() : word);
         }
-
-        System.out.println(result);
-        return result;
+        return result.toString();
     }
 }

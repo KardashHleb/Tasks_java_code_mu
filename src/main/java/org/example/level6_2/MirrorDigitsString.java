@@ -1,20 +1,17 @@
 package org.example.level6_2;
 
 public class MirrorDigitsString {
-    public String make() {
-        String result = "";
 
+    /** Builds the string "12345 54321". */
+    public String build() {
+        StringBuilder result = new StringBuilder();
         for (int digit = 1; digit <= 5; digit++) {
-            result = result + digit;
+            result.append(digit);
         }
-
-        result = result + " ";
-
+        result.append(' ');
         for (int digit = 5; digit >= 1; digit--) {
-            result = result + digit;
+            result.append(digit);
         }
-
-        System.out.println(result);
-        return result;
+        return result.toString();
     }
 }

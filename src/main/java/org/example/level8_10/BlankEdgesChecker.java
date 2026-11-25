@@ -1,71 +1,27 @@
 package org.example.level8_10;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.util.List;
+import org.example.common.FileUtils;
 
 public class BlankEdgesChecker {
-    public boolean check(String path) {
-        String text = readText(path);
-        String[] rows = lines(text);
-        boolean ok = rows.length >= 3
-                && rows[0].length() == 0
-                && rows[1].length() > 0
-                && rows[rows.length - 1].length() == 0
-                && rows[rows.length - 2].length() == 0
-                && rows[rows.length - 3].length() > 0;
 
-        System.out.println(ok);
-        return ok;
+    /** Returns true if the file starts with exactly one empty line and ends with exactly two empty lines. */
+    public boolean check(Path file) {
+        return check(FileUtils.readLines(file));
     }
 
-    private String[] lines(String text) {
-        if (text.length() == 0) {
-            return new String[0];
-        }
-        int count = 1;
-        for (int i = 0; i < text.length(); i++) {
-            if (text.charAt(i) == '\n') {
-                count = count + 1;
-            }
-        }
-        if (text.charAt(text.length() - 1) == '\n') {
-            count = count - 1;
-        }
-        String[] result = new String[count];
-        String line = "";
-        int index = 0;
-        for (int i = 0; i < text.length(); i++) {
-            if (text.charAt(i) == '\n') {
-                if (index < result.length) {
-                    result[index] = line;
-                    index = index + 1;
-                }
-                line = "";
-            } else {
-                line = line + text.charAt(i);
-            }
-        }
-        if (index < result.length) {
-            result[index] = line;
-        }
-        return result;
-    }
-
-    private String readText(String path) {
-        String text = "";
-        try (InputStreamReader reader = new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8)) {
-            int ch = reader.read();
-            while (ch != -1) {
-                if (ch != '\r') {
-                    text = text + (char) ch;
-                }
-                ch = reader.read();
-            }
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-        return text;
+    /**
+     * Returns true if the first line is empty and the second is not, and the last two lines are empty while
+     * the third from the end is not.
+     */
+    public boolean check(List<String> lines) {
+        int size = lines.size();
+        return size >= 4
+                && lines.get(0).isEmpty()
+                && !lines.get(1).isEmpty()
+                && lines.get(size - 1).isEmpty()
+                && lines.get(size - 2).isEmpty()
+                && !lines.get(size - 3).isEmpty();
     }
 }

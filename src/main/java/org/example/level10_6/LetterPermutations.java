@@ -1,46 +1,37 @@
 package org.example.level10_6;
 
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+
 public class LetterPermutations {
-    public String[] make(String word) {
-        System.out.println("Введите слово");
-        System.out.println(word);
 
-        if (word.length() > 8) {
-            System.out.println("слишком длинное слово");
-            return new String[0];
-        }
+    private static final int MAX_LENGTH = 8;
 
-        int limit = 1;
-        for (int i = 2; i <= word.length(); i++) {
-            limit = limit * i;
+    /** All distinct permutations of the letters of a word, e.g. "aab" -> [aab, aba, baa]. */
+    public List<String> make(String word) {
+        if (word.length() > MAX_LENGTH) {
+            throw new IllegalArgumentException(
+                    "Word is too long for permutations: " + word.length() + " > " + MAX_LENGTH);
         }
-        String[] found = new String[limit];
-        int[] count = new int[]{0};
-        walk(word, new boolean[word.length()], "", found, count);
-
-        String[] result = new String[count[0]];
-        for (int i = 0; i < result.length; i++) {
-            result[i] = found[i];
-            System.out.println(result[i]);
-        }
-        return result;
+        Set<String> found = new LinkedHashSet<>();
+        walk(word, new boolean[word.length()], new StringBuilder(), found);
+        return new ArrayList<>(found);
     }
 
-    private void walk(String word, boolean[] used, String current, String[] found, int[] count) {
+    /** Backtracking: appends every unused letter in turn, recurses, then takes it back. */
+    private static void walk(String word, boolean[] used, StringBuilder current, Set<String> found) {
         if (current.length() == word.length()) {
-            for (int i = 0; i < count[0]; i++) {
-                if (found[i].equals(current)) {
-                    return;
-                }
-            }
-            found[count[0]] = current;
-            count[0] = count[0] + 1;
+            found.add(current.toString());
             return;
         }
         for (int i = 0; i < word.length(); i++) {
             if (!used[i]) {
                 used[i] = true;
-                walk(word, used, current + word.charAt(i), found, count);
+                current.append(word.charAt(i));
+                walk(word, used, current, found);
+                current.deleteCharAt(current.length() - 1);
                 used[i] = false;
             }
         }

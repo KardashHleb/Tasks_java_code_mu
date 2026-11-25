@@ -1,19 +1,15 @@
 package org.example.level5_10;
 
+import java.util.StringJoiner;
+
 public class MultiplicationTable {
-    public String make(int number) {
-        System.out.println("Введите число");
-        System.out.println(number);
 
-        String result = "";
+    /** Builds the multiplication table of the number by 1..9, one line per product. */
+    public String build(int number) {
+        StringJoiner lines = new StringJoiner("\n");
         for (int i = 1; i <= 9; i++) {
-            if (i > 1) {
-                result = result + "\n";
-            }
-            result = result + i + " * " + number + " = " + (i * number);
+            lines.add(i + " * " + number + " = " + (long) i * number);
         }
-
-        System.out.println(result);
-        return result;
+        return lines.toString();
     }
 }

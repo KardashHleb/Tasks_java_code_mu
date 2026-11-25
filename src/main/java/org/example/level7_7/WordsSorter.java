@@ -1,56 +1,28 @@
 package org.example.level7_7;
 
 public class WordsSorter {
+
+    /** Sorts the whitespace-separated words of the text alphabetically with a bubble sort and joins them with spaces. */
     public String sort(String text) {
-        int wordCount = 0;
-        String word = "";
-
-        for (int i = 0; i <= text.length(); i++) {
-            if (i == text.length() || text.charAt(i) == ' ') {
-                if (word.length() > 0) {
-                    wordCount = wordCount + 1;
-                    word = "";
-                }
-            } else {
-                word = word + text.charAt(i);
-            }
+        String trimmed = text.strip();
+        if (trimmed.isEmpty()) {
+            return "";
         }
-
-        String[] words = new String[wordCount];
-        int index = 0;
-        word = "";
-
-        for (int i = 0; i <= text.length(); i++) {
-            if (i == text.length() || text.charAt(i) == ' ') {
-                if (word.length() > 0) {
-                    words[index] = word;
-                    index = index + 1;
-                    word = "";
-                }
-            } else {
-                word = word + text.charAt(i);
-            }
-        }
-
-        for (int i = 0; i < words.length; i++) {
-            for (int j = 0; j < words.length - 1; j++) {
+        String[] words = trimmed.split("\\s+");
+        for (int pass = 0; pass < words.length - 1; pass++) {
+            boolean swapped = false;
+            for (int j = 0; j < words.length - 1 - pass; j++) {
                 if (words[j].compareTo(words[j + 1]) > 0) {
                     String temp = words[j];
                     words[j] = words[j + 1];
                     words[j + 1] = temp;
+                    swapped = true;
                 }
             }
-        }
-
-        String result = "";
-        for (int i = 0; i < words.length; i++) {
-            if (i > 0) {
-                result = result + " ";
+            if (!swapped) {
+                break;
             }
-            result = result + words[i];
         }
-
-        System.out.println(result);
-        return result;
+        return String.join(" ", words);
     }
 }

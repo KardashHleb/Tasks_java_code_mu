@@ -1,22 +1,24 @@
 package org.example.level3_9;
 
 public class BinaryConverter {
-    public String toBinary(int number) {
-        int positiveNumber = Math.abs(number);
 
-        if (positiveNumber == 0) {
-            System.out.println("0");
+    /**
+     * Converts the number to its binary notation by repeated division by two.
+     * Negative numbers get a leading minus sign, e.g. -5 gives "-101".
+     */
+    public String toBinary(int number) {
+        if (number == 0) {
             return "0";
         }
-
-        String binary = "";
-
-        while (positiveNumber > 0) {
-            binary = (positiveNumber % 2) + binary;
-            positiveNumber = positiveNumber / 2;
+        long rest = Math.abs((long) number);
+        StringBuilder binary = new StringBuilder();
+        while (rest > 0) {
+            binary.append(rest % 2);
+            rest = rest / 2;
         }
-
-        System.out.println(binary);
-        return binary;
+        if (number < 0) {
+            binary.append('-');
+        }
+        return binary.reverse().toString();
     }
 }

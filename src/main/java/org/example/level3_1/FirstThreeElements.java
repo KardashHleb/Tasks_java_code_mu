@@ -1,14 +1,14 @@
 package org.example.level3_1;
 
+import java.util.Arrays;
+
 public class FirstThreeElements {
+
+    /** Returns a new array with the first three elements of the given array. */
     public int[] takeFirstThree(int[] arr) {
-        int[] slice = new int[3];
-
-        for (int i = 0; i < slice.length; i++) {
-            slice[i] = arr[i];
-            System.out.println(slice[i]);
+        if (arr.length < 3) {
+            throw new IllegalArgumentException("Array must contain at least 3 elements, got " + arr.length);
         }
-
-        return slice;
+        return Arrays.copyOf(arr, 3);
     }
 }

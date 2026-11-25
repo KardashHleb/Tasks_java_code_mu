@@ -1,15 +1,16 @@
 package org.example.level5_2;
 
 public class TenNumbersArrayFiller {
-    public int[] fill(int[] numbers) {
-        int[] arr = new int[numbers.length];
 
-        System.out.println("Введите 10 чисел");
-        for (int i = 0; i < numbers.length; i++) {
-            arr[i] = numbers[i];
-            System.out.println(arr[i]);
+    /** Fills a new array with exactly ten given numbers. */
+    public int[] fill(int... numbers) {
+        if (numbers.length != 10) {
+            throw new IllegalArgumentException("Exactly 10 numbers are required, got " + numbers.length);
         }
-
-        return arr;
+        int[] result = new int[10];
+        for (int i = 0; i < numbers.length; i++) {
+            result[i] = numbers[i];
+        }
+        return result;
     }
 }

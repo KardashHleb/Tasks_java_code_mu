@@ -1,12 +1,17 @@
 package org.example.level9_10;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MiddleBlankRemover {
+
+    /** Removes empty lines between the first and the last non-empty line; leading and trailing empty lines are kept. */
     public String clean(String text) {
-        String[] rows = lines(text);
+        String[] lines = text.split("\n", -1);
         int first = -1;
         int last = -1;
-        for (int i = 0; i < rows.length; i++) {
-            if (rows[i].length() > 0) {
+        for (int i = 0; i < lines.length; i++) {
+            if (!lines[i].isEmpty()) {
                 if (first < 0) {
                     first = i;
                 }
@@ -14,53 +19,13 @@ public class MiddleBlankRemover {
             }
         }
 
-        String result = "";
-        boolean started = false;
-        for (int i = 0; i < rows.length; i++) {
-            boolean keep = rows[i].length() > 0 || first < 0 || i < first || i > last;
-            if (keep) {
-                if (started) {
-                    result = result + "\n";
-                }
-                result = result + rows[i];
-                started = true;
+        List<String> kept = new ArrayList<>();
+        for (int i = 0; i < lines.length; i++) {
+            boolean inside = i > first && i < last;
+            if (!inside || !lines[i].isEmpty()) {
+                kept.add(lines[i]);
             }
         }
-
-        System.out.println(result);
-        return result;
-    }
-
-    private String[] lines(String text) {
-        if (text.length() == 0) {
-            return new String[0];
-        }
-        int count = 1;
-        for (int i = 0; i < text.length(); i++) {
-            if (text.charAt(i) == '\n') {
-                count = count + 1;
-            }
-        }
-        if (text.charAt(text.length() - 1) == '\n') {
-            count = count - 1;
-        }
-        String[] result = new String[count];
-        String line = "";
-        int index = 0;
-        for (int i = 0; i < text.length(); i++) {
-            if (text.charAt(i) == '\n') {
-                if (index < result.length) {
-                    result[index] = line;
-                    index = index + 1;
-                }
-                line = "";
-            } else {
-                line = line + text.charAt(i);
-            }
-        }
-        if (index < result.length) {
-            result[index] = line;
-        }
-        return result;
+        return String.join("\n", kept);
     }
 }

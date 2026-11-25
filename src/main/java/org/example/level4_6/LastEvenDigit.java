@@ -1,24 +1,19 @@
 package org.example.level4_6;
 
+import java.util.OptionalInt;
+
 public class LastEvenDigit {
-    public int find(int number) {
-        int positiveNumber = Math.abs(number);
 
-        if (positiveNumber == 0) {
-            System.out.println(0);
-            return 0;
-        }
-
-        while (positiveNumber > 0) {
-            int digit = positiveNumber % 10;
+    /** Returns the last (rightmost) even digit of the number, or an empty result if all digits are odd. */
+    public OptionalInt find(int number) {
+        int rest = Math.abs(number);
+        do {
+            int digit = rest % 10;
             if (digit % 2 == 0) {
-                System.out.println(digit);
-                return digit;
+                return OptionalInt.of(digit);
             }
-            positiveNumber = positiveNumber / 10;
-        }
-
-        System.out.println("Четная цифра не найдена");
-        return -1;
+            rest = rest / 10;
+        } while (rest > 0);
+        return OptionalInt.empty();
     }
 }

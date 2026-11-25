@@ -1,48 +1,33 @@
 package org.example.level10_10;
 
+import java.util.Arrays;
+
 public class MinMaxSwap {
+
+    /** Returns a copy of the matrix in which the smallest and the largest element swapped places (first occurrences). */
     public int[][] swap(int[][] matrix) {
-        int minRow = 0;
-        int minColumn = 0;
-        int maxRow = 0;
-        int maxColumn = 0;
-        boolean found = false;
-
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[i].length; j++) {
-                if (!found) {
-                    minRow = i;
-                    minColumn = j;
-                    maxRow = i;
-                    maxColumn = j;
-                    found = true;
-                }
-                if (matrix[i][j] < matrix[minRow][minColumn]) {
+        int[][] result = Arrays.stream(matrix).map(int[]::clone).toArray(int[][]::new);
+        int minRow = -1;
+        int minColumn = -1;
+        int maxRow = -1;
+        int maxColumn = -1;
+        for (int i = 0; i < result.length; i++) {
+            for (int j = 0; j < result[i].length; j++) {
+                if (minRow < 0 || result[i][j] < result[minRow][minColumn]) {
                     minRow = i;
                     minColumn = j;
                 }
-                if (matrix[i][j] > matrix[maxRow][maxColumn]) {
+                if (maxRow < 0 || result[i][j] > result[maxRow][maxColumn]) {
                     maxRow = i;
                     maxColumn = j;
                 }
             }
         }
-
-        if (found) {
-            int temp = matrix[minRow][minColumn];
-            matrix[minRow][minColumn] = matrix[maxRow][maxColumn];
-            matrix[maxRow][maxColumn] = temp;
+        if (minRow >= 0) {
+            int temp = result[minRow][minColumn];
+            result[minRow][minColumn] = result[maxRow][maxColumn];
+            result[maxRow][maxColumn] = temp;
         }
-
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[i].length; j++) {
-                System.out.print(matrix[i][j]);
-                if (j < matrix[i].length - 1) {
-                    System.out.print(" ");
-                }
-            }
-            System.out.println();
-        }
-        return matrix;
+        return result;
     }
 }

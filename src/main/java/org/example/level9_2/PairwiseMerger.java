@@ -1,19 +1,17 @@
 package org.example.level9_2;
 
 public class PairwiseMerger {
+
+    /** Merges two arrays of equal length into an array of pairs {first[i], second[i]}. */
     public int[][] merge(int[] first, int[] second) {
-        int length = first.length;
-        if (second.length < length) {
-            length = second.length;
+        if (first.length != second.length) {
+            throw new IllegalArgumentException(
+                    "Arrays must have the same length: " + first.length + " and " + second.length);
         }
-        int[][] result = new int[length][2];
-
-        for (int i = 0; i < length; i++) {
-            result[i][0] = first[i];
-            result[i][1] = second[i];
-            System.out.println(result[i][0] + " " + result[i][1]);
+        int[][] result = new int[first.length][];
+        for (int i = 0; i < first.length; i++) {
+            result[i] = new int[]{first[i], second[i]};
         }
-
         return result;
     }
 }

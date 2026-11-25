@@ -1,28 +1,31 @@
 package org.example.level7_8;
 
+import java.util.Arrays;
 import java.util.Random;
 
 public class RandomElementsPicker {
-    public int[] pick(int[] arr, int count) {
-        int size = count;
-        if (size > arr.length) {
-            size = arr.length;
-        }
 
-        int[] pool = new int[arr.length];
-        for (int i = 0; i < arr.length; i++) {
-            pool[i] = arr[i];
-        }
+    /** Returns {@code count} elements taken from distinct random positions of the array. */
+    public int[] pick(int[] values, int count) {
+        return pick(values, count, new Random());
+    }
 
-        Random random = new Random();
-        int[] result = new int[size];
-        for (int i = 0; i < size; i++) {
-            int index = random.nextInt(pool.length - i);
+    /**
+     * Same as {@link #pick(int[], int)} with a caller-supplied random generator. A picked element is
+     * replaced by the last element of the shrinking pool, so each pick costs O(1).
+     */
+    public int[] pick(int[] values, int count, Random random) {
+        if (count < 0 || count > values.length) {
+            throw new IllegalArgumentException("Count must be between 0 and " + values.length + ": " + count);
+        }
+        int[] pool = Arrays.copyOf(values, values.length);
+        int[] result = new int[count];
+        for (int i = 0; i < count; i++) {
+            int lastIndex = pool.length - 1 - i;
+            int index = random.nextInt(lastIndex + 1);
             result[i] = pool[index];
-            pool[index] = pool[pool.length - 1 - i];
-            System.out.println(result[i]);
+            pool[index] = pool[lastIndex];
         }
-
         return result;
     }
 }

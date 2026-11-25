@@ -1,21 +1,17 @@
 package org.example.level7_4;
 
 public class PrimeNumberChecker {
-    public boolean isPrime(int num) {
-        int positive = Math.abs(num);
-        if (positive < 2) {
-            System.out.println("Не простое");
+
+    /** Returns true if the number is prime, checking divisors up to its square root. */
+    public boolean isPrime(int number) {
+        if (number < 2) {
             return false;
         }
-
-        for (int divisor = 2; divisor * divisor <= positive; divisor++) {
-            if (positive % divisor == 0) {
-                System.out.println("Не простое");
+        for (long divisor = 2; divisor * divisor <= number; divisor++) {
+            if (number % divisor == 0) {
                 return false;
             }
         }
-
-        System.out.println("Простое");
         return true;
     }
 }

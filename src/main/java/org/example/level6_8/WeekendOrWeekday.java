@@ -4,14 +4,15 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 
 public class WeekendOrWeekday {
-    public String show() {
-        DayOfWeek day = LocalDate.now().getDayOfWeek();
-        String result = "Будний";
-        if (day == DayOfWeek.SATURDAY || day == DayOfWeek.SUNDAY) {
-            result = "Выходной";
-        }
 
-        System.out.println(result);
-        return result;
+    /** Tells whether today is a "weekend" or a "weekday". */
+    public String classify() {
+        return classify(LocalDate.now());
+    }
+
+    /** Tells whether the given "today" date is a "weekend" or a "weekday". */
+    public String classify(LocalDate today) {
+        DayOfWeek day = today.getDayOfWeek();
+        return day == DayOfWeek.SATURDAY || day == DayOfWeek.SUNDAY ? "weekend" : "weekday";
     }
 }

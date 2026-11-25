@@ -4,15 +4,14 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 
 public class DaysUntilSunday {
-    public int count() {
-        int today = LocalDate.now().getDayOfWeek().getValue();
-        int sunday = DayOfWeek.SUNDAY.getValue();
-        int result = sunday - today;
-        if (result < 0) {
-            result = result + 7;
-        }
 
-        System.out.println(result);
-        return result;
+    /** Returns the number of days left until the nearest Sunday (0 on Sunday). */
+    public int count() {
+        return count(LocalDate.now());
+    }
+
+    /** Returns the number of days from the given "today" date until the nearest Sunday (0 on Sunday). */
+    public int count(LocalDate today) {
+        return DayOfWeek.SUNDAY.getValue() - today.getDayOfWeek().getValue();
     }
 }

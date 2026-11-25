@@ -1,22 +1,17 @@
 package org.example.level4_2;
 
 public class EvenDigitsCount {
+
+    /** Counts the even digits of the number (0 counts as even). */
     public int countEvenDigits(int number) {
-        int positiveNumber = Math.abs(number);
+        int rest = Math.abs(number);
         int count = 0;
-
-        if (positiveNumber == 0) {
-            count = 1;
-        }
-
-        while (positiveNumber > 0) {
-            if (positiveNumber % 10 % 2 == 0) {
-                count = count + 1;
+        do {
+            if (rest % 10 % 2 == 0) {
+                count++;
             }
-            positiveNumber = positiveNumber / 10;
-        }
-
-        System.out.println(count);
+            rest = rest / 10;
+        } while (rest > 0);
         return count;
     }
 }

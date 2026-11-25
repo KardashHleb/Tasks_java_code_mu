@@ -1,31 +1,30 @@
 package org.example.level10_8;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class SameLettersChecker {
-    public boolean same(String first, String second) {
-        boolean result = false;
-        if (first.length() == second.length()) {
-            int[] counts = new int[first.length()];
-            String chars = "";
-            for (int i = 0; i < first.length(); i++) {
-                int place = chars.indexOf(first.charAt(i));
-                if (place < 0) {
-                    chars = chars + first.charAt(i);
-                    counts[chars.length() - 1] = 1;
-                } else {
-                    counts[place] = counts[place] + 1;
-                }
-            }
-            result = true;
-            for (int i = 0; i < second.length(); i++) {
-                int place = chars.indexOf(second.charAt(i));
-                if (place < 0 || counts[place] == 0) {
-                    result = false;
-                } else {
-                    counts[place] = counts[place] - 1;
-                }
-            }
+
+    /**
+     * Checks whether two strings consist of the same letters (are anagrams, case-sensitive):
+     * letters of the first string are counted up, letters of the second counted down,
+     * and every count must end at zero.
+     */
+    public boolean haveSameLetters(String first, String second) {
+        if (first.length() != second.length()) {
+            return false;
         }
-        System.out.println(result);
-        return result;
+        Map<Character, Integer> counts = new HashMap<>();
+        for (char current : first.toCharArray()) {
+            counts.merge(current, 1, Integer::sum);
+        }
+        for (char current : second.toCharArray()) {
+            int left = counts.getOrDefault(current, 0);
+            if (left == 0) {
+                return false;
+            }
+            counts.put(current, left - 1);
+        }
+        return true;
     }
 }

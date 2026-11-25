@@ -1,62 +1,30 @@
 package org.example.level9_6;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class OperationCalculator {
+
+    private static final Pattern EXPRESSION = Pattern.compile("\\s*(-?\\d+)\\s*([-+*/])\\s*(-?\\d+)\\s*");
+
+    /** Evaluates an expression of two integers and one operation, e.g. "12 * -3"; division is integer division. */
     public int calculate(String expression) {
-        int i = 0;
-        while (i < expression.length() && expression.charAt(i) == ' ') {
-            i = i + 1;
+        Matcher matcher = EXPRESSION.matcher(expression);
+        if (!matcher.matches()) {
+            throw new IllegalArgumentException("Invalid expression: \"" + expression + "\"");
         }
-        int sign = 1;
-        if (i < expression.length() && expression.charAt(i) == '-') {
-            sign = -1;
-            i = i + 1;
-        }
-        int left = 0;
-        while (i < expression.length() && isDigit(expression.charAt(i))) {
-            left = left * 10 + (expression.charAt(i) - '0');
-            i = i + 1;
-        }
-        left = left * sign;
-
-        while (i < expression.length() && expression.charAt(i) == ' ') {
-            i = i + 1;
-        }
-        char operation = '+';
-        if (i < expression.length()) {
-            operation = expression.charAt(i);
-            i = i + 1;
-        }
-        while (i < expression.length() && expression.charAt(i) == ' ') {
-            i = i + 1;
-        }
-        sign = 1;
-        if (i < expression.length() && expression.charAt(i) == '-') {
-            sign = -1;
-            i = i + 1;
-        }
-        int right = 0;
-        while (i < expression.length() && isDigit(expression.charAt(i))) {
-            right = right * 10 + (expression.charAt(i) - '0');
-            i = i + 1;
-        }
-        right = right * sign;
-
-        int result = left;
-        if (operation == '+') {
-            result = left + right;
-        } else if (operation == '-') {
-            result = left - right;
-        } else if (operation == '*') {
-            result = left * right;
-        } else if (operation == '/' && right != 0) {
-            result = left / right;
-        }
-
-        System.out.println(result);
-        return result;
-    }
-
-    private boolean isDigit(char current) {
-        return current >= '0' && current <= '9';
+        int left = Integer.parseInt(matcher.group(1));
+        int right = Integer.parseInt(matcher.group(3));
+        return switch (matcher.group(2).charAt(0)) {
+            case '+' -> left + right;
+            case '-' -> left - right;
+            case '*' -> left * right;
+            default -> {
+                if (right == 0) {
+                    throw new IllegalArgumentException("Division by zero: \"" + expression + "\"");
+                }
+                yield left / right;
+            }
+        };
     }
 }

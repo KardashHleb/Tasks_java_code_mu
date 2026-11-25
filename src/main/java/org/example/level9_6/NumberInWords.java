@@ -1,68 +1,47 @@
 package org.example.level9_6;
 
 public class NumberInWords {
+
+    private static final String[] UNDER_TWENTY = {
+            "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
+            "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen",
+            "sixteen", "seventeen", "eighteen", "nineteen"
+    };
+
+    private static final String[] TENS = {
+            "", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"
+    };
+
+    /** Writes a number from -999 to 999 in English words, e.g. 123 -> "one hundred twenty-three". */
     public String words(int number) {
-        int value = number;
-        if (value < 0) {
-            value = -value;
+        if (number < -999 || number > 999) {
+            throw new IllegalArgumentException("Number must be between -999 and 999: " + number);
+        }
+        if (number == 0) {
+            return UNDER_TWENTY[0];
+        }
+        int value = Math.abs(number);
+        StringBuilder result = new StringBuilder();
+        if (number < 0) {
+            result.append("minus ");
         }
 
-        String result;
-        if (value == 0) {
-            result = "ноль";
-        } else if (value > 999) {
-            result = "только до 999";
-        } else {
-            result = "";
-            int hundreds = value / 100;
-            int rest = value % 100;
-            if (hundreds > 0) {
-                result = hundreds(hundreds);
-            }
+        int hundreds = value / 100;
+        int rest = value % 100;
+        if (hundreds > 0) {
+            result.append(UNDER_TWENTY[hundreds]).append(" hundred");
             if (rest > 0) {
-                if (result.length() > 0) {
-                    result = result + " ";
-                }
-                if (rest < 20) {
-                    result = result + underTwenty(rest);
-                } else {
-                    result = result + tens(rest / 10);
-                    if (rest % 10 > 0) {
-                        result = result + " " + underTwenty(rest % 10);
-                    }
-                }
+                result.append(' ');
             }
         }
-
-        if (number < 0 && value != 0 && value <= 999) {
-            result = "минус " + result;
+        if (rest >= 20) {
+            result.append(TENS[rest / 10]);
+            if (rest % 10 > 0) {
+                result.append('-').append(UNDER_TWENTY[rest % 10]);
+            }
+        } else if (rest > 0) {
+            result.append(UNDER_TWENTY[rest]);
         }
-        System.out.println(result);
-        return result;
-    }
-
-    private String underTwenty(int value) {
-        String[] words = {
-                "", "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять",
-                "десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать", "пятнадцать",
-                "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать"
-        };
-        return words[value];
-    }
-
-    private String tens(int value) {
-        String[] words = {
-                "", "", "двадцать", "тридцать", "сорок", "пятьдесят",
-                "шестьдесят", "семьдесят", "восемьдесят", "девяносто"
-        };
-        return words[value];
-    }
-
-    private String hundreds(int value) {
-        String[] words = {
-                "", "сто", "двести", "триста", "четыреста", "пятьсот",
-                "шестьсот", "семьсот", "восемьсот", "девятьсот"
-        };
-        return words[value];
+        return result.toString();
     }
 }

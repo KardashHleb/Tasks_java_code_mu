@@ -1,15 +1,12 @@
 package org.example.level3_2;
 
 public class LastThreeChars {
+
+    /** Returns the last three characters of the string. */
     public String lastThree(String str) {
-        String result = "";
-        int start = str.length() - 3;
-
-        for (int i = start; i < str.length(); i++) {
-            result = result + str.charAt(i);
+        if (str.length() < 3) {
+            throw new IllegalArgumentException("String must contain at least 3 characters: \"" + str + "\"");
         }
-
-        System.out.println(result);
-        return result;
+        return str.substring(str.length() - 3);
     }
 }

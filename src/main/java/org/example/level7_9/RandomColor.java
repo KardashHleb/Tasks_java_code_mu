@@ -3,16 +3,20 @@ package org.example.level7_9;
 import java.util.Random;
 
 public class RandomColor {
+
+    private static final String HEX_DIGITS = "0123456789abcdef";
+
+    /** Returns a random color in the #rrggbb hex format. */
     public String color() {
-        String symbols = "0123456789abcdef";
-        Random random = new Random();
-        String result = "#";
+        return color(new Random());
+    }
 
+    /** Same as {@link #color()} with a caller-supplied random generator. */
+    public String color(Random random) {
+        StringBuilder result = new StringBuilder("#");
         for (int i = 0; i < 6; i++) {
-            result = result + symbols.charAt(random.nextInt(symbols.length()));
+            result.append(HEX_DIGITS.charAt(random.nextInt(HEX_DIGITS.length())));
         }
-
-        System.out.println(result);
-        return result;
+        return result.toString();
     }
 }

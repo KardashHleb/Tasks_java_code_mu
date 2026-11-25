@@ -1,22 +1,21 @@
 package org.example.level3_8;
 
 public class CamelToSnake {
-    public String convert(String str) {
-        String result = "";
 
+    /** Converts camelCase to snake_case, e.g. "someVariableName" gives "some_variable_name". */
+    public String convert(String str) {
+        StringBuilder result = new StringBuilder();
         for (int i = 0; i < str.length(); i++) {
             char current = str.charAt(i);
             if (Character.isUpperCase(current)) {
                 if (i > 0) {
-                    result = result + '_';
+                    result.append('_');
                 }
-                result = result + Character.toLowerCase(current);
+                result.append(Character.toLowerCase(current));
             } else {
-                result = result + current;
+                result.append(current);
             }
         }
-
-        System.out.println(result);
-        return result;
+        return result.toString();
     }
 }

@@ -1,53 +1,42 @@
 package org.example.level9_5;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FourTwosDates {
-    public String[] find() {
-        int count = 0;
-        for (int year = 2001; year <= 2100; year++) {
-            for (int month = 1; month <= 12; month++) {
-                int days = LocalDate.of(year, month, 1).lengthOfMonth();
-                for (int day = 1; day <= days; day++) {
-                    if (twos(day, month, year) == 4) {
-                        count = count + 1;
-                    }
-                }
-            }
-        }
 
-        String[] result = new String[count];
-        int index = 0;
-        for (int year = 2001; year <= 2100; year++) {
-            for (int month = 1; month <= 12; month++) {
-                int days = LocalDate.of(year, month, 1).lengthOfMonth();
-                for (int day = 1; day <= days; day++) {
-                    if (twos(day, month, year) == 4) {
-                        result[index] = two(day) + "." + two(month) + "." + year;
-                        System.out.println(result[index]);
-                        index = index + 1;
-                    }
-                }
+    private static final DateTimeFormatter FORMAT = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+
+    /** Dates of the 21st century (2001-2100) whose dd.MM.yyyy form contains exactly four digits 2. */
+    public List<String> find() {
+        return find(2001, 2100);
+    }
+
+    /** Dates between the given years (inclusive) whose dd.MM.yyyy form contains exactly four digits 2. */
+    public List<String> find(int fromYear, int toYear) {
+        if (fromYear > toYear) {
+            throw new IllegalArgumentException("Start year " + fromYear + " is after end year " + toYear);
+        }
+        List<String> result = new ArrayList<>();
+        LocalDate end = LocalDate.of(toYear, 12, 31);
+        for (LocalDate date = LocalDate.of(fromYear, 1, 1); !date.isAfter(end); date = date.plusDays(1)) {
+            String text = date.format(FORMAT);
+            if (countTwos(text) == 4) {
+                result.add(text);
             }
         }
         return result;
     }
 
-    private int twos(int day, int month, int year) {
-        String date = two(day) + "." + two(month) + "." + year;
+    private static int countTwos(String text) {
         int count = 0;
-        for (int i = 0; i < date.length(); i++) {
-            if (date.charAt(i) == '2') {
-                count = count + 1;
+        for (char current : text.toCharArray()) {
+            if (current == '2') {
+                count++;
             }
         }
         return count;
-    }
-
-    private String two(int value) {
-        if (value < 10) {
-            return "0" + value;
-        }
-        return "" + value;
     }
 }

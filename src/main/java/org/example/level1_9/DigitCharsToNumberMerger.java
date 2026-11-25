@@ -1,10 +1,16 @@
 package org.example.level1_9;
 
 public class DigitCharsToNumberMerger {
+
+    /** Builds a number from three digit characters, e.g. '1', '2', '3' gives 123. */
     public int mergeToNumber(char chr1, char chr2, char chr3) {
-        String str = "" + chr1 + chr2 + chr3;
-        int number = Integer.parseInt(str);
-        System.out.println(number);
-        return number;
+        return digitValue(chr1) * 100 + digitValue(chr2) * 10 + digitValue(chr3);
+    }
+
+    private static int digitValue(char chr) {
+        if (chr < '0' || chr > '9') {
+            throw new IllegalArgumentException("Character is not a digit: " + chr);
+        }
+        return chr - '0';
     }
 }

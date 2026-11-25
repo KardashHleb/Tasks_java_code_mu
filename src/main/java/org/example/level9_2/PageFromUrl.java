@@ -1,24 +1,18 @@
 package org.example.level9_2;
 
 public class PageFromUrl {
+
+    /** Returns the last path segment of a URL without the query string, e.g. "page.html". */
     public String page(String url) {
-        int slash = -1;
-        for (int i = 0; i < url.length(); i++) {
-            if (url.charAt(i) == '/') {
-                slash = i;
-            }
-        }
-
         String result = url;
-        if (slash >= 0 && slash < url.length() - 1) {
-            result = url.substring(slash + 1);
+        int query = result.indexOf('?');
+        if (query >= 0) {
+            result = result.substring(0, query);
         }
-        int question = result.indexOf('?');
-        if (question >= 0) {
-            result = result.substring(0, question);
+        int slash = result.lastIndexOf('/');
+        if (slash >= 0) {
+            result = result.substring(slash + 1);
         }
-
-        System.out.println(result);
         return result;
     }
 }

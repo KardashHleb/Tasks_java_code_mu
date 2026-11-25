@@ -1,34 +1,26 @@
 package org.example.level4_10;
 
 public class EverySecondWordCapitalizer {
-    public String capitalize(String str) {
-        String result = "";
-        String word = "";
-        int wordNumber = 0;
 
-        for (int i = 0; i <= str.length(); i++) {
-            if (i == str.length() || str.charAt(i) == ' ') {
-                if (word.length() > 0) {
-                    wordNumber = wordNumber + 1;
-                    if (result.length() > 0) {
-                        result = result + " ";
-                    }
-                    if (wordNumber % 2 == 0) {
-                        result = result + Character.toUpperCase(word.charAt(0));
-                        for (int j = 1; j < word.length(); j++) {
-                            result = result + word.charAt(j);
-                        }
-                    } else {
-                        result = result + word;
-                    }
-                    word = "";
-                }
+    /** Capitalizes the first letter of every second word (the 2nd, 4th, ...); words are separated by spaces. */
+    public String capitalize(String str) {
+        String trimmed = str.trim();
+        if (trimmed.isEmpty()) {
+            return "";
+        }
+        String[] words = trimmed.split(" +");
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < words.length; i++) {
+            if (i > 0) {
+                result.append(' ');
+            }
+            String word = words[i];
+            if (i % 2 == 1) {
+                result.append(Character.toUpperCase(word.charAt(0))).append(word, 1, word.length());
             } else {
-                word = word + str.charAt(i);
+                result.append(word);
             }
         }
-
-        System.out.println(result);
-        return result;
+        return result.toString();
     }
 }

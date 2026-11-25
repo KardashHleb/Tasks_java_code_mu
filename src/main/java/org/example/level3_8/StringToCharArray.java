@@ -1,14 +1,9 @@
 package org.example.level3_8;
 
 public class StringToCharArray {
+
+    /** Converts the string into an array of its characters. */
     public char[] toChars(String str) {
-        char[] chars = new char[str.length()];
-
-        for (int i = 0; i < str.length(); i++) {
-            chars[i] = str.charAt(i);
-            System.out.println(chars[i]);
-        }
-
-        return chars;
+        return str.toCharArray();
     }
 }

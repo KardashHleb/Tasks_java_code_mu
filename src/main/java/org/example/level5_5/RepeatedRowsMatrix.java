@@ -1,16 +1,15 @@
 package org.example.level5_5;
 
 public class RepeatedRowsMatrix {
-    public int[][] build() {
-        int[][] arr = new int[5][3];
 
-        for (int i = 0; i < arr.length; i++) {
-            for (int j = 0; j < arr[i].length; j++) {
-                arr[i][j] = j + 1;
-                System.out.println(arr[i][j]);
+    /** Builds a 5x3 array where every row is 1, 2, 3. */
+    public int[][] build() {
+        int[][] matrix = new int[5][3];
+        for (int[] row : matrix) {
+            for (int j = 0; j < row.length; j++) {
+                row[j] = j + 1;
             }
         }
-
-        return arr;
+        return matrix;
     }
 }

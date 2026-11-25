@@ -1,19 +1,13 @@
 package org.example.level6_10;
 
 public class AlternatingSignsString {
-    public String make() {
-        String result = "1";
 
+    /** Builds the string "1+2-3+4-5+6-7+8". */
+    public String build() {
+        StringBuilder result = new StringBuilder("1");
         for (int number = 2; number <= 8; number++) {
-            if (number % 2 == 0) {
-                result = result + "+";
-            } else {
-                result = result + "-";
-            }
-            result = result + number;
+            result.append(number % 2 == 0 ? '+' : '-').append(number);
         }
-
-        System.out.println(result);
-        return result;
+        return result.toString();
     }
 }

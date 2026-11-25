@@ -1,98 +1,76 @@
 package org.example.level9_7;
 
-public class FractionOperation {
-    public String calculate(String expression) {
-        int[] left = readFraction(expression, 0);
-        int position = left[2];
-        while (position < expression.length() && expression.charAt(position) == ' ') {
-            position = position + 1;
-        }
-        char operation = '+';
-        if (position < expression.length()) {
-            operation = expression.charAt(position);
-            position = position + 1;
-        }
-        int[] right = readFraction(expression, position);
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-        int numerator = left[0];
-        int denominator = left[1];
-        if (operation == '+') {
-            numerator = left[0] * right[1] + right[0] * left[1];
-            denominator = left[1] * right[1];
-        } else if (operation == '-') {
-            numerator = left[0] * right[1] - right[0] * left[1];
-            denominator = left[1] * right[1];
-        } else if (operation == '*') {
-            numerator = left[0] * right[0];
-            denominator = left[1] * right[1];
-        } else if (operation == '/' && right[0] != 0) {
-            numerator = left[0] * right[1];
-            denominator = left[1] * right[0];
+public class FractionOperation {
+
+    private static final String FRACTION = "(-?\\d+)(?:/(\\d+))?";
+    private static final Pattern EXPRESSION =
+            Pattern.compile("\\s*" + FRACTION + "\\s*([-+*/])\\s*" + FRACTION + "\\s*");
+
+    /** Evaluates an operation on two fractions, e.g. "1/2 + 1/3" -> "5/6"; the result is reduced. */
+    public String calculate(String expression) {
+        Matcher matcher = EXPRESSION.matcher(expression);
+        if (!matcher.matches()) {
+            throw new IllegalArgumentException("Invalid expression: \"" + expression + "\"");
+        }
+        long leftNumerator = Long.parseLong(matcher.group(1));
+        long leftDenominator = denominator(matcher.group(2));
+        char operation = matcher.group(3).charAt(0);
+        long rightNumerator = Long.parseLong(matcher.group(4));
+        long rightDenominator = denominator(matcher.group(5));
+
+        long numerator;
+        long denominator;
+        switch (operation) {
+            case '+' -> {
+                numerator = leftNumerator * rightDenominator + rightNumerator * leftDenominator;
+                denominator = leftDenominator * rightDenominator;
+            }
+            case '-' -> {
+                numerator = leftNumerator * rightDenominator - rightNumerator * leftDenominator;
+                denominator = leftDenominator * rightDenominator;
+            }
+            case '*' -> {
+                numerator = leftNumerator * rightNumerator;
+                denominator = leftDenominator * rightDenominator;
+            }
+            default -> {
+                if (rightNumerator == 0) {
+                    throw new IllegalArgumentException("Division by zero: \"" + expression + "\"");
+                }
+                numerator = leftNumerator * rightDenominator;
+                denominator = leftDenominator * rightNumerator;
+            }
         }
 
         if (denominator < 0) {
             numerator = -numerator;
             denominator = -denominator;
         }
-        int divisor = gcd(numerator, denominator);
-        if (divisor == 0) {
-            divisor = 1;
-        }
-        numerator = numerator / divisor;
-        denominator = denominator / divisor;
-
-        String result = numerator + "/" + denominator;
-        System.out.println(result);
-        return result;
+        long divisor = gcd(Math.abs(numerator), denominator);
+        return numerator / divisor + "/" + denominator / divisor;
     }
 
-    private int[] readFraction(String expression, int start) {
-        int i = start;
-        while (i < expression.length() && expression.charAt(i) == ' ') {
-            i = i + 1;
+    private static long denominator(String text) {
+        if (text == null) {
+            return 1;
         }
-        int sign = 1;
-        if (i < expression.length() && expression.charAt(i) == '-') {
-            sign = -1;
-            i = i + 1;
+        long value = Long.parseLong(text);
+        if (value == 0) {
+            throw new IllegalArgumentException("Denominator must not be zero");
         }
-        int numerator = 0;
-        while (i < expression.length() && isDigit(expression.charAt(i))) {
-            numerator = numerator * 10 + (expression.charAt(i) - '0');
-            i = i + 1;
-        }
-        numerator = numerator * sign;
-        int denominator = 1;
-        if (i < expression.length() && expression.charAt(i) == '/') {
-            i = i + 1;
-            denominator = 0;
-            while (i < expression.length() && isDigit(expression.charAt(i))) {
-                denominator = denominator * 10 + (expression.charAt(i) - '0');
-                i = i + 1;
-            }
-            if (denominator == 0) {
-                denominator = 1;
-            }
-        }
-        return new int[]{numerator, denominator, i};
+        return value;
     }
 
-    private int gcd(int first, int second) {
-        if (first < 0) {
-            first = -first;
-        }
-        if (second < 0) {
-            second = -second;
-        }
+    /** Euclid's algorithm. */
+    private static long gcd(long first, long second) {
         while (second != 0) {
-            int rest = first % second;
+            long rest = first % second;
             first = second;
             second = rest;
         }
         return first;
-    }
-
-    private boolean isDigit(char current) {
-        return current >= '0' && current <= '9';
     }
 }

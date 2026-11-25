@@ -1,26 +1,20 @@
 package org.example.level10_7;
 
 public class DiagonalKeeper {
+
+    /** Returns a copy of a square matrix in which everything except both diagonals is set to zero. */
     public int[][] keep(int[][] matrix) {
         int size = matrix.length;
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[i].length; j++) {
-                boolean main = i == j;
-                boolean secondary = i + j == size - 1;
-                if (!main && !secondary) {
-                    matrix[i][j] = 0;
-                }
+        for (int[] row : matrix) {
+            if (row.length != size) {
+                throw new IllegalArgumentException("Matrix must be square");
             }
         }
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[i].length; j++) {
-                System.out.print(matrix[i][j]);
-                if (j < matrix[i].length - 1) {
-                    System.out.print(" ");
-                }
-            }
-            System.out.println();
+        int[][] result = new int[size][size];
+        for (int i = 0; i < size; i++) {
+            result[i][i] = matrix[i][i];
+            result[i][size - 1 - i] = matrix[i][size - 1 - i];
         }
-        return matrix;
+        return result;
     }
 }

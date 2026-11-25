@@ -1,18 +1,20 @@
 package org.example.level9_2;
 
 public class DigitRowsToNumbers {
-    public int[] join(int[][] rows) {
-        int[] result = new int[rows.length];
 
+    /** Turns every row of digits into a number, e.g. {1, 2, 3} -> 123. */
+    public long[] join(int[][] rows) {
+        long[] result = new long[rows.length];
         for (int i = 0; i < rows.length; i++) {
-            int number = 0;
-            for (int j = 0; j < rows[i].length; j++) {
-                number = number * 10 + rows[i][j];
+            long number = 0;
+            for (int digit : rows[i]) {
+                if (digit < 0 || digit > 9) {
+                    throw new IllegalArgumentException("Not a digit: " + digit);
+                }
+                number = Math.addExact(Math.multiplyExact(number, 10), digit);
             }
             result[i] = number;
-            System.out.println(result[i]);
         }
-
         return result;
     }
 }

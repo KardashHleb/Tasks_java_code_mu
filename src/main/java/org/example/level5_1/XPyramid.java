@@ -1,19 +1,18 @@
 package org.example.level5_1;
 
 public class XPyramid {
-    public String make() {
-        String result = "";
 
+    /** Builds a pyramid of five rows where row n consists of n 'x' characters. */
+    public String build() {
+        StringBuilder result = new StringBuilder();
         for (int row = 1; row <= 5; row++) {
             if (row > 1) {
-                result = result + "\n";
+                result.append('\n');
             }
             for (int col = 0; col < row; col++) {
-                result = result + "x";
+                result.append('x');
             }
         }
-
-        System.out.println(result);
-        return result;
+        return result.toString();
     }
 }

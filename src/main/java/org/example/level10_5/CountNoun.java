@@ -1,24 +1,19 @@
 package org.example.level10_5;
 
-public class CountNoun {
-    public String form(int number, String one, String few, String many) {
-        int value = number;
-        if (value < 0) {
-            value = -value;
-        }
-        int lastTwo = value % 100;
-        int last = value % 10;
-        String word = many;
-        if (lastTwo < 11 || lastTwo > 14) {
-            if (last == 1) {
-                word = one;
-            } else if (last >= 2 && last <= 4) {
-                word = few;
-            }
-        }
+import org.example.level10_3.EnglishPlural;
 
-        String result = number + " " + word;
-        System.out.println(result);
-        return result;
+public class CountNoun {
+
+    private final EnglishPlural plurals = new EnglishPlural();
+
+    /** Writes a number with the matching noun form: 1 -> "1 apple", 0 or 5 -> "0 apples", "5 apples". */
+    public String form(int number, String singular, String plural) {
+        boolean one = number == 1 || number == -1;
+        return number + " " + (one ? singular : plural);
+    }
+
+    /** Same as {@link #form(int, String, String)} with the plural built by the regular English rules. */
+    public String form(int number, String singular) {
+        return form(number, singular, plurals.plural(singular));
     }
 }

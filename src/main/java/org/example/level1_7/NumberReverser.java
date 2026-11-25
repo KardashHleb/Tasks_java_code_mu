@@ -1,17 +1,15 @@
 package org.example.level1_7;
 
 public class NumberReverser {
-    public int reverse(int number) {
-        int positiveNumber = Math.abs(number);
-        int reversed = 0;
 
-        while (positiveNumber > 0) {
-            int lastDigit = positiveNumber % 10;
-            reversed = reversed * 10 + lastDigit;
-            positiveNumber = positiveNumber / 10;
+    /** Reverses the digits of the number, keeping its sign (e.g. -123 becomes -321). */
+    public long reverse(int number) {
+        long rest = Math.abs((long) number);
+        long reversed = 0;
+        while (rest > 0) {
+            reversed = reversed * 10 + rest % 10;
+            rest /= 10;
         }
-
-        System.out.println(reversed);
-        return reversed;
+        return number < 0 ? -reversed : reversed;
     }
 }

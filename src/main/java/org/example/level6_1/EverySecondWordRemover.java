@@ -1,29 +1,20 @@
 package org.example.level6_1;
 
+import java.util.StringJoiner;
+
 public class EverySecondWordRemover {
-    public String remove(String str) {
-        String result = "";
-        String word = "";
-        int wordNumber = 0;
 
-        for (int i = 0; i <= str.length(); i++) {
-            if (i == str.length() || str.charAt(i) == ' ') {
-                if (word.length() > 0) {
-                    wordNumber = wordNumber + 1;
-                    if (wordNumber % 2 != 0) {
-                        if (result.length() > 0) {
-                            result = result + " ";
-                        }
-                        result = result + word;
-                    }
-                    word = "";
-                }
-            } else {
-                word = word + str.charAt(i);
-            }
+    /** Removes the 2nd, 4th, 6th... word from a space-separated string. */
+    public String remove(String text) {
+        StringJoiner result = new StringJoiner(" ");
+        String trimmed = text.trim();
+        if (trimmed.isEmpty()) {
+            return "";
         }
-
-        System.out.println(result);
-        return result;
+        String[] words = trimmed.split(" +");
+        for (int i = 0; i < words.length; i += 2) {
+            result.add(words[i]);
+        }
+        return result.toString();
     }
 }

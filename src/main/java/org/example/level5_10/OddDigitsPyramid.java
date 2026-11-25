@@ -1,19 +1,18 @@
 package org.example.level5_10;
 
 public class OddDigitsPyramid {
-    public String make() {
-        String result = "";
 
-        for (int digit = 1; digit <= 9; digit = digit + 2) {
+    /** Builds the rows 1, 333, 55555, 7777777, 999999999. */
+    public String build() {
+        StringBuilder result = new StringBuilder();
+        for (int digit = 1; digit <= 9; digit += 2) {
             if (digit > 1) {
-                result = result + "\n";
+                result.append('\n');
             }
             for (int i = 0; i < digit; i++) {
-                result = result + digit;
+                result.append(digit);
             }
         }
-
-        System.out.println(result);
-        return result;
+        return result.toString();
     }
 }

@@ -1,62 +1,23 @@
 package org.example.level8_5;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import org.example.common.FileUtils;
 
 public class TimePrepender {
-    public String prepend(String path) {
-        String text = readText(path);
-        LocalDateTime now = LocalDateTime.now();
-        String moment = now.getYear() + "-" + two(now.getMonthValue()) + "-" + two(now.getDayOfMonth())
-                + " " + two(now.getHour()) + ":" + two(now.getMinute()) + ":" + two(now.getSecond());
-        String result = moment + "\n" + text;
 
-        writeText(path, result);
-        System.out.println(result);
+    private static final DateTimeFormatter FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+    /** Inserts the current date and time as a new first line of the file and returns the new content. */
+    public String prepend(Path file) {
+        return prepend(file, LocalDateTime.now());
+    }
+
+    /** Inserts {@code moment} (yyyy-MM-dd HH:mm:ss) as a new first line of the file and returns the new content. */
+    public String prepend(Path file, LocalDateTime moment) {
+        String result = moment.format(FORMAT) + "\n" + FileUtils.readText(file);
+        FileUtils.writeText(file, result);
         return result;
-    }
-
-    private String two(int value) {
-        if (value < 10) {
-            return "0" + value;
-        }
-        return "" + value;
-    }
-
-    private String readText(String path) {
-        String text = "";
-        try (InputStreamReader reader = new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8)) {
-            int ch = reader.read();
-            while (ch != -1) {
-                if (ch != '\r') {
-                    text = text + (char) ch;
-                }
-                ch = reader.read();
-            }
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-        return text;
-    }
-
-    private void writeText(String path, String text) {
-        try {
-            File file = new File(path);
-            File parent = file.getParentFile();
-            if (parent != null) {
-                parent.mkdirs();
-            }
-            try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8)) {
-                writer.write(text);
-            }
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
     }
 }

@@ -1,18 +1,15 @@
 package org.example.level5_4;
 
+import java.util.Arrays;
+
 public class XMatrixBuilder {
+
+    /** Builds a 3x3 array of chars filled with 'x'. */
     public char[][] build() {
-        char[][] arr = new char[3][3];
-
-        for (int i = 0; i < arr.length; i++) {
-            String row = "";
-            for (int j = 0; j < arr[i].length; j++) {
-                arr[i][j] = 'x';
-                row = row + arr[i][j];
-            }
-            System.out.println(row);
+        char[][] matrix = new char[3][3];
+        for (char[] row : matrix) {
+            Arrays.fill(row, 'x');
         }
-
-        return arr;
+        return matrix;
     }
 }

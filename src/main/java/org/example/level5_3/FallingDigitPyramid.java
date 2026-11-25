@@ -1,19 +1,18 @@
 package org.example.level5_3;
 
 public class FallingDigitPyramid {
-    public String make() {
-        String result = "";
 
+    /** Builds the rows 55555, 4444, 333, 22, 1. */
+    public String build() {
+        StringBuilder result = new StringBuilder();
         for (int digit = 5; digit >= 1; digit--) {
             if (digit < 5) {
-                result = result + "\n";
+                result.append('\n');
             }
             for (int i = 0; i < digit; i++) {
-                result = result + digit;
+                result.append(digit);
             }
         }
-
-        System.out.println(result);
-        return result;
+        return result.toString();
     }
 }

@@ -1,28 +1,18 @@
 package org.example.level4_8;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+
 public class DateToArray {
+
+    /** Splits a date in the "yyyy-mm-dd" format into {day, month, year}, e.g. "2025-12-31" gives {"31", "12", "2025"}. */
     public String[] convert(String date) {
-        String year = "";
-        String month = "";
-        String day = "";
-        int part = 0;
-
-        for (int i = 0; i <= date.length(); i++) {
-            if (i == date.length() || date.charAt(i) == '-') {
-                part = part + 1;
-            } else if (part == 0) {
-                year = year + date.charAt(i);
-            } else if (part == 1) {
-                month = month + date.charAt(i);
-            } else {
-                day = day + date.charAt(i);
-            }
+        try {
+            LocalDate.parse(date);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Expected a valid date in the yyyy-mm-dd format, got \"" + date + "\"", e);
         }
-
-        String[] result = {day, month, year};
-        for (int i = 0; i < result.length; i++) {
-            System.out.println(result[i]);
-        }
-        return result;
+        String[] parts = date.split("-");
+        return new String[]{parts[2], parts[1], parts[0]};
     }
 }

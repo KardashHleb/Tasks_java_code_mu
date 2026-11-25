@@ -1,9 +1,12 @@
 package org.example.level1_5;
 
 public class KilobytesToBytesConverter {
-    public int toBytes(int kb) {
-        int bytes = kb * 1024;
-        System.out.println(bytes);
-        return bytes;
+
+    /** Converts kilobytes to bytes (1 KB = 1024 bytes). */
+    public long toBytes(long kilobytes) {
+        if (kilobytes < 0) {
+            throw new IllegalArgumentException("Size must not be negative: " + kilobytes);
+        }
+        return Math.multiplyExact(kilobytes, 1024L);
     }
 }

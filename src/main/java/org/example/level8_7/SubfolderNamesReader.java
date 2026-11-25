@@ -1,50 +1,26 @@
 package org.example.level8_7;
 
-import java.io.File;
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.stream.Stream;
 
 public class SubfolderNamesReader {
-    public String[] names(String folderPath) {
-        File folder = new File(folderPath);
-        File[] children = folder.listFiles();
-        if (children == null) {
-            System.out.println("Папка не найдена");
-            return new String[0];
-        }
 
-        int count = 0;
-        for (int i = 0; i < children.length; i++) {
-            if (children[i].isDirectory()) {
-                count = count + 1;
-            }
+    /** Returns the names of the folders directly inside the folder, in alphabetical order. */
+    public List<String> names(Path folder) {
+        if (!Files.isDirectory(folder)) {
+            throw new IllegalArgumentException("Not a folder: " + folder);
         }
-
-        String[] result = new String[count];
-        int index = 0;
-        for (int i = 0; i < children.length; i++) {
-            if (children[i].isDirectory()) {
-                result[index] = children[i].getName();
-                index = index + 1;
-            }
-        }
-
-        sort(result);
-        for (int i = 0; i < result.length; i++) {
-            System.out.println(result[i]);
-        }
-        return result;
-    }
-
-    private void sort(String[] values) {
-        for (int i = 0; i < values.length; i++) {
-            int min = i;
-            for (int j = i + 1; j < values.length; j++) {
-                if (values[j].compareTo(values[min]) < 0) {
-                    min = j;
-                }
-            }
-            String temp = values[i];
-            values[i] = values[min];
-            values[min] = temp;
+        try (Stream<Path> children = Files.list(folder)) {
+            return children.filter(Files::isDirectory)
+                    .map(child -> child.getFileName().toString())
+                    .sorted()
+                    .toList();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
         }
     }
 }

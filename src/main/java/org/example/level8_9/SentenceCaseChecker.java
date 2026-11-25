@@ -1,50 +1,32 @@
 package org.example.level8_9;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import org.example.common.FileUtils;
 
 public class SentenceCaseChecker {
-    public boolean check(String path) {
-        String text = readText(path);
-        boolean expect = true;
-        boolean ok = true;
 
-        for (int i = 0; i < text.length(); i++) {
-            char current = text.charAt(i);
-            if (expect) {
-                if (current == ' ' || current == '\n' || current == '\t') {
-                    continue;
-                }
-                if (Character.isLetter(current)) {
-                    if (!Character.isUpperCase(current)) {
-                        ok = false;
-                    }
-                    expect = false;
-                }
-            } else if (current == '.' || current == '!' || current == '?') {
-                expect = true;
-            }
-        }
-
-        System.out.println(ok);
-        return ok;
+    /** Returns true if every sentence in the file starts with a capital letter. */
+    public boolean allSentencesCapitalized(Path file) {
+        return allSentencesCapitalized(FileUtils.readText(file));
     }
 
-    private String readText(String path) {
-        String text = "";
-        try (InputStreamReader reader = new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8)) {
-            int ch = reader.read();
-            while (ch != -1) {
-                if (ch != '\r') {
-                    text = text + (char) ch;
+    /**
+     * Returns true if the first letter of the text and the first letter after every '.', '!' or '?' is
+     * upper case. Non-letters (spaces, quotes, digits) before that letter are skipped.
+     */
+    public boolean allSentencesCapitalized(String text) {
+        boolean sentenceStart = true;
+        for (int i = 0; i < text.length(); i++) {
+            char current = text.charAt(i);
+            if (sentenceStart && Character.isLetter(current)) {
+                if (!Character.isUpperCase(current)) {
+                    return false;
                 }
-                ch = reader.read();
+                sentenceStart = false;
+            } else if (current == '.' || current == '!' || current == '?') {
+                sentenceStart = true;
             }
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
         }
-        return text;
+        return true;
     }
 }

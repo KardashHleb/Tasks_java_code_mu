@@ -1,19 +1,14 @@
 package org.example.level4_5;
 
+import java.util.Arrays;
+
 public class SkipFirstElements {
+
+    /** Returns the array without its first {@code count} elements. */
     public int[] skip(int[] arr, int count) {
-        int length = arr.length - count;
-        if (length < 0) {
-            length = 0;
+        if (count < 0 || count > arr.length) {
+            throw new IllegalArgumentException("Count must be between 0 and " + arr.length + ", got " + count);
         }
-
-        int[] result = new int[length];
-
-        for (int i = 0; i < result.length; i++) {
-            result[i] = arr[i + count];
-            System.out.println(result[i]);
-        }
-
-        return result;
+        return Arrays.copyOfRange(arr, count, arr.length);
     }
 }

@@ -1,24 +1,16 @@
 package org.example.level3_4;
 
 public class AllDigitsOddChecker {
+
+    /** Checks whether every digit of the number is odd. */
     public boolean allDigitsOdd(int number) {
-        int positiveNumber = Math.abs(number);
-
-        if (positiveNumber == 0) {
-            System.out.println("Есть четная цифра");
-            return false;
-        }
-
-        while (positiveNumber > 0) {
-            int digit = positiveNumber % 10;
-            if (digit % 2 == 0) {
-                System.out.println("Есть четная цифра");
+        int rest = Math.abs(number);
+        do {
+            if (rest % 10 % 2 == 0) {
                 return false;
             }
-            positiveNumber = positiveNumber / 10;
-        }
-
-        System.out.println("Все цифры нечетные");
+            rest = rest / 10;
+        } while (rest > 0);
         return true;
     }
 }

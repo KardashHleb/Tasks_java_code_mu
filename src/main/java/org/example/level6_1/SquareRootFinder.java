@@ -1,17 +1,12 @@
 package org.example.level6_1;
 
 public class SquareRootFinder {
+
+    /** Returns the square root of a non-negative number. */
     public double find(double number) {
-        System.out.println("Введите число");
-        System.out.println(number);
-
-        if (number < 0) {
-            System.out.println("Квадратный корень из отрицательного числа не вычисляется");
-            return -1;
+        if (number < 0 || Double.isNaN(number)) {
+            throw new IllegalArgumentException("Square root of a negative number is not defined: " + number);
         }
-
-        double result = Math.sqrt(number);
-        System.out.println(result);
-        return result;
+        return Math.sqrt(number);
     }
 }

@@ -1,68 +1,48 @@
 package org.example.level8_2;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import org.example.common.FileUtils;
 
 public class CommaMaxNumber {
-    public int max(String path) {
-        String text = readText(path);
+
+    /** Returns the largest integer in a file of comma-separated numbers. */
+    public int max(Path file) {
+        return max(FileUtils.readText(file));
+    }
+
+    /** Returns the largest integer found in the text, parsing digits (with an optional minus) by hand. */
+    public int max(String text) {
         boolean found = false;
         int max = 0;
         int i = 0;
-
         while (i < text.length()) {
-            char current = text.charAt(i);
-            if (current == '-' || isDigit(current)) {
-                int sign = 1;
-                if (current == '-') {
-                    sign = -1;
-                    i = i + 1;
-                }
-                if (i < text.length() && isDigit(text.charAt(i))) {
-                    int value = 0;
-                    while (i < text.length() && isDigit(text.charAt(i))) {
-                        value = value * 10 + (text.charAt(i) - '0');
-                        i = i + 1;
-                    }
-                    value = value * sign;
-                    if (!found || value > max) {
-                        max = value;
-                        found = true;
-                    }
-                }
-            } else {
-                i = i + 1;
+            int sign = 1;
+            if (text.charAt(i) == '-' && i + 1 < text.length() && isDigit(text.charAt(i + 1))) {
+                sign = -1;
+                i++;
+            }
+            if (!isDigit(text.charAt(i))) {
+                i++;
+                continue;
+            }
+            int value = 0;
+            while (i < text.length() && isDigit(text.charAt(i))) {
+                value = value * 10 + (text.charAt(i) - '0');
+                i++;
+            }
+            value *= sign;
+            if (!found || value > max) {
+                max = value;
+                found = true;
             }
         }
-
         if (!found) {
-            System.out.println("числа не найдены");
-            return 0;
+            throw new IllegalArgumentException("No numbers found");
         }
-
-        System.out.println(max);
         return max;
     }
 
     private boolean isDigit(char current) {
         return current >= '0' && current <= '9';
-    }
-
-    private String readText(String path) {
-        String text = "";
-        try (InputStreamReader reader = new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8)) {
-            int ch = reader.read();
-            while (ch != -1) {
-                if (ch != '\r') {
-                    text = text + (char) ch;
-                }
-                ch = reader.read();
-            }
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-        return text;
     }
 }

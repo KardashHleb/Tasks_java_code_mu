@@ -4,13 +4,13 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
 public class DateCorrectnessChecker {
+
+    /** Checks whether the text is an existing calendar date in the format year-month-day. */
     public boolean isCorrect(String date) {
         try {
             LocalDate.parse(date);
-            System.out.println("Дата корректна");
             return true;
-        } catch (DateTimeParseException exception) {
-            System.out.println("Дата некорректна");
+        } catch (DateTimeParseException e) {
             return false;
         }
     }

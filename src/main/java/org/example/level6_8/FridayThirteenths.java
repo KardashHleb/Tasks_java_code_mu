@@ -2,40 +2,20 @@ package org.example.level6_8;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FridayThirteenths {
-    public String show(int year) {
-        System.out.println("Введите год");
-        System.out.println(year);
 
-        String result = "";
+    /** Finds all the 13th days of the given year that fall on a Friday. */
+    public List<LocalDate> find(int year) {
+        List<LocalDate> result = new ArrayList<>();
         for (int month = 1; month <= 12; month++) {
             LocalDate date = LocalDate.of(year, month, 13);
             if (date.getDayOfWeek() == DayOfWeek.FRIDAY) {
-                if (result.length() > 0) {
-                    result = result + "\n";
-                }
-                result = result + format(date);
+                result.add(date);
             }
         }
-
-        if (result.length() == 0) {
-            System.out.println("Пятниц 13-го нет");
-        } else {
-            System.out.println(result);
-        }
         return result;
-    }
-
-    private String format(LocalDate date) {
-        String month = "" + date.getMonthValue();
-        String day = "" + date.getDayOfMonth();
-        if (month.length() == 1) {
-            month = "0" + month;
-        }
-        if (day.length() == 1) {
-            day = "0" + day;
-        }
-        return date.getYear() + "-" + month + "-" + day;
     }
 }

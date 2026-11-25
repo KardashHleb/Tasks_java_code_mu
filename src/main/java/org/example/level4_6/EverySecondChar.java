@@ -1,14 +1,13 @@
 package org.example.level4_6;
 
 public class EverySecondChar {
+
+    /** Returns the characters at even indexes: the first, the third, the fifth and so on. */
     public String take(String str) {
-        String result = "";
-
-        for (int i = 0; i < str.length(); i = i + 2) {
-            result = result + str.charAt(i);
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < str.length(); i += 2) {
+            result.append(str.charAt(i));
         }
-
-        System.out.println(result);
-        return result;
+        return result.toString();
     }
 }

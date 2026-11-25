@@ -1,34 +1,31 @@
 package org.example.level5_2;
 
+import java.util.OptionalInt;
+
 public class SecondWithDigitThree {
-    public int find(int[] arr) {
+
+    /** Finds the second element of the array that contains the digit 3. */
+    public OptionalInt find(int[] numbers) {
         int found = 0;
-
-        for (int i = 0; i < arr.length; i++) {
-            int temp = Math.abs(arr[i]);
-            boolean hasThree = false;
-
-            if (temp == 0) {
-                hasThree = false;
-            }
-
-            while (temp > 0) {
-                if (temp % 10 == 3) {
-                    hasThree = true;
-                }
-                temp = temp / 10;
-            }
-
-            if (hasThree) {
-                found = found + 1;
+        for (int number : numbers) {
+            if (containsThree(number)) {
+                found++;
                 if (found == 2) {
-                    System.out.println(arr[i]);
-                    return arr[i];
+                    return OptionalInt.of(number);
                 }
             }
         }
+        return OptionalInt.empty();
+    }
 
-        System.out.println("Второй элемент с цифрой 3 не найден");
-        return -1;
+    private boolean containsThree(int number) {
+        long value = Math.abs((long) number);
+        while (value > 0) {
+            if (value % 10 == 3) {
+                return true;
+            }
+            value /= 10;
+        }
+        return false;
     }
 }

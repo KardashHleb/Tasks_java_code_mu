@@ -1,33 +1,21 @@
 package org.example.level9_1;
 
-public class RowsBySumSorter {
-    public int[][] sort(int[][] rows) {
-        for (int i = 0; i < rows.length; i++) {
-            for (int j = 0; j < rows.length - 1; j++) {
-                if (sum(rows[j]) > sum(rows[j + 1])) {
-                    int[] temp = rows[j];
-                    rows[j] = rows[j + 1];
-                    rows[j + 1] = temp;
-                }
-            }
-        }
+import java.util.Arrays;
+import java.util.Comparator;
 
-        for (int i = 0; i < rows.length; i++) {
-            for (int j = 0; j < rows[i].length; j++) {
-                System.out.print(rows[i][j]);
-                if (j < rows[i].length - 1) {
-                    System.out.print(" ");
-                }
-            }
-            System.out.println();
-        }
-        return rows;
+public class RowsBySumSorter {
+
+    /** Returns a copy of the rows sorted by the sum of their elements in ascending order. */
+    public int[][] sort(int[][] rows) {
+        int[][] result = Arrays.stream(rows).map(int[]::clone).toArray(int[][]::new);
+        Arrays.sort(result, Comparator.comparingLong(RowsBySumSorter::sum));
+        return result;
     }
 
-    private int sum(int[] row) {
-        int result = 0;
-        for (int i = 0; i < row.length; i++) {
-            result = result + row[i];
+    private static long sum(int[] row) {
+        long result = 0;
+        for (int value : row) {
+            result += value;
         }
         return result;
     }

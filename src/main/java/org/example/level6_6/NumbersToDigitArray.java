@@ -1,50 +1,35 @@
 package org.example.level6_6;
 
 public class NumbersToDigitArray {
-    public byte[] split(int[] arr) {
-        int count = 0;
 
-        for (int i = 0; i < arr.length; i++) {
-            int temp = Math.abs(arr[i]);
-            if (temp == 0) {
-                count = count + 1;
-            }
-            while (temp > 0) {
-                count = count + 1;
-                temp = temp / 10;
-            }
+    /** Splits every number into its digits and puts all digits into one byte array: [12, 3] becomes [1, 2, 3]. */
+    public byte[] split(int[] numbers) {
+        int total = 0;
+        for (int number : numbers) {
+            total += digitCount(number);
         }
 
-        byte[] result = new byte[count];
-        int index = 0;
-
-        for (int i = 0; i < arr.length; i++) {
-            int positive = Math.abs(arr[i]);
-            int length = 1;
-            int copy = positive;
-            while (copy >= 10) {
-                length = length + 1;
-                copy = copy / 10;
+        byte[] result = new byte[total];
+        int start = 0;
+        for (int number : numbers) {
+            int length = digitCount(number);
+            long value = Math.abs((long) number);
+            for (int i = start + length - 1; i >= start; i--) {
+                result[i] = (byte) (value % 10);
+                value /= 10;
             }
-
-            int divisor = 1;
-            for (int j = 1; j < length; j++) {
-                divisor = divisor * 10;
-            }
-
-            int temp = positive;
-            for (int j = 0; j < length; j++) {
-                int digit = temp / divisor;
-                temp = temp % divisor;
-                if (divisor > 1) {
-                    divisor = divisor / 10;
-                }
-                result[index] = (byte) digit;
-                System.out.println(result[index]);
-                index = index + 1;
-            }
+            start += length;
         }
-
         return result;
+    }
+
+    private int digitCount(int number) {
+        long value = Math.abs((long) number);
+        int count = 1;
+        while (value >= 10) {
+            value /= 10;
+            count++;
+        }
+        return count;
     }
 }

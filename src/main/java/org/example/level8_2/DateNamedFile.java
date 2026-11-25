@@ -1,31 +1,30 @@
 package org.example.level8_2;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class DateNamedFile {
-    public String create(String folder) {
-        LocalDate today = LocalDate.now();
-        String name = today.getYear() + "-" + two(today.getMonthValue()) + "-" + two(today.getDayOfMonth()) + ".txt";
-        File dir = new File(folder);
-        dir.mkdirs();
-        File file = new File(dir, name);
 
-        try {
-            file.createNewFile();
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-
-        System.out.println(file.getPath());
-        return file.getPath();
+    /** Creates an empty file named after the current date (yyyy-MM-dd.txt) in the folder. */
+    public Path create(Path folder) {
+        return create(folder, LocalDate.now());
     }
 
-    private String two(int value) {
-        if (value < 10) {
-            return "0" + value;
+    /** Creates an empty file named yyyy-MM-dd.txt for the given date in the folder; an existing file is kept. */
+    public Path create(Path folder, LocalDate date) {
+        Path file = folder.resolve(date.format(DateTimeFormatter.ISO_LOCAL_DATE) + ".txt");
+        try {
+            Files.createDirectories(folder);
+            if (Files.notExists(file)) {
+                Files.createFile(file);
+            }
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
         }
-        return "" + value;
+        return file;
     }
 }

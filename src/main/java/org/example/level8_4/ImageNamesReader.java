@@ -1,59 +1,22 @@
 package org.example.level8_4;
 
-import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+import org.example.common.FileUtils;
 
 public class ImageNamesReader {
-    public String[] names(String folderPath) {
-        File folder = new File(folderPath);
-        File[] children = folder.listFiles();
-        if (children == null) {
-            System.out.println("Папка не найдена");
-            return new String[0];
-        }
 
-        int count = 0;
-        for (int i = 0; i < children.length; i++) {
-            if (children[i].isFile() && isImage(children[i].getName())) {
-                count = count + 1;
-            }
-        }
+    private static final String[] IMAGE_EXTENSIONS = {"jpg", "jpeg", "png", "gif", "bmp", "webp"};
 
-        String[] result = new String[count];
-        int index = 0;
-        for (int i = 0; i < children.length; i++) {
-            if (children[i].isFile() && isImage(children[i].getName())) {
-                result[index] = children[i].getName();
-                index = index + 1;
-            }
+    /** Returns the names of the image files directly inside the folder, in alphabetical order. */
+    public List<String> names(Path folder) {
+        if (!Files.isDirectory(folder)) {
+            throw new IllegalArgumentException("Not a folder: " + folder);
         }
-
-        sort(result);
-        for (int i = 0; i < result.length; i++) {
-            System.out.println(result[i]);
-        }
-        return result;
-    }
-
-    private boolean isImage(String name) {
-        String lower = "";
-        for (int i = 0; i < name.length(); i++) {
-            lower = lower + Character.toLowerCase(name.charAt(i));
-        }
-        return lower.endsWith(".jpg") || lower.endsWith(".jpeg") || lower.endsWith(".png")
-                || lower.endsWith(".gif") || lower.endsWith(".bmp") || lower.endsWith(".webp");
-    }
-
-    private void sort(String[] values) {
-        for (int i = 0; i < values.length; i++) {
-            int min = i;
-            for (int j = i + 1; j < values.length; j++) {
-                if (values[j].compareTo(values[min]) < 0) {
-                    min = j;
-                }
-            }
-            String temp = values[i];
-            values[i] = values[min];
-            values[min] = temp;
-        }
+        return FileUtils.listFiles(folder).stream()
+                .filter(file -> FileUtils.hasExtension(file, IMAGE_EXTENSIONS))
+                .map(file -> file.getFileName().toString())
+                .toList();
     }
 }

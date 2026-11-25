@@ -1,18 +1,14 @@
 package org.example.level5_5;
 
 public class NumberInRangeReader {
-    public int read(int[] attempts) {
-        for (int i = 0; i < attempts.length; i++) {
-            System.out.println("Введите целое число от 1 до 10");
-            System.out.println(attempts[i]);
-            if (attempts[i] >= 1 && attempts[i] <= 10) {
-                System.out.println(attempts[i]);
-                return attempts[i];
-            }
-            System.out.println("Введите число еще раз");
-        }
 
-        System.out.println("Число из промежутка не введено");
-        return -1;
+    /** Simulates asking for a number from 1 to 10 until one fits: returns the first attempt in range. */
+    public int read(int... attempts) {
+        for (int attempt : attempts) {
+            if (attempt >= 1 && attempt <= 10) {
+                return attempt;
+            }
+        }
+        throw new IllegalArgumentException("None of the attempts is between 1 and 10");
     }
 }

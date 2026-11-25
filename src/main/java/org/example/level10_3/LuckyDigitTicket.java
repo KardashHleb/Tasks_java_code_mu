@@ -1,42 +1,35 @@
 package org.example.level10_3;
 
 public class LuckyDigitTicket {
-    public boolean can(int[] digits) {
+
+    /**
+     * Checks whether six digits can be rearranged into a lucky ticket (sum of the first three equals
+     * the sum of the last three). That is the case exactly when some three of the digits add up to
+     * half of the total, so all 20 ways to choose three positions are tried.
+     */
+    public boolean canBeLucky(int[] digits) {
         if (digits.length != 6) {
-            System.out.println(false);
+            throw new IllegalArgumentException("A ticket must have 6 digits, got " + digits.length);
+        }
+        int total = 0;
+        for (int digit : digits) {
+            if (digit < 0 || digit > 9) {
+                throw new IllegalArgumentException("Not a digit: " + digit);
+            }
+            total += digit;
+        }
+        if (total % 2 != 0) {
             return false;
         }
-
-        int[] order = new int[6];
-        for (int i = 0; i < order.length; i++) {
-            order[i] = digits[i];
-        }
-        boolean[] found = new boolean[]{false};
-        permute(order, 0, found);
-        System.out.println(found[0]);
-        return found[0];
-    }
-
-    private void permute(int[] digits, int index, boolean[] found) {
-        if (found[0]) {
-            return;
-        }
-        if (index == digits.length) {
-            int left = digits[0] + digits[1] + digits[2];
-            int right = digits[3] + digits[4] + digits[5];
-            if (left == right) {
-                found[0] = true;
+        for (int i = 0; i < 6; i++) {
+            for (int j = i + 1; j < 6; j++) {
+                for (int k = j + 1; k < 6; k++) {
+                    if (digits[i] + digits[j] + digits[k] == total / 2) {
+                        return true;
+                    }
+                }
             }
-            return;
         }
-        for (int i = index; i < digits.length; i++) {
-            int temp = digits[index];
-            digits[index] = digits[i];
-            digits[i] = temp;
-            permute(digits, index + 1, found);
-            temp = digits[index];
-            digits[index] = digits[i];
-            digits[i] = temp;
-        }
+        return false;
     }
 }

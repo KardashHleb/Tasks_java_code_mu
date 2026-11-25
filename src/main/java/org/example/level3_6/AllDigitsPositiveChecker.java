@@ -1,23 +1,16 @@
 package org.example.level3_6;
 
 public class AllDigitsPositiveChecker {
+
+    /** Checks whether every digit of the number is greater than zero. */
     public boolean allDigitsPositive(int number) {
-        int positiveNumber = Math.abs(number);
-
-        if (positiveNumber == 0) {
-            System.out.println("Есть ноль");
-            return false;
-        }
-
-        while (positiveNumber > 0) {
-            if (positiveNumber % 10 == 0) {
-                System.out.println("Есть ноль");
+        int rest = Math.abs(number);
+        do {
+            if (rest % 10 == 0) {
                 return false;
             }
-            positiveNumber = positiveNumber / 10;
-        }
-
-        System.out.println("Все цифры больше нуля");
+            rest = rest / 10;
+        } while (rest > 0);
         return true;
     }
 }

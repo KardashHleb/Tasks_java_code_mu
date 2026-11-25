@@ -1,40 +1,17 @@
 package org.example.level8_7;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.util.List;
+import org.example.common.FileUtils;
 
 public class SecondLineReader {
-    public String read(String path) {
-        String result = "";
-        int line = 1;
-        boolean done = false;
-        boolean started = false;
 
-        try (InputStreamReader reader = new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8)) {
-            int ch = reader.read();
-            while (ch != -1 && !done) {
-                if (ch == '\n') {
-                    if (line == 2) {
-                        done = true;
-                    } else {
-                        line = line + 1;
-                    }
-                } else if (ch != '\r' && line == 2) {
-                    result = result + (char) ch;
-                    started = true;
-                }
-                ch = reader.read();
-            }
-            if (!started && line < 2) {
-                result = "";
-            }
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
+    /** Returns the second line of a text file. */
+    public String read(Path file) {
+        List<String> lines = FileUtils.readLines(file);
+        if (lines.size() < 2) {
+            throw new IllegalArgumentException("File has fewer than two lines: " + file);
         }
-
-        System.out.println(result);
-        return result;
+        return lines.get(1);
     }
 }

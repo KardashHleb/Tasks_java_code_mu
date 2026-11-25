@@ -1,15 +1,22 @@
 package org.example.level9_8;
 
 public class PerfectNumber {
-    public boolean check(int number) {
-        int sum = 0;
-        for (int i = 1; i < number; i++) {
-            if (number % i == 0) {
-                sum = sum + i;
+
+    /** Checks whether a number equals the sum of its proper divisors (6, 28, 496, ...). */
+    public boolean isPerfect(int number) {
+        if (number < 2) {
+            return false;
+        }
+        long sum = 1;
+        for (int divisor = 2; divisor <= number / divisor; divisor++) {
+            if (number % divisor == 0) {
+                sum += divisor;
+                int pair = number / divisor;
+                if (pair != divisor) {
+                    sum += pair;
+                }
             }
         }
-        boolean perfect = number > 1 && sum == number;
-        System.out.println(perfect);
-        return perfect;
+        return sum == number;
     }
 }

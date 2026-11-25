@@ -1,13 +1,14 @@
 package org.example.level3_3;
 
-public class LastTwoElements {
-    public int[] takeLastTwo(int[] arr) {
-        int[] slice = new int[2];
-        slice[0] = arr[arr.length - 2];
-        slice[1] = arr[arr.length - 1];
+import java.util.Arrays;
 
-        System.out.println(slice[0]);
-        System.out.println(slice[1]);
-        return slice;
+public class LastTwoElements {
+
+    /** Returns a new array with the last two elements of the given array. */
+    public int[] takeLastTwo(int[] arr) {
+        if (arr.length < 2) {
+            throw new IllegalArgumentException("Array must contain at least 2 elements, got " + arr.length);
+        }
+        return Arrays.copyOfRange(arr, arr.length - 2, arr.length);
     }
 }

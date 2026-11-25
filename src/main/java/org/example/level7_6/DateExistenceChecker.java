@@ -4,13 +4,13 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
 public class DateExistenceChecker {
+
+    /** Returns true if the text is a real calendar date in the yyyy-MM-dd format (2023-02-29 is not). */
     public boolean exists(String date) {
         try {
             LocalDate.parse(date);
-            System.out.println("Дата существует");
             return true;
-        } catch (DateTimeParseException exception) {
-            System.out.println("Дата не существует");
+        } catch (DateTimeParseException e) {
             return false;
         }
     }

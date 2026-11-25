@@ -1,16 +1,13 @@
 package org.example.level2_9;
 
 public class EvenNumbersArrayFiller {
+
+    /** Returns an array filled with the even numbers from 2 to 100. */
     public int[] fill() {
         int[] arr = new int[50];
-        int number = 2;
-
         for (int i = 0; i < arr.length; i++) {
-            arr[i] = number;
-            System.out.println(arr[i]);
-            number = number + 2;
+            arr[i] = (i + 1) * 2;
         }
-
         return arr;
     }
 }

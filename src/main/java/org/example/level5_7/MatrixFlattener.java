@@ -1,24 +1,20 @@
 package org.example.level5_7;
 
 public class MatrixFlattener {
-    public int[] flatten(int[][] arr) {
+
+    /** Flattens a two-dimensional array into a one-dimensional one, row by row. */
+    public int[] flatten(int[][] matrix) {
         int length = 0;
-
-        for (int i = 0; i < arr.length; i++) {
-            length = length + arr[i].length;
+        for (int[] row : matrix) {
+            length += row.length;
         }
-
         int[] result = new int[length];
         int index = 0;
-
-        for (int i = 0; i < arr.length; i++) {
-            for (int j = 0; j < arr[i].length; j++) {
-                result[index] = arr[i][j];
-                System.out.println(result[index]);
-                index = index + 1;
+        for (int[] row : matrix) {
+            for (int element : row) {
+                result[index++] = element;
             }
         }
-
         return result;
     }
 }

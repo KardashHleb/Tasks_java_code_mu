@@ -1,34 +1,35 @@
 package org.example.level6_6;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 
 public class DaysUntilBirthday {
+
+    /** Returns the number of days until the next birthday (0 if it is today). */
     public long count(String birthDate) {
-        System.out.println("Введите дату рождения");
-        System.out.println(birthDate);
+        return count(birthDate, LocalDate.now());
+    }
 
-        LocalDate birth = LocalDate.parse(birthDate);
-        LocalDate today = LocalDate.now();
-        LocalDate next = birthdayInYear(today.getYear(), birth.getMonthValue(), birth.getDayOfMonth());
-
+    /**
+     * Returns the number of days from the given "today" date until the next birthday (0 if it is today).
+     * A February 29 birthday is celebrated on February 28 in non-leap years.
+     */
+    public long count(String birthDate, LocalDate today) {
+        LocalDate birth;
+        try {
+            birth = LocalDate.parse(birthDate);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Invalid date, expected yyyy-MM-dd: " + birthDate, e);
+        }
+        if (birth.isAfter(today)) {
+            throw new IllegalArgumentException("Birth date is in the future: " + birthDate);
+        }
+        // withYear moves February 29 to February 28 when the target year is not a leap year
+        LocalDate next = birth.withYear(today.getYear());
         if (next.isBefore(today)) {
-            next = birthdayInYear(today.getYear() + 1, birth.getMonthValue(), birth.getDayOfMonth());
+            next = birth.withYear(today.getYear() + 1);
         }
-
-        long result = ChronoUnit.DAYS.between(today, next);
-        System.out.println(result);
-        return result;
-    }
-
-    private LocalDate birthdayInYear(int year, int month, int day) {
-        if (month == 2 && day == 29 && !isLeap(year)) {
-            return LocalDate.of(year, 2, 28);
-        }
-        return LocalDate.of(year, month, day);
-    }
-
-    private boolean isLeap(int year) {
-        return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
+        return ChronoUnit.DAYS.between(today, next);
     }
 }

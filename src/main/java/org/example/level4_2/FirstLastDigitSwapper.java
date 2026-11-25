@@ -1,31 +1,24 @@
 package org.example.level4_2;
 
 public class FirstLastDigitSwapper {
+
+    /**
+     * Swaps the first and the last digit of the number, keeping the sign, e.g. 12345 gives 52341.
+     * A leading zero produced by the swap disappears (120 gives 21).
+     */
     public int swap(int number) {
-        int positiveNumber = Math.abs(number);
-        int digits = 0;
-        int temp = positiveNumber;
-
-        if (positiveNumber == 0) {
-            digits = 1;
+        int value = Math.abs(number);
+        if (value < 10) {
+            return number;
         }
-
-        while (temp > 0) {
-            digits = digits + 1;
-            temp = temp / 10;
-        }
-
         int divisor = 1;
-        for (int i = 1; i < digits; i++) {
+        while (value / divisor >= 10) {
             divisor = divisor * 10;
         }
-
-        int first = positiveNumber / divisor;
-        int last = positiveNumber % 10;
-        int middle = positiveNumber % divisor / 10;
+        int first = value / divisor;
+        int last = value % 10;
+        int middle = value % divisor / 10;
         int result = last * divisor + middle * 10 + first;
-
-        System.out.println(result);
-        return result;
+        return number < 0 ? -result : result;
     }
 }

@@ -1,43 +1,42 @@
 package org.example.level9_9;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TextWidthWrapper {
+
+    /** Wraps the text into lines of at most 70 characters. */
     public String wrap(String text) {
-        String result = "";
-        String line = "";
-        String word = "";
+        return wrap(text, 70);
+    }
 
-        for (int i = 0; i <= text.length(); i++) {
-            boolean boundary = i == text.length()
-                    || text.charAt(i) == ' '
-                    || text.charAt(i) == '\n'
-                    || text.charAt(i) == '\t';
-            if (boundary) {
-                if (word.length() > 0) {
-                    if (line.length() == 0) {
-                        line = word;
-                    } else if (line.length() + 1 + word.length() <= 70) {
-                        line = line + " " + word;
-                    } else {
-                        if (result.length() > 0) {
-                            result = result + "\n";
-                        }
-                        result = result + line;
-                        line = word;
-                    }
-                    word = "";
-                }
+    /**
+     * Wraps the text into lines of at most {@code width} characters, breaking only between words.
+     * A word longer than the width gets a line of its own.
+     */
+    public String wrap(String text, int width) {
+        if (width < 1) {
+            throw new IllegalArgumentException("Width must be positive: " + width);
+        }
+        List<String> lines = new ArrayList<>();
+        StringBuilder line = new StringBuilder();
+        for (String word : text.strip().split("\\s+")) {
+            if (word.isEmpty()) {
+                continue;
+            }
+            if (line.isEmpty()) {
+                line.append(word);
+            } else if (line.length() + 1 + word.length() <= width) {
+                line.append(' ').append(word);
             } else {
-                word = word + text.charAt(i);
+                lines.add(line.toString());
+                line.setLength(0);
+                line.append(word);
             }
         }
-        if (line.length() > 0) {
-            if (result.length() > 0) {
-                result = result + "\n";
-            }
-            result = result + line;
+        if (!line.isEmpty()) {
+            lines.add(line.toString());
         }
-
-        System.out.println(result);
-        return result;
+        return String.join("\n", lines);
     }
 }

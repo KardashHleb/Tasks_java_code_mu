@@ -1,22 +1,26 @@
 package org.example.level7_3;
 
 public class MinMaxFinder {
-    public int[] find(int[] arr) {
-        int max = arr[0];
-        int min = arr[0];
 
-        for (int i = 1; i < arr.length; i++) {
-            if (arr[i] > max) {
-                max = arr[i];
+    /** Smallest and largest element of an array. */
+    public record MinMax(int min, int max) {
+    }
+
+    /** Finds the smallest and the largest element in a single pass. */
+    public MinMax find(int[] values) {
+        if (values.length == 0) {
+            throw new IllegalArgumentException("Array must not be empty");
+        }
+        int min = values[0];
+        int max = values[0];
+        for (int i = 1; i < values.length; i++) {
+            if (values[i] > max) {
+                max = values[i];
             }
-            if (arr[i] < min) {
-                min = arr[i];
+            if (values[i] < min) {
+                min = values[i];
             }
         }
-
-        int[] result = {max, min};
-        System.out.println(result[0]);
-        System.out.println(result[1]);
-        return result;
+        return new MinMax(min, max);
     }
 }

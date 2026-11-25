@@ -1,34 +1,36 @@
 package org.example.level8_10;
 
-import java.io.File;
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Stream;
 
 public class FolderRemover {
-    public boolean remove(String folderPath) {
-        File folder = new File(folderPath);
-        if (!folder.isDirectory()) {
-            System.out.println("Папка не найдена");
-            return false;
-        }
-        if (folder.getParentFile() == null) {
-            System.out.println("Нельзя удалить корень диска");
-            return false;
-        }
 
-        boolean removed = removeAll(folder);
-        System.out.println(removed);
-        System.out.println(folder.getPath());
-        return removed;
-    }
-
-    private boolean removeAll(File file) {
-        if (file.isDirectory()) {
-            File[] children = file.listFiles();
-            if (children != null) {
-                for (int i = 0; i < children.length; i++) {
-                    removeAll(children[i]);
-                }
+    /**
+     * Deletes the folder together with everything inside it. Paths are deleted deepest first, so every folder
+     * is already empty when its turn comes.
+     */
+    public void remove(Path folder) {
+        if (!Files.isDirectory(folder)) {
+            throw new IllegalArgumentException("Not a folder: " + folder);
+        }
+        if (folder.toAbsolutePath().normalize().getParent() == null) {
+            throw new IllegalArgumentException("Refusing to delete a root folder: " + folder);
+        }
+        try {
+            List<Path> paths;
+            try (Stream<Path> walk = Files.walk(folder)) {
+                paths = walk.sorted(Comparator.reverseOrder()).toList();
             }
+            for (Path path : paths) {
+                Files.delete(path);
+            }
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
         }
-        return file.delete();
     }
 }

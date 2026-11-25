@@ -1,25 +1,17 @@
 package org.example.level6_4;
 
-public class LongWordsRemover {
-    public String remove(String str) {
-        String result = "";
-        String word = "";
+import java.util.StringJoiner;
 
-        for (int i = 0; i <= str.length(); i++) {
-            if (i == str.length() || str.charAt(i) == ' ') {
-                if (word.length() > 0 && word.length() <= 3) {
-                    if (result.length() > 0) {
-                        result = result + " ";
-                    }
-                    result = result + word;
-                }
-                word = "";
-            } else {
-                word = word + str.charAt(i);
+public class LongWordsRemover {
+
+    /** Removes all words longer than three characters from a space-separated string. */
+    public String remove(String text) {
+        StringJoiner result = new StringJoiner(" ");
+        for (String word : text.split(" ")) {
+            if (!word.isEmpty() && word.length() <= 3) {
+                result.add(word);
             }
         }
-
-        System.out.println(result);
-        return result;
+        return result.toString();
     }
 }

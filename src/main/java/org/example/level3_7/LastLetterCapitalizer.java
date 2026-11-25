@@ -1,37 +1,20 @@
 package org.example.level3_7;
 
 public class LastLetterCapitalizer {
+
+    /** Capitalizes the last letter of every word; words in the result are separated by single spaces. */
     public String capitalizeLastLetters(String str) {
-        String result = "";
-        String word = "";
-
-        for (int i = 0; i <= str.length(); i++) {
-            if (i == str.length() || str.charAt(i) == ' ') {
-                if (word.length() > 0) {
-                    if (result.length() > 0) {
-                        result = result + " ";
-                    }
-                    result = result + capitalizeLast(word);
-                    word = "";
-                }
-            } else {
-                word = word + str.charAt(i);
+        StringBuilder result = new StringBuilder();
+        for (String word : str.trim().split(" +")) {
+            if (word.isEmpty()) {
+                continue;
             }
+            if (!result.isEmpty()) {
+                result.append(' ');
+            }
+            int last = word.length() - 1;
+            result.append(word, 0, last).append(Character.toUpperCase(word.charAt(last)));
         }
-
-        System.out.println(result);
-        return result;
-    }
-
-    private String capitalizeLast(String word) {
-        String result = "";
-
-        for (int i = 0; i < word.length() - 1; i++) {
-            result = result + word.charAt(i);
-        }
-
-        char last = word.charAt(word.length() - 1);
-        result = result + Character.toUpperCase(last);
-        return result;
+        return result.toString();
     }
 }

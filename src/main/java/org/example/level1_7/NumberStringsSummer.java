@@ -1,12 +1,17 @@
 package org.example.level1_7;
 
 public class NumberStringsSummer {
-    public int sumNumberStrings(String str1, String str2, String str3) {
-        int number1 = Integer.parseInt(str1);
-        int number2 = Integer.parseInt(str2);
-        int number3 = Integer.parseInt(str3);
-        int sum = number1 + number2 + number3;
-        System.out.println(sum);
-        return sum;
+
+    /** Parses three strings as integers and returns their sum. */
+    public long sumNumberStrings(String str1, String str2, String str3) {
+        return parse(str1) + parse(str2) + parse(str3);
+    }
+
+    private static long parse(String str) {
+        try {
+            return Integer.parseInt(str.trim());
+        } catch (NumberFormatException | NullPointerException e) {
+            throw new IllegalArgumentException("Not an integer: " + str, e);
+        }
     }
 }

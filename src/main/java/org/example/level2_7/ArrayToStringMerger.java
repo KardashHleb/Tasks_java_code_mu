@@ -1,14 +1,16 @@
 package org.example.level2_7;
 
 public class ArrayToStringMerger {
+
+    /** Concatenates the array elements into one string without separators. */
     public String merge(int[] arr) {
-        String result = "";
-
-        for (int i = 0; i < arr.length; i++) {
-            result = result + arr[i];
+        if (arr == null) {
+            throw new IllegalArgumentException("Array must not be null");
         }
-
-        System.out.println(result);
-        return result;
+        StringBuilder result = new StringBuilder();
+        for (int element : arr) {
+            result.append(element);
+        }
+        return result.toString();
     }
 }

@@ -1,36 +1,21 @@
 package org.example.level5_7;
 
+import java.util.stream.IntStream;
+
 public class FirstTwoDigitsSumFive {
-    public int[] print() {
-        int count = 0;
 
-        for (int number = 10; number <= 1000; number++) {
-            if (firstTwoSum(number) == 5) {
-                count = count + 1;
-            }
-        }
-
-        int[] result = new int[count];
-        int index = 0;
-
-        for (int number = 10; number <= 1000; number++) {
-            if (firstTwoSum(number) == 5) {
-                result[index] = number;
-                System.out.println(result[index]);
-                index = index + 1;
-            }
-        }
-
-        return result;
+    /** Finds all numbers from 10 to 1000 whose first two digits add up to 5. */
+    public int[] find() {
+        return IntStream.rangeClosed(10, 1000)
+                .filter(number -> firstTwoDigitsSum(number) == 5)
+                .toArray();
     }
 
-    private int firstTwoSum(int number) {
+    private int firstTwoDigitsSum(int number) {
         int reduced = number;
         while (reduced >= 100) {
-            reduced = reduced / 10;
+            reduced /= 10;
         }
-        int first = reduced / 10;
-        int second = reduced % 10;
-        return first + second;
+        return reduced / 10 + reduced % 10;
     }
 }

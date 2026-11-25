@@ -1,15 +1,16 @@
 package org.example.level2_3;
 
 public class ArrayAverage {
+
+    /** Returns the arithmetic mean of the array elements. */
     public double calculateAverage(int[] arr) {
-        int sum = 0;
-
-        for (int i = 0; i < arr.length; i++) {
-            sum = sum + arr[i];
+        if (arr == null || arr.length == 0) {
+            throw new IllegalArgumentException("Array must not be empty");
         }
-
-        double average = (double) sum / arr.length;
-        System.out.println(average);
-        return average;
+        long sum = 0;
+        for (int element : arr) {
+            sum += element;
+        }
+        return (double) sum / arr.length;
     }
 }

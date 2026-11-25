@@ -1,14 +1,13 @@
 package org.example.level4_6;
 
 public class CountdownString {
+
+    /** Returns the string "54321". */
     public String make() {
-        String result = "";
-
+        StringBuilder result = new StringBuilder();
         for (int i = 5; i >= 1; i--) {
-            result = result + i;
+            result.append(i);
         }
-
-        System.out.println(result);
-        return result;
+        return result.toString();
     }
 }

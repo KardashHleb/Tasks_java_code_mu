@@ -1,68 +1,35 @@
 package org.example.level8_1;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import org.example.common.FileUtils;
 
 public class WordsParentheses {
-    public String wrap(String source, String target) {
-        String text = readText(source);
-        String result = "";
-        String word = "";
 
-        for (int i = 0; i < text.length(); i++) {
-            char current = text.charAt(i);
-            if (current == ' ' || current == '\n' || current == '\t') {
-                if (word.length() > 0) {
-                    result = result + "(" + word + ")";
-                    word = "";
-                }
-                result = result + current;
-            } else {
-                word = word + current;
-            }
-        }
-        if (word.length() > 0) {
-            result = result + "(" + word + ")";
-        }
-
-        writeText(target, result);
-        System.out.println(result);
+    /** Reads the source file, wraps every word in parentheses and writes the result to the target file. */
+    public String wrap(Path source, Path target) {
+        String result = wrap(FileUtils.readText(source));
+        FileUtils.writeText(target, result);
         return result;
     }
 
-    private String readText(String path) {
-        String text = "";
-        try (InputStreamReader reader = new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8)) {
-            int ch = reader.read();
-            while (ch != -1) {
-                if (ch != '\r') {
-                    text = text + (char) ch;
+    /** Wraps every whitespace-separated word in parentheses, keeping the whitespace: "a b" -> "(a) (b)". */
+    public String wrap(String text) {
+        StringBuilder result = new StringBuilder();
+        int wordStart = -1;
+        for (int i = 0; i <= text.length(); i++) {
+            boolean separator = i == text.length() || Character.isWhitespace(text.charAt(i));
+            if (separator) {
+                if (wordStart >= 0) {
+                    result.append('(').append(text, wordStart, i).append(')');
+                    wordStart = -1;
                 }
-                ch = reader.read();
+                if (i < text.length()) {
+                    result.append(text.charAt(i));
+                }
+            } else if (wordStart < 0) {
+                wordStart = i;
             }
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
         }
-        return text;
-    }
-
-    private void writeText(String path, String text) {
-        try {
-            File file = new File(path);
-            File parent = file.getParentFile();
-            if (parent != null) {
-                parent.mkdirs();
-            }
-            try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8)) {
-                writer.write(text);
-            }
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
+        return result.toString();
     }
 }

@@ -1,22 +1,18 @@
 package org.example.level1_3;
 
 public class SeasonDeterminer {
-    public String determineSeason(byte num) {
-        if (num == 12 || num == 1 || num == 2) {
-            System.out.println("Зима");
-            return "Зима";
-        } else if (num >= 3 && num <= 5) {
-            System.out.println("Весна");
-            return "Весна";
-        } else if (num >= 6 && num <= 8) {
-            System.out.println("Лето");
-            return "Лето";
-        } else if (num >= 9 && num <= 11) {
-            System.out.println("Осень");
-            return "Осень";
-        } else {
-            System.out.println("Некорректный номер месяца");
-            return "Некорректный номер месяца";
+
+    /** Returns the season ("Winter", "Spring", "Summer" or "Autumn") of the month number 1-12. */
+    public String determineSeason(int month) {
+        if (month == 12 || month == 1 || month == 2) {
+            return "Winter";
+        } else if (month >= 3 && month <= 5) {
+            return "Spring";
+        } else if (month >= 6 && month <= 8) {
+            return "Summer";
+        } else if (month >= 9 && month <= 11) {
+            return "Autumn";
         }
+        throw new IllegalArgumentException("Month number must be between 1 and 12: " + month);
     }
 }

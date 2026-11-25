@@ -3,10 +3,14 @@ package org.example.level7_2;
 import java.time.LocalDate;
 
 public class MonthEndDays {
-    public int count() {
-        LocalDate today = LocalDate.now();
-        int result = today.lengthOfMonth() - today.getDayOfMonth();
-        System.out.println(result);
-        return result;
+
+    /** Returns how many days are left until the end of the current month. */
+    public int daysLeft() {
+        return daysLeft(LocalDate.now());
+    }
+
+    /** Returns how many days are left from {@code today} until the end of its month. */
+    public int daysLeft(LocalDate today) {
+        return today.lengthOfMonth() - today.getDayOfMonth();
     }
 }

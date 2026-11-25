@@ -1,32 +1,16 @@
 package org.example.level5_7;
 
 public class CommonCharsKeeper {
-    public String keep(String str1, String str2) {
-        String result = "";
 
-        for (int i = 0; i < str1.length(); i++) {
-            char current = str1.charAt(i);
-            boolean inSecond = false;
-            boolean already = false;
-
-            for (int j = 0; j < str2.length(); j++) {
-                if (str2.charAt(j) == current) {
-                    inSecond = true;
-                }
-            }
-
-            for (int j = 0; j < result.length(); j++) {
-                if (result.charAt(j) == current) {
-                    already = true;
-                }
-            }
-
-            if (inSecond && !already) {
-                result = result + current;
+    /** Returns the distinct characters of the first string that also occur in the second one. */
+    public String keep(String first, String second) {
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < first.length(); i++) {
+            String current = String.valueOf(first.charAt(i));
+            if (second.contains(current) && result.indexOf(current) < 0) {
+                result.append(current);
             }
         }
-
-        System.out.println(result);
-        return result;
+        return result.toString();
     }
 }

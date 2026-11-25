@@ -1,27 +1,19 @@
 package org.example.level8_2;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import org.example.common.FileUtils;
 
 public class FileLettersCounter {
-    public int count(String path) {
+
+    /** Returns the number of letters (of any alphabet) in a text file. */
+    public int count(Path file) {
+        String text = FileUtils.readText(file);
         int result = 0;
-
-        try (InputStreamReader reader = new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8)) {
-            int ch = reader.read();
-            while (ch != -1) {
-                if (Character.isLetter((char) ch)) {
-                    result = result + 1;
-                }
-                ch = reader.read();
+        for (int i = 0; i < text.length(); i++) {
+            if (Character.isLetter(text.charAt(i))) {
+                result++;
             }
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
         }
-
-        System.out.println(result);
         return result;
     }
 }

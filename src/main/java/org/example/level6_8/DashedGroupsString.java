@@ -1,19 +1,16 @@
 package org.example.level6_8;
 
 public class DashedGroupsString {
-    public String make() {
-        int[] counts = {1, 2, 3, 3, 5};
-        String result = "";
 
-        for (int i = 0; i < counts.length; i++) {
-            result = result + "-";
-            for (int j = 0; j < counts[i]; j++) {
-                result = result + (i + 1);
+    /** Builds the string "-1-22-333-4444-55555-": every digit repeated as many times as its value. */
+    public String build() {
+        StringBuilder result = new StringBuilder("-");
+        for (int digit = 1; digit <= 5; digit++) {
+            for (int i = 0; i < digit; i++) {
+                result.append(digit);
             }
+            result.append('-');
         }
-
-        result = result + "-";
-        System.out.println(result);
-        return result;
+        return result.toString();
     }
 }

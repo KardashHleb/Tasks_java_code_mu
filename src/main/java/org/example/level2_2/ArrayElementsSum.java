@@ -1,14 +1,16 @@
 package org.example.level2_2;
 
 public class ArrayElementsSum {
-    public int sumElements(int[] arr) {
-        int sum = 0;
 
-        for (int i = 0; i < arr.length; i++) {
-            sum = sum + arr[i];
+    /** Returns the sum of the array elements. */
+    public long sumElements(int[] arr) {
+        if (arr == null) {
+            throw new IllegalArgumentException("Array must not be null");
         }
-
-        System.out.println(sum);
+        long sum = 0;
+        for (int element : arr) {
+            sum += element;
+        }
         return sum;
     }
 }

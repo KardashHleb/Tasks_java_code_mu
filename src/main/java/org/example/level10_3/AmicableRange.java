@@ -1,43 +1,38 @@
 package org.example.level10_3;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AmicableRange {
-    public int[][] pairs(int from, int to) {
-        if (from > to) {
-            int temp = from;
-            from = to;
-            to = temp;
-        }
 
-        int count = 0;
-        for (int number = from; number <= to; number++) {
-            int pair = properSum(number);
-            if (pair > number && pair <= to && properSum(pair) == number) {
-                count = count + 1;
-            }
+    /** All pairs of amicable numbers {a, b} with from <= a < b <= to, e.g. {220, 284}. */
+    public List<int[]> pairs(int from, int to) {
+        if (from < 1 || from > to) {
+            throw new IllegalArgumentException("Invalid range: [" + from + ", " + to + "]");
         }
-
-        int[][] result = new int[count][2];
-        int index = 0;
+        List<int[]> result = new ArrayList<>();
         for (int number = from; number <= to; number++) {
-            int pair = properSum(number);
-            if (pair > number && pair <= to && properSum(pair) == number) {
-                result[index][0] = number;
-                result[index][1] = pair;
-                System.out.println(number + " " + pair);
-                index = index + 1;
+            long pair = properDivisorSum(number);
+            if (pair > number && pair <= to && properDivisorSum((int) pair) == number) {
+                result.add(new int[]{number, (int) pair});
             }
         }
         return result;
     }
 
-    private int properSum(int number) {
-        if (number < 0) {
-            number = -number;
+    /** Sum of the divisors of a number excluding the number itself; divisors come in pairs d and n / d. */
+    private static long properDivisorSum(int number) {
+        if (number == 1) {
+            return 0;
         }
-        int sum = 0;
-        for (int i = 1; i < number; i++) {
-            if (number % i == 0) {
-                sum = sum + i;
+        long sum = 1;
+        for (int divisor = 2; divisor <= number / divisor; divisor++) {
+            if (number % divisor == 0) {
+                sum += divisor;
+                int pair = number / divisor;
+                if (pair != divisor) {
+                    sum += pair;
+                }
             }
         }
         return sum;

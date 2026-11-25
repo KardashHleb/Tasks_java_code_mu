@@ -1,16 +1,17 @@
 package org.example.level1_9;
 
 public class LastAndFirstLetterChecker {
-    public boolean sameLastAndFirstLetter(String word1, String word2) {
-        char lastLetter = word1.charAt(word1.length() - 1);
-        char firstLetter = word2.charAt(0);
 
-        if (lastLetter == firstLetter) {
-            System.out.println("Буквы совпадают");
-            return true;
-        } else {
-            System.out.println("Буквы не совпадают");
-            return false;
+    /** Checks whether the last letter of the first word equals the first letter of the second word. */
+    public boolean lastMatchesFirst(String word1, String word2) {
+        requireNotEmpty(word1);
+        requireNotEmpty(word2);
+        return word1.charAt(word1.length() - 1) == word2.charAt(0);
+    }
+
+    private static void requireNotEmpty(String word) {
+        if (word == null || word.isEmpty()) {
+            throw new IllegalArgumentException("Word must not be empty");
         }
     }
 }

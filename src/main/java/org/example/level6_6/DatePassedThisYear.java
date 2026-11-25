@@ -1,31 +1,32 @@
 package org.example.level6_6;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 public class DatePassedThisYear {
-    public String check(String dateText) {
-        System.out.println("Введите дату в формате год-месяц-день");
-        System.out.println(dateText);
 
-        LocalDate date = LocalDate.parse(dateText);
-        LocalDate today = LocalDate.now();
+    /** Tells whether a date of the current year has already passed: "already passed", "today" or "not yet". */
+    public String check(String date) {
+        return check(date, LocalDate.now());
+    }
 
-        if (date.getYear() != today.getYear()) {
-            System.out.println("Дата не в текущем году");
-            return "Дата не в текущем году";
+    /** Same as {@link #check(String)} relative to the given "today" date. */
+    public String check(String date, LocalDate today) {
+        LocalDate value;
+        try {
+            value = LocalDate.parse(date);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Invalid date, expected yyyy-MM-dd: " + date, e);
         }
-
-        if (date.isBefore(today)) {
-            System.out.println("Уже была");
-            return "Уже была";
+        if (value.getYear() != today.getYear()) {
+            throw new IllegalArgumentException("The date is not in the current year: " + date);
         }
-
-        if (date.isEqual(today)) {
-            System.out.println("Сегодня");
-            return "Сегодня";
+        if (value.isBefore(today)) {
+            return "already passed";
         }
-
-        System.out.println("Еще не была");
-        return "Еще не была";
+        if (value.isEqual(today)) {
+            return "today";
+        }
+        return "not yet";
     }
 }

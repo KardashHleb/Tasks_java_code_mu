@@ -1,50 +1,42 @@
 package org.example.level8_10;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.UncheckedIOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.util.List;
+import java.util.stream.Stream;
 
 public class FolderCopier {
-    public String copy(String sourcePath, String targetPath) {
-        File source = new File(sourcePath);
-        File target = new File(targetPath);
-        if (!source.isDirectory()) {
-            System.out.println("Папка не найдена");
-            return "";
-        }
-        copyAll(source, target);
-        System.out.println(target.getPath());
-        return target.getPath();
-    }
 
-    private void copyAll(File source, File target) {
-        if (source.isDirectory()) {
-            target.mkdirs();
-            File[] children = source.listFiles();
-            if (children != null) {
-                for (int i = 0; i < children.length; i++) {
-                    copyAll(children[i], new File(target, children[i].getName()));
-                }
-            }
-        } else if (source.isFile()) {
-            File parent = target.getParentFile();
-            if (parent != null) {
-                parent.mkdirs();
-            }
-            try (InputStream input = new FileInputStream(source);
-                 OutputStream output = new FileOutputStream(target)) {
-                byte[] buffer = new byte[1024];
-                int read = input.read(buffer);
-                while (read != -1) {
-                    output.write(buffer, 0, read);
-                    read = input.read(buffer);
-                }
-            } catch (IOException e) {
-                System.out.println(e.getMessage());
-            }
+    /**
+     * Copies the folder with all its files and subfolders to the target path (existing files are replaced)
+     * and returns the target. Parents are visited before children, so every folder exists before its files.
+     */
+    public Path copy(Path source, Path target) {
+        if (!Files.isDirectory(source)) {
+            throw new IllegalArgumentException("Not a folder: " + source);
         }
+        if (target.toAbsolutePath().normalize().startsWith(source.toAbsolutePath().normalize())) {
+            throw new IllegalArgumentException("Cannot copy a folder into itself: " + target);
+        }
+        try {
+            List<Path> paths;
+            try (Stream<Path> walk = Files.walk(source)) {
+                paths = walk.toList();
+            }
+            for (Path path : paths) {
+                Path destination = target.resolve(source.relativize(path).toString());
+                if (Files.isDirectory(path)) {
+                    Files.createDirectories(destination);
+                } else {
+                    Files.copy(path, destination, StandardCopyOption.REPLACE_EXISTING);
+                }
+            }
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+        return target;
     }
 }

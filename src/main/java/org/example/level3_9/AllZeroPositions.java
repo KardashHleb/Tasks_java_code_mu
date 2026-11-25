@@ -1,11 +1,13 @@
 package org.example.level3_9;
 
+import java.util.stream.IntStream;
+
 public class AllZeroPositions {
-    public void printZeroPositions(String str) {
-        for (int i = 0; i < str.length(); i++) {
-            if (str.charAt(i) == '0') {
-                System.out.println(i);
-            }
-        }
+
+    /** Returns the indexes of all '0' characters in the string. */
+    public int[] findZeroPositions(String str) {
+        return IntStream.range(0, str.length())
+                .filter(i -> str.charAt(i) == '0')
+                .toArray();
     }
 }

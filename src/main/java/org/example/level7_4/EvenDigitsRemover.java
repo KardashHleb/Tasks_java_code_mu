@@ -1,35 +1,20 @@
 package org.example.level7_4;
 
 public class EvenDigitsRemover {
-    public int remove(int num) {
-        int positive = Math.abs(num);
-        String digits = "";
 
-        if (positive == 0) {
-            System.out.println(0);
-            return 0;
-        }
-
-        int temp = positive;
-        while (temp > 0) {
-            int digit = temp % 10;
+    /** Removes all even digits from the number, keeping its sign (for example 123456 -> 135). */
+    public int remove(int number) {
+        long rest = Math.abs((long) number);
+        long result = 0;
+        long place = 1;
+        while (rest > 0) {
+            long digit = rest % 10;
             if (digit % 2 != 0) {
-                digits = digit + digits;
+                result += digit * place;
+                place *= 10;
             }
-            temp = temp / 10;
+            rest /= 10;
         }
-
-        if (digits.length() == 0) {
-            System.out.println(0);
-            return 0;
-        }
-
-        int result = 0;
-        for (int i = 0; i < digits.length(); i++) {
-            result = result * 10 + (digits.charAt(i) - '0');
-        }
-
-        System.out.println(result);
-        return result;
+        return (int) (number < 0 ? -result : result);
     }
 }

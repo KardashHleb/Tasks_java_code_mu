@@ -1,24 +1,19 @@
 package org.example.level6_3;
 
 public class RangeArrayFiller {
+
+    /** Fills an array with all integers between the two numbers inclusive, in ascending order. */
     public int[] fill(int first, int second) {
-        System.out.println("Введите два целых числа");
-        System.out.println(first);
-        System.out.println(second);
-
-        int min = first;
-        int max = second;
-        if (second < first) {
-            min = second;
-            max = first;
+        int min = Math.min(first, second);
+        int max = Math.max(first, second);
+        long length = (long) max - min + 1;
+        if (length > Integer.MAX_VALUE - 8) {
+            throw new IllegalArgumentException("The range is too large for an array: " + length);
         }
-
-        int[] result = new int[max - min + 1];
+        int[] result = new int[(int) length];
         for (int i = 0; i < result.length; i++) {
             result[i] = min + i;
-            System.out.println(result[i]);
         }
-
         return result;
     }
 }

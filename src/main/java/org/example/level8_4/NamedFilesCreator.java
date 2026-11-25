@@ -1,30 +1,34 @@
 package org.example.level8_4;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 public class NamedFilesCreator {
-    public String[] create(String folderPath, String[] names) {
-        File folder = new File(folderPath);
-        folder.mkdirs();
-        String[] created = new String[names.length];
 
-        for (int i = 0; i < names.length; i++) {
-            File file = new File(folder, names[i]);
-            File parent = file.getParentFile();
-            if (parent != null) {
-                parent.mkdirs();
+    /** Creates empty files with the given names inside the folder (existing files are kept) and returns their paths. */
+    public List<Path> create(Path folder, List<String> names) {
+        for (String name : names) {
+            if (name.isBlank()) {
+                throw new IllegalArgumentException("File name must not be blank");
             }
-            try {
-                file.createNewFile();
-                created[i] = file.getPath();
-            } catch (IOException e) {
-                System.out.println(e.getMessage());
-                created[i] = "";
-            }
-            System.out.println(created[i]);
         }
-
+        List<Path> created = new ArrayList<>();
+        try {
+            for (String name : names) {
+                Path file = folder.resolve(name);
+                Files.createDirectories(file.getParent());
+                if (Files.notExists(file)) {
+                    Files.createFile(file);
+                }
+                created.add(file);
+            }
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
         return created;
     }
 }

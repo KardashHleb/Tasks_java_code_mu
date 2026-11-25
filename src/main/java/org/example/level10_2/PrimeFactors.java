@@ -1,43 +1,36 @@
 package org.example.level10_2;
 
-public class PrimeFactors {
-    public int[] factor(int number) {
-        System.out.println("Введите число");
-        System.out.println(number);
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
-        int value = number;
-        if (value < 0) {
-            value = -value;
+public class PrimeFactors {
+
+    /** Prime factors of a positive number in ascending order with repetition, e.g. 60 -> [2, 2, 3, 5]; 1 -> []. */
+    public List<Integer> factor(int number) {
+        if (number < 1) {
+            throw new IllegalArgumentException("Number must be positive: " + number);
         }
-        int[] found = new int[32];
-        int count = 0;
-        int divisor = 2;
-        while (value > 1 && divisor * divisor <= value) {
+        List<Integer> result = new ArrayList<>();
+        int value = number;
+        for (int divisor = 2; divisor <= value / divisor; divisor++) {
             while (value % divisor == 0) {
-                found[count] = divisor;
-                count = count + 1;
-                value = value / divisor;
+                result.add(divisor);
+                value /= divisor;
             }
-            divisor = divisor + 1;
         }
         if (value > 1) {
-            found[count] = value;
-            count = count + 1;
+            result.add(value);
         }
-
-        int[] result = new int[count];
-        String line = "";
-        for (int i = 0; i < count; i++) {
-            result[i] = found[i];
-            if (i > 0) {
-                line = line + " * ";
-            }
-            line = line + result[i];
-        }
-        if (count == 0) {
-            line = "" + number;
-        }
-        System.out.println(line);
         return result;
+    }
+
+    /** The factorization written as a product, e.g. 60 -> "2 * 2 * 3 * 5". */
+    public String format(int number) {
+        List<Integer> factors = factor(number);
+        if (factors.isEmpty()) {
+            return String.valueOf(number);
+        }
+        return factors.stream().map(String::valueOf).collect(Collectors.joining(" * "));
     }
 }

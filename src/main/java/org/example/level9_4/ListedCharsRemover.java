@@ -1,22 +1,15 @@
 package org.example.level9_4;
 
 public class ListedCharsRemover {
-    public String remove(String text, String deleted) {
-        String result = "";
 
-        for (int i = 0; i < text.length(); i++) {
-            boolean drop = false;
-            for (int j = 0; j < deleted.length(); j++) {
-                if (text.charAt(i) == deleted.charAt(j)) {
-                    drop = true;
-                }
-            }
-            if (!drop) {
-                result = result + text.charAt(i);
+    /** Removes from the text every character that occurs in {@code charsToRemove}. */
+    public String remove(String text, String charsToRemove) {
+        StringBuilder result = new StringBuilder();
+        for (char current : text.toCharArray()) {
+            if (charsToRemove.indexOf(current) < 0) {
+                result.append(current);
             }
         }
-
-        System.out.println(result);
-        return result;
+        return result.toString();
     }
 }

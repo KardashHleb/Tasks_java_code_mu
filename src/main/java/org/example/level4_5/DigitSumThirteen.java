@@ -1,17 +1,23 @@
 package org.example.level4_5;
 
+import java.util.stream.IntStream;
+
 public class DigitSumThirteen {
-    public void printNumbers() {
-        for (int i = 1; i <= 1000; i++) {
-            int temp = i;
-            int sum = 0;
-            while (temp > 0) {
-                sum = sum + temp % 10;
-                temp = temp / 10;
-            }
-            if (sum == 13) {
-                System.out.println(i);
-            }
+
+    /** Returns the numbers from 1 to 1000 whose digit sum equals 13. */
+    public int[] find() {
+        return IntStream.rangeClosed(1, 1000)
+                .filter(number -> digitSum(number) == 13)
+                .toArray();
+    }
+
+    private int digitSum(int number) {
+        int rest = number;
+        int sum = 0;
+        while (rest > 0) {
+            sum += rest % 10;
+            rest = rest / 10;
         }
+        return sum;
     }
 }

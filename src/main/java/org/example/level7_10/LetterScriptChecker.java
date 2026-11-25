@@ -1,18 +1,18 @@
 package org.example.level7_10;
 
 public class LetterScriptChecker {
-    public String check(char letter) {
-        if ((letter >= 'a' && letter <= 'z') || (letter >= 'A' && letter <= 'Z')) {
-            System.out.println("латиница");
-            return "латиница";
-        }
 
-        if ((letter >= 'а' && letter <= 'я') || (letter >= 'А' && letter <= 'Я') || letter == 'ё' || letter == 'Ё') {
-            System.out.println("кириллица");
-            return "кириллица";
+    /** Returns "latin" for a Latin letter, "cyrillic" for a Russian Cyrillic letter and "not a letter" otherwise. */
+    public String check(char symbol) {
+        if ((symbol >= 'a' && symbol <= 'z') || (symbol >= 'A' && symbol <= 'Z')) {
+            return "latin";
         }
-
-        System.out.println("не буква");
-        return "не буква";
+        // the Russian alphabet: lowercase and uppercase ranges plus the letter Yo, which lies outside them
+        if ((symbol >= 'а' && symbol <= 'я')
+                || (symbol >= 'А' && symbol <= 'Я')
+                || symbol == 'ё' || symbol == 'Ё') {
+            return "cyrillic";
+        }
+        return "not a letter";
     }
 }

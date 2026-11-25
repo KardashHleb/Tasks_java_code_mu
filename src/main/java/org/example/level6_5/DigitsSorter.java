@@ -1,39 +1,22 @@
 package org.example.level6_5;
 
 public class DigitsSorter {
-    public int sort(int num) {
-        int positive = Math.abs(num);
-        int length = 1;
-        int copy = positive;
 
-        while (copy >= 10) {
-            length = length + 1;
-            copy = copy / 10;
-        }
+    /** Sorts the digits of the number in ascending order (counting sort); leading zeros disappear, the sign is kept. */
+    public long sort(int number) {
+        int[] counts = new int[10];
+        long value = Math.abs((long) number);
+        do {
+            counts[(int) (value % 10)]++;
+            value /= 10;
+        } while (value > 0);
 
-        int[] digits = new int[length];
-        int temp = positive;
-        for (int i = length - 1; i >= 0; i--) {
-            digits[i] = temp % 10;
-            temp = temp / 10;
-        }
-
-        for (int i = 0; i < digits.length; i++) {
-            for (int j = 0; j < digits.length - 1; j++) {
-                if (digits[j] > digits[j + 1]) {
-                    int swap = digits[j];
-                    digits[j] = digits[j + 1];
-                    digits[j + 1] = swap;
-                }
+        long result = 0;
+        for (int digit = 0; digit <= 9; digit++) {
+            for (int i = 0; i < counts[digit]; i++) {
+                result = result * 10 + digit;
             }
         }
-
-        int result = 0;
-        for (int i = 0; i < digits.length; i++) {
-            result = result * 10 + digits[i];
-        }
-
-        System.out.println(result);
-        return result;
+        return number < 0 ? -result : result;
     }
 }

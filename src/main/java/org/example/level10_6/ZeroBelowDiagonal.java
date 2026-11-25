@@ -1,21 +1,22 @@
 package org.example.level10_6;
 
+import java.util.Arrays;
+
 public class ZeroBelowDiagonal {
+
+    /** Returns a copy of a square matrix with every element below the main diagonal set to zero. */
     public int[][] zero(int[][] matrix) {
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[i].length && j < i; j++) {
-                matrix[i][j] = 0;
+        for (int[] row : matrix) {
+            if (row.length != matrix.length) {
+                throw new IllegalArgumentException("Matrix must be square");
             }
         }
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[i].length; j++) {
-                System.out.print(matrix[i][j]);
-                if (j < matrix[i].length - 1) {
-                    System.out.print(" ");
-                }
+        int[][] result = Arrays.stream(matrix).map(int[]::clone).toArray(int[][]::new);
+        for (int i = 0; i < result.length; i++) {
+            for (int j = 0; j < i; j++) {
+                result[i][j] = 0;
             }
-            System.out.println();
         }
-        return matrix;
+        return result;
     }
 }

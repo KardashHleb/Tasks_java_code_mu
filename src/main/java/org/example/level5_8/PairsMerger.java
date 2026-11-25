@@ -1,29 +1,25 @@
 package org.example.level5_8;
 
 public class PairsMerger {
-    public int[] merge(int[] arr) {
-        int[] result = new int[arr.length / 2];
-        int index = 0;
 
-        for (int i = 0; i < arr.length - 1; i = i + 2) {
-            int second = Math.abs(arr[i + 1]);
-            int multiplier = 1;
-
-            if (second == 0) {
-                multiplier = 10;
-            } else {
-                int temp = second;
-                while (temp > 0) {
-                    multiplier = multiplier * 10;
-                    temp = temp / 10;
-                }
-            }
-
-            result[index] = arr[i] * multiplier + arr[i + 1];
-            System.out.println(result[index]);
-            index = index + 1;
+    /** Glues the numbers of each consecutive pair together: [1, 2, 3, 45] becomes [12, 345]. */
+    public long[] merge(int[] numbers) {
+        if (numbers.length % 2 != 0) {
+            throw new IllegalArgumentException("The array must have an even length, got " + numbers.length);
         }
-
+        long[] result = new long[numbers.length / 2];
+        for (int i = 0; i < numbers.length; i += 2) {
+            int first = numbers[i];
+            int second = numbers[i + 1];
+            if (first < 0 || second < 0) {
+                throw new IllegalArgumentException("Numbers must not be negative");
+            }
+            long multiplier = 10;
+            for (int rest = second / 10; rest > 0; rest /= 10) {
+                multiplier *= 10;
+            }
+            result[i / 2] = Math.addExact(Math.multiplyExact(first, multiplier), second);
+        }
         return result;
     }
 }

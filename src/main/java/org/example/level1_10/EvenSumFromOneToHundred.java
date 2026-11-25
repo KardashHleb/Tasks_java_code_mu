@@ -1,14 +1,13 @@
 package org.example.level1_10;
 
 public class EvenSumFromOneToHundred {
+
+    /** Returns the sum of the even numbers from 1 to 100. */
     public int calculateEvenSum() {
         int sum = 0;
-        for (int i = 1; i <= 100; i++) {
-            if (i % 2 == 0) {
-                sum = sum + i;
-            }
+        for (int i = 2; i <= 100; i += 2) {
+            sum += i;
         }
-        System.out.println(sum);
         return sum;
     }
 }

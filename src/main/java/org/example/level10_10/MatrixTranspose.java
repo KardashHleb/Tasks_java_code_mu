@@ -1,27 +1,23 @@
 package org.example.level10_10;
 
 public class MatrixTranspose {
+
+    /** Returns the transposed matrix: rows become columns. */
     public int[][] transpose(int[][] matrix) {
-        int width = 0;
-        for (int i = 0; i < matrix.length; i++) {
-            if (matrix[i].length > width) {
-                width = matrix[i].length;
+        if (matrix.length == 0) {
+            return new int[0][0];
+        }
+        int width = matrix[0].length;
+        for (int[] row : matrix) {
+            if (row.length != width) {
+                throw new IllegalArgumentException("Matrix must be rectangular");
             }
         }
         int[][] result = new int[width][matrix.length];
         for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[i].length; j++) {
+            for (int j = 0; j < width; j++) {
                 result[j][i] = matrix[i][j];
             }
-        }
-        for (int i = 0; i < result.length; i++) {
-            for (int j = 0; j < result[i].length; j++) {
-                System.out.print(result[i][j]);
-                if (j < result[i].length - 1) {
-                    System.out.print(" ");
-                }
-            }
-            System.out.println();
         }
         return result;
     }

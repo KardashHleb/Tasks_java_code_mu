@@ -1,14 +1,13 @@
 package org.example.level8_9;
 
 public class DashedPairsString {
+
+    /** Returns the string "-1-12-23-34-45-": the digit 1 followed by pairs of consecutive digits, all framed by dashes. */
     public String make() {
-        String result = "-1-";
-
+        StringBuilder result = new StringBuilder("-1-");
         for (int i = 1; i <= 4; i++) {
-            result = result + i + (i + 1) + "-";
+            result.append(i).append(i + 1).append('-');
         }
-
-        System.out.println(result);
-        return result;
+        return result.toString();
     }
 }

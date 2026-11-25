@@ -4,27 +4,19 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
 public class DaysUntilLeapDay {
+
+    /** Returns how many days are left until the nearest February 29. */
     public long count() {
-        LocalDate today = LocalDate.now();
+        return count(LocalDate.now());
+    }
+
+    /** Returns how many days are left from {@code today} until the nearest February 29 (0 if today is one). */
+    public long count(LocalDate today) {
         int year = today.getYear();
-
-        if (isLeap(year)) {
-            LocalDate leapDay = LocalDate.of(year, 2, 29);
-            if (!today.isAfter(leapDay)) {
-                long result = ChronoUnit.DAYS.between(today, leapDay);
-                System.out.println(result);
-                return result;
-            }
+        while (!isLeap(year) || today.isAfter(LocalDate.of(year, 2, 29))) {
+            year++;
         }
-
-        year = year + 1;
-        while (!isLeap(year)) {
-            year = year + 1;
-        }
-
-        long result = ChronoUnit.DAYS.between(today, LocalDate.of(year, 2, 29));
-        System.out.println(result);
-        return result;
+        return ChronoUnit.DAYS.between(today, LocalDate.of(year, 2, 29));
     }
 
     private boolean isLeap(int year) {

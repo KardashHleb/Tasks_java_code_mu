@@ -1,55 +1,35 @@
 package org.example.level8_6;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import org.example.common.FileUtils;
 
 public class LuckyTicketsWriter {
-    public int write(String path) {
+
+    private static final int MAX_TICKET = 999_999;
+
+    /**
+     * Writes every lucky six-digit ticket number (000000 to 999999), one per line, to the file and returns
+     * how many there are. A ticket is lucky when the digit sums of its two halves are equal.
+     */
+    public int write(Path file) {
+        StringBuilder text = new StringBuilder();
         int count = 0;
-
-        try {
-            File file = new File(path);
-            File parent = file.getParentFile();
-            if (parent != null) {
-                parent.mkdirs();
+        for (int number = 0; number <= MAX_TICKET; number++) {
+            if (digitSum(number / 1000) == digitSum(number % 1000)) {
+                text.append(String.format("%06d", number)).append('\n');
+                count++;
             }
-            try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8)) {
-                for (int number = 0; number <= 999999; number++) {
-                    int left = number / 1000;
-                    int right = number % 1000;
-                    if (digitSum(left) == digitSum(right)) {
-                        writer.write(ticket(number));
-                        writer.write("\n");
-                        count = count + 1;
-                    }
-                }
-            }
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
         }
-
-        System.out.println(count);
-        System.out.println(path);
+        FileUtils.writeText(file, text.toString());
         return count;
     }
 
     private int digitSum(int value) {
         int sum = 0;
-        for (int i = 0; i < 3; i++) {
-            sum = sum + value % 10;
-            value = value / 10;
+        while (value > 0) {
+            sum += value % 10;
+            value /= 10;
         }
         return sum;
-    }
-
-    private String ticket(int number) {
-        String result = "" + number;
-        while (result.length() < 6) {
-            result = "0" + result;
-        }
-        return result;
     }
 }

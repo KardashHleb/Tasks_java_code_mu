@@ -1,43 +1,33 @@
 package org.example.level10_2;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class DecimalPeriod {
+
+    /**
+     * Returns the repeating part of the decimal expansion of numerator / denominator,
+     * e.g. 1/7 -> "142857", 1/6 -> "6", or an empty string if the fraction terminates (1/4).
+     */
     public String period(int numerator, int denominator) {
         if (denominator == 0) {
-            System.out.println("деление на ноль");
+            throw new IllegalArgumentException("Denominator must not be zero");
+        }
+        long divisor = Math.abs((long) denominator);
+        long rest = Math.abs((long) numerator) % divisor;
+
+        // Long division: a repeated remainder means the digits from its first occurrence repeat.
+        Map<Long, Integer> firstPosition = new HashMap<>();
+        StringBuilder digits = new StringBuilder();
+        while (rest != 0 && !firstPosition.containsKey(rest)) {
+            firstPosition.put(rest, digits.length());
+            rest *= 10;
+            digits.append(rest / divisor);
+            rest %= divisor;
+        }
+        if (rest == 0) {
             return "";
         }
-        if (numerator < 0) {
-            numerator = -numerator;
-        }
-        if (denominator < 0) {
-            denominator = -denominator;
-        }
-
-        int rest = numerator % denominator;
-        int[] seen = new int[denominator];
-        for (int i = 0; i < seen.length; i++) {
-            seen[i] = -1;
-        }
-
-        String digits = "";
-        int position = 0;
-        while (rest != 0 && seen[rest] < 0) {
-            seen[rest] = position;
-            rest = rest * 10;
-            int digit = rest / denominator;
-            digits = digits + digit;
-            rest = rest % denominator;
-            position = position + 1;
-        }
-
-        String result = "";
-        if (rest == 0) {
-            result = "";
-            System.out.println("конечная дробь");
-        } else {
-            result = digits.substring(seen[rest]);
-            System.out.println(result);
-        }
-        return result;
+        return digits.substring(firstPosition.get(rest));
     }
 }

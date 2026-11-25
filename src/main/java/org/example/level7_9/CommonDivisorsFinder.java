@@ -1,38 +1,35 @@
 package org.example.level7_9;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CommonDivisorsFinder {
-    public int[] find(int[] arr) {
-        int min = Math.abs(arr[0]);
-        for (int i = 1; i < arr.length; i++) {
-            int positive = Math.abs(arr[i]);
-            if (positive < min) {
-                min = positive;
-            }
-        }
 
-        int count = 0;
+    /** Returns all positive numbers that divide every element of the array, in ascending order. */
+    public List<Integer> find(int[] values) {
+        if (values.length == 0) {
+            throw new IllegalArgumentException("Array must not be empty");
+        }
+        int min = Integer.MAX_VALUE;
+        for (int value : values) {
+            if (value == 0) {
+                throw new IllegalArgumentException("Zero has infinitely many divisors");
+            }
+            min = Math.min(min, Math.abs(value));
+        }
+        // a common divisor cannot exceed the smallest absolute value
+        List<Integer> result = new ArrayList<>();
         for (int divisor = 1; divisor <= min; divisor++) {
-            if (dividesAll(arr, divisor)) {
-                count = count + 1;
+            if (dividesAll(values, divisor)) {
+                result.add(divisor);
             }
         }
-
-        int[] result = new int[count];
-        int index = 0;
-        for (int divisor = 1; divisor <= min; divisor++) {
-            if (dividesAll(arr, divisor)) {
-                result[index] = divisor;
-                System.out.println(result[index]);
-                index = index + 1;
-            }
-        }
-
         return result;
     }
 
-    private boolean dividesAll(int[] arr, int divisor) {
-        for (int i = 0; i < arr.length; i++) {
-            if (Math.abs(arr[i]) % divisor != 0) {
+    private boolean dividesAll(int[] values, int divisor) {
+        for (int value : values) {
+            if (value % divisor != 0) {
                 return false;
             }
         }

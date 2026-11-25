@@ -1,31 +1,22 @@
 package org.example.level3_4;
 
 public class DigitsToArray {
+
+    /** Splits the number into its decimal digits, most significant first (the sign is ignored). */
     public byte[] toDigits(int number) {
-        int positiveNumber = Math.abs(number);
-        int temp = positiveNumber;
+        int rest = Math.abs(number);
         int count = 0;
-
-        if (positiveNumber == 0) {
-            count = 1;
-        }
-
-        while (temp > 0) {
-            count = count + 1;
+        int temp = rest;
+        do {
+            count++;
             temp = temp / 10;
-        }
+        } while (temp > 0);
 
         byte[] digits = new byte[count];
-
         for (int i = count - 1; i >= 0; i--) {
-            digits[i] = (byte) (positiveNumber % 10);
-            positiveNumber = positiveNumber / 10;
+            digits[i] = (byte) (rest % 10);
+            rest = rest / 10;
         }
-
-        for (int i = 0; i < digits.length; i++) {
-            System.out.println(digits[i]);
-        }
-
         return digits;
     }
 }

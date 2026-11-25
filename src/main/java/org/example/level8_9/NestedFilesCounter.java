@@ -1,27 +1,22 @@
 package org.example.level8_9;
 
-import java.io.File;
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.stream.Stream;
 
 public class NestedFilesCounter {
-    public int count(String folderPath) {
-        int result = countFiles(new File(folderPath));
-        System.out.println(result);
-        return result;
-    }
 
-    private int countFiles(File folder) {
-        File[] children = folder.listFiles();
-        if (children == null) {
-            return 0;
+    /** Returns the number of files in the folder and all its subfolders (folders themselves are not counted). */
+    public long count(Path folder) {
+        if (!Files.isDirectory(folder)) {
+            throw new IllegalArgumentException("Not a folder: " + folder);
         }
-        int count = 0;
-        for (int i = 0; i < children.length; i++) {
-            if (children[i].isDirectory()) {
-                count = count + countFiles(children[i]);
-            } else if (children[i].isFile()) {
-                count = count + 1;
-            }
+        try (Stream<Path> paths = Files.walk(folder)) {
+            return paths.filter(Files::isRegularFile).count();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
         }
-        return count;
     }
 }

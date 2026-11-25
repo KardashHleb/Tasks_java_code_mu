@@ -1,24 +1,27 @@
 package org.example.level9_10;
 
 public class AmicableChecker {
-    public boolean check(int first, int second) {
-        System.out.println("Введите два числа");
-        System.out.println(first);
-        System.out.println(second);
 
-        boolean friends = first != second && properSum(first) == second && properSum(second) == first;
-        System.out.println(friends);
-        return friends;
+    /** Checks whether two different positive numbers are amicable (each equals the sum of the other's proper divisors). */
+    public boolean areAmicable(int first, int second) {
+        if (first < 1 || second < 1) {
+            throw new IllegalArgumentException("Numbers must be positive: " + first + ", " + second);
+        }
+        return first != second && properDivisorSum(first) == second && properDivisorSum(second) == first;
     }
 
-    private int properSum(int number) {
-        if (number < 0) {
-            number = -number;
+    private static long properDivisorSum(int number) {
+        if (number == 1) {
+            return 0;
         }
-        int sum = 0;
-        for (int i = 1; i < number; i++) {
-            if (number % i == 0) {
-                sum = sum + i;
+        long sum = 1;
+        for (int divisor = 2; divisor <= number / divisor; divisor++) {
+            if (number % divisor == 0) {
+                sum += divisor;
+                int pair = number / divisor;
+                if (pair != divisor) {
+                    sum += pair;
+                }
             }
         }
         return sum;

@@ -1,38 +1,22 @@
 package org.example.level7_3;
 
+import java.util.Arrays;
+
 public class UniqueElements {
-    public int[] unique(int[] arr) {
-        int count = 0;
 
-        for (int i = 0; i < arr.length; i++) {
+    /** Returns the distinct elements of the array in order of their first occurrence. */
+    public int[] unique(int[] values) {
+        int[] result = new int[values.length];
+        int size = 0;
+        for (int value : values) {
             boolean seen = false;
-            for (int j = 0; j < i; j++) {
-                if (arr[j] == arr[i]) {
-                    seen = true;
-                }
+            for (int j = 0; j < size && !seen; j++) {
+                seen = result[j] == value;
             }
             if (!seen) {
-                count = count + 1;
+                result[size++] = value;
             }
         }
-
-        int[] result = new int[count];
-        int index = 0;
-
-        for (int i = 0; i < arr.length; i++) {
-            boolean seen = false;
-            for (int j = 0; j < i; j++) {
-                if (arr[j] == arr[i]) {
-                    seen = true;
-                }
-            }
-            if (!seen) {
-                result[index] = arr[i];
-                System.out.println(result[index]);
-                index = index + 1;
-            }
-        }
-
-        return result;
+        return Arrays.copyOf(result, size);
     }
 }

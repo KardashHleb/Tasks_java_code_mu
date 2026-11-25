@@ -1,24 +1,26 @@
 package org.example.level7_10;
 
+import java.util.Arrays;
 import java.util.Random;
 
 public class ArrayShuffler {
-    public int[] shuffle(int[] arr) {
-        int[] result = new int[arr.length];
-        for (int i = 0; i < arr.length; i++) {
-            result[i] = arr[i];
-        }
 
-        Random random = new Random();
+    /** Returns a shuffled copy of the array. */
+    public int[] shuffle(int[] values) {
+        return shuffle(values, new Random());
+    }
+
+    /**
+     * Returns a shuffled copy of the array using the Fisher-Yates algorithm: walking from the end, each
+     * element is swapped with a random element at or before it, which makes every permutation equally likely.
+     */
+    public int[] shuffle(int[] values, Random random) {
+        int[] result = Arrays.copyOf(values, values.length);
         for (int i = result.length - 1; i > 0; i--) {
             int index = random.nextInt(i + 1);
             int temp = result[i];
             result[i] = result[index];
             result[index] = temp;
-        }
-
-        for (int i = 0; i < result.length; i++) {
-            System.out.println(result[i]);
         }
         return result;
     }

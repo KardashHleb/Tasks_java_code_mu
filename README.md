@@ -1,5 +1,12 @@
 # Java solutions for code.mu exercises
 
+![Java](https://img.shields.io/badge/Java-21-ED8B00?logo=openjdk&logoColor=white)
+![Maven](https://img.shields.io/badge/Maven_Wrapper-3.9-C71A36?logo=apachemaven&logoColor=white)
+![JUnit 5](https://img.shields.io/badge/JUnit-5.11-25A162?logo=junit5&logoColor=white)
+![Allure](https://img.shields.io/badge/Allure_Report-2.42-FF6A00)
+![Tasks](https://img.shields.io/badge/tasks-423-blue)
+![Tests](https://img.shields.io/badge/tests-1456_passing-brightgreen)
+
 A solutions book for the Java practice tasks from [code.mu](https://code.mu): ten levels, ten
 sub-levels each, about 420 small problems in total. Every task is solved in its own class and
 covered by JUnit tests.
@@ -42,18 +49,39 @@ Conventions used across all tasks:
 
 ## Building and running the tests
 
-Requires JDK 21 and Maven.
+Requires only JDK 21. Maven does not need to be installed: the Maven Wrapper (`mvnw`) downloads
+Maven 3.9.9 on the first run.
 
-```
-mvn test
+```bash
+# macOS/Linux
+./mvnw test
+
+# Windows
+mvnw.cmd test
 ```
 
 To run a single level or a single task:
 
+```bash
+./mvnw test -Dtest='org.example.level10_*.*Test'
+./mvnw test -Dtest=EratosthenesTest
 ```
-mvn test -Dtest='org.example.level10_*.*Test'
-mvn test -Dtest=EratosthenesTest
+
+## Allure report
+
+Every test run writes Allure results to `target/allure-results`. To turn them into an HTML report:
+
+```bash
+# Run the tests and build the report into target/site/allure-maven-plugin
+./mvnw clean test allure:report
+
+# Or build the report and open it in the browser through a local server
+./mvnw allure:serve
 ```
+
+Open the report through `allure:serve` rather than by double-clicking `index.html`: browsers block
+the report's data files when the page is opened from disk. The report groups the tests by level
+and task class, with the run time of each test.
 
 ## Notable solutions
 

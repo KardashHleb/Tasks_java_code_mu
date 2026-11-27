@@ -41,3 +41,6 @@ build/
 
 ### IntelliJ IDEA (whole folder) ###
 .idea/
+
+### Allure command line, downloaded by allure-maven ###
+.allure/
